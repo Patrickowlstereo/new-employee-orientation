@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/orientation
+    username: orientation_app
+    password: orientation_dev_pass
+app:
+  jwt:
+    secret: dev-secret-change-me-please-make-it-long-enough-32bytes

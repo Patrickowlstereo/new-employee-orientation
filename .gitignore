@@ -16,7 +16,7 @@ dist/
 
 # 本地配置与上传
 api/src/main/resources/application-local.yml
-uploads/
+uploads/*
 !uploads/.gitkeep
 
 # OS
