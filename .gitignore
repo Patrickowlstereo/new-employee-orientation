@@ -1,0 +1,27 @@
+# Java / Maven
+api/target/
+*.class
+*.jar
+*.war
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Node / pnpm
+node_modules/
+dist/
+.pnpm-store/
+
+# 本地配置与上传
+api/src/main/resources/application-local.yml
+uploads/
+!uploads/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 旧 Demo 备份
+index.html.bak

@@ -1,0 +1,13 @@
+{
+  "name": "new-employee-orientation",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev:web": "pnpm --filter @gmnl/web dev",
+    "dev:admin": "pnpm --filter @gmnl/admin dev",
+    "build": "pnpm -r build",
+    "build:web": "pnpm --filter @gmnl/web build",
+    "build:admin": "pnpm --filter @gmnl/admin build"
+  },
+  "packageManager": "pnpm@9.0.0"
+}
