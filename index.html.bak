@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国民养老 · 新人航行计划</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --blue-50:#EEF4FF;--blue-100:#D9E6FF;--blue-200:#B8D0FF;--blue-300:#8BB4FF;--blue-400:#5E8FEE;--blue-500:#4A7BE0;--blue-600:#3A62C0;
+  --purple-50:#F3EEFF;--purple-100:#E4D9FF;--purple-200:#CBB8FF;--purple-300:#A98EF5;--purple-400:#8B6FE0;
+  --rose-50:#FFF0F1;--rose-100:#FFDDE0;--rose-200:#FFBCC2;--rose-300:#FF8F99;--rose-400:#E8636E;
+  --emerald-50:#EDFCF5;--emerald-100:#D0F5E3;--emerald-200:#A5EBCC;--emerald-300:#6DD8AD;--emerald-400:#4BBF92;
+  --amber-50:#FFF9EB;--amber-100:#FFEDC5;--amber-200:#FFD98A;--amber-300:#FFC04D;--amber-400:#F5A623;
+  --slate-50:#F8FAFC;--slate-100:#F1F5F9;--slate-200:#E2E8F0;--slate-300:#CBD5E1;--slate-400:#94A3B8;--slate-500:#64748B;--slate-600:#475569;--slate-700:#334155;--slate-800:#1E293B;--slate-900:#0F172A;
+  --white:#FFFFFF;
+  --radius:16px;--radius-lg:24px;--radius-xl:32px;
+  --shadow-sm:0 2px 8px rgba(47,71,110,0.06);
+  --shadow-md:0 4px 16px rgba(47,71,110,0.08);
+  --shadow-lg:0 8px 32px rgba(47,71,110,0.12);
+  --shadow-xl:0 16px 48px rgba(47,71,110,0.16);
+  --font:'Noto Sans SC',-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  --transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);overflow-x:hidden;min-height:100vh;}
+.screen{display:none;width:100%;min-height:100vh;position:relative;}
+.screen.active{display:flex;flex-direction:column;animation:fadeIn 0.5s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes floatSlow{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-15px) rotate(3deg)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-20px)}50%{transform:translateY(-10px)}70%{transform:translateY(-15px)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes wave1{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(-25px) translateY(-8px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes wave2{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(20px) translateY(-6px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes wave3{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(-15px) translateY(-10px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes boatBob{0%,100%{transform:translateY(0) rotate(-2deg)}25%{transform:translateY(-8px) rotate(1deg)}75%{transform:translateY(-4px) rotate(-3deg)}}
+@keyframes cloudFloat{0%{transform:translateX(-100px)}100%{transform:translateX(calc(100vw + 100px))}}
+@keyframes sparkle{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}
+@keyframes tornado{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-4px)}20%,40%,60%,80%{transform:translateX(4px)}}
+@keyframes coinFly{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(0.5)}}
+@keyframes starSpin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.2)}100%{transform:rotate(360deg) scale(1)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 15px rgba(74,123,224,0.3)}50%{box-shadow:0 0 30px rgba(74,123,224,0.6)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes progressFill{from{width:0}to{width:var(--fill)}}
+@keyframes confetti{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(400px) rotate(720deg);opacity:0}}
+
+/* ===== TOP NAV ===== */
+.top-nav{position:fixed;top:0;left:0;right:0;height:64px;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--slate-200);display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:100;}
+.nav-left{display:flex;align-items:center;gap:12px;}
+.nav-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue-400),var(--purple-400));display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700;cursor:pointer;transition:var(--transition);position:relative;}
+.nav-avatar:hover{transform:scale(1.08);box-shadow:0 4px 12px rgba(74,123,224,0.25);}
+.nav-name{font-weight:600;font-size:15px;color:var(--slate-700);}
+.nav-left{position:relative;}
+
+/* Avatar dropdown menu */
+.avatar-dropdown{position:absolute;top:56px;left:0;z-index:150;background:var(--white);border-radius:var(--radius);padding:6px;min-width:180px;box-shadow:var(--shadow-xl);border:1px solid var(--slate-200);display:none;animation:slideUp 0.2s ease;}
+.avatar-dropdown.active{display:block;}
+.avatar-dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;cursor:pointer;font-size:14px;color:var(--slate-600);transition:var(--transition);font-weight:500;}
+.avatar-dropdown-item:hover{background:var(--blue-50);color:var(--blue-500);}
+.avatar-dropdown-item.danger{color:var(--rose-400);}
+.avatar-dropdown-item.danger:hover{background:var(--rose-50);color:var(--rose-400);}
+.avatar-dropdown-item .item-icon{font-size:16px;width:22px;text-align:center;}
+.avatar-dropdown-divider{height:1px;background:var(--slate-100);margin:4px 8px;}
+.nav-center{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--amber-50),var(--amber-100));padding:8px 20px;border-radius:40px;border:2px solid var(--amber-200);}
+.bean-icon{font-size:22px;animation:bounce 2s infinite;}
+.bean-count{font-weight:700;font-size:18px;color:var(--amber-400);}
+.nav-right{display:flex;gap:8px;}
+.nav-btn{padding:8px 16px;border-radius:12px;border:1.5px solid var(--slate-200);background:var(--white);cursor:pointer;font-size:14px;font-weight:500;color:var(--slate-600);transition:var(--transition);display:flex;align-items:center;gap:6px;}
+.nav-btn:hover{border-color:var(--blue-300);color:var(--blue-500);background:var(--blue-50);}
+
+/* ===== START SCREEN ===== */
+#startScreen{justify-content:center;align-items:center;background:linear-gradient(160deg,#EEF4FF 0%,#F3EEFF 40%,#FFF0F1 70%,#FFF9EB 100%);min-height:100vh;overflow:hidden;}
+.start-clouds{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
+.cloud{position:absolute;background:rgba(255,255,255,0.8);border-radius:50%;filter:blur(1px);}
+.cloud::before,.cloud::after{content:'';position:absolute;background:inherit;border-radius:50%;}
+.cloud-1{width:120px;height:40px;top:15%;animation:cloudFloat 35s linear infinite;}
+.cloud-1::before{width:50px;height:50px;top:-25px;left:20px;}
+.cloud-1::after{width:40px;height:40px;top:-15px;left:55px;}
+.cloud-2{width:90px;height:30px;top:25%;animation:cloudFloat 45s linear infinite;animation-delay:-10s;opacity:0.6;}
+.cloud-2::before{width:35px;height:35px;top:-18px;left:15px;}
+.cloud-2::after{width:30px;height:30px;top:-12px;left:40px;}
+.cloud-3{width:140px;height:45px;top:60%;animation:cloudFloat 55s linear infinite;animation-delay:-25s;opacity:0.5;}
+.cloud-3::before{width:55px;height:55px;top:-30px;left:25px;}
+.cloud-3::after{width:45px;height:45px;top:-20px;left:65px;}
+.start-content{text-align:center;z-index:2;animation:slideUp 0.8s ease;}
+.start-logo{width:120px;height:120px;margin:0 auto 24px;background:linear-gradient(135deg,var(--blue-400),var(--purple-300));border-radius:32px;display:flex;align-items:center;justify-content:center;font-size:56px;box-shadow:0 12px 40px rgba(74,123,224,0.25);animation:floatSlow 4s ease-in-out infinite;}
+
+/* ===== BRAND LOGO ===== */
+.brand-logo{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 24px;margin-bottom:16px;}
+.brand-logo-img{height:80px;width:auto;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.08));}
+.brand-logo--large .brand-logo-img{height:112px;}
+.brand-logo--small .brand-logo-img{height:64px;}
+.brand-logo--light{background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border-radius:12px;border:1px solid rgba(255,255,255,0.5);}
+.brand-logo--dark{background:rgba(15,23,42,0.06);backdrop-filter:blur(8px);border-radius:12px;border:1px solid rgba(15,23,42,0.08);}
+.start-title{font-size:42px;font-weight:900;background:linear-gradient(135deg,var(--blue-500),var(--purple-400),var(--rose-400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;letter-spacing:2px;}
+.start-subtitle{font-size:18px;color:var(--slate-500);margin-bottom:40px;font-weight:400;letter-spacing:1px;}
+.start-btn{padding:16px 48px;background:linear-gradient(135deg,var(--blue-400),var(--blue-500));color:#fff;border:none;border-radius:16px;font-size:18px;font-weight:600;cursor:pointer;transition:var(--transition);box-shadow:0 8px 24px rgba(74,123,224,0.3);font-family:var(--font);}
+.start-btn:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(74,123,224,0.4);}
+.start-btn:active{transform:translateY(0);}
+.start-features{display:flex;gap:32px;justify-content:center;margin-top:48px;}
+.start-feature{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--slate-500);font-size:13px;}
+.start-feature-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(255,255,255,0.8);box-shadow:var(--shadow-sm);}
+
+/* ===== MAP SCREEN ===== */
+#mapScreen{padding-top:64px;min-height:100vh;background:linear-gradient(180deg,#EDF2FF 0%,#F8FAFF 40%,#FFF9F0 100%);}
+.map-container{flex:1;display:flex;flex-direction:column;align-items:center;padding:24px 32px;position:relative;overflow:hidden;}
+.map-header{text-align:center;margin-bottom:20px;}
+.map-header h2{font-size:22px;font-weight:700;color:var(--slate-800);margin-bottom:4px;}
+.map-header p{font-size:14px;color:var(--slate-500);}
+
+/* Branch Map - using the actual image (1334x720) */
+.map-board{position:relative;width:1000px;max-width:95vw;height:540px;margin:0 auto;border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-lg);}
+.map-board-img{width:100%;height:100%;object-fit:fill;display:block;}
+
+/* Province clickable hotspots - positioned over the map image text labels */
+.province-hotspot{position:absolute;cursor:pointer;z-index:10;transition:var(--transition);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:transparent;user-select:none;}
+.province-hotspot:hover{transform:translateY(-6px) scale(1.06);background:rgba(74,123,224,0.12);box-shadow:0 0 24px rgba(74,123,224,0.25),inset 0 0 20px rgba(74,123,224,0.08);}
+.province-hotspot:active{transform:translateY(-2px) scale(1.02);}
+
+/* Hotspot positions - calibrated for 1334x720 image in 1000x540 container */
+.hotspot-shandong{left:22%;top:0%;width:26%;height:14%;}
+.hotspot-beijing{left:26%;top:12%;width:32%;height:32%;}
+.hotspot-shanghai{left:76%;top:18%;width:20%;height:24%;}
+.hotspot-zhejiang{left:45%;top:30%;width:27%;height:24%;}
+.hotspot-sichuan{left:0%;top:18%;width:20%;height:24%;}
+.hotspot-chongqing{left:18%;top:68%;width:26%;height:28%;}
+.hotspot-guangdong{left:64%;top:68%;width:32%;height:28%;}
+
+/* Map progress bar */
+.map-progress{margin-top:16px;width:1000px;max-width:95vw;}
+.progress-bar-container{background:var(--slate-100);border-radius:12px;height:10px;overflow:hidden;position:relative;}
+.progress-bar-fill{height:100%;border-radius:12px;background:linear-gradient(90deg,var(--blue-400),var(--purple-300),var(--rose-300));transition:width 0.8s ease;position:relative;}
+.progress-bar-fill::after{content:'';position:absolute;right:0;top:0;width:20px;height:100%;background:rgba(255,255,255,0.4);border-radius:0 12px 12px 0;animation:shimmer 2s infinite;}
+.progress-info{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--slate-500);}
+.inst-progress-dots{display:flex;gap:12px;justify-content:center;margin-top:8px;}
+.inst-dot{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--slate-500);}
+.inst-dot-dot{width:8px;height:8px;border-radius:50%;background:var(--slate-300);}
+.inst-dot-dot.done{background:var(--emerald-400);}
+
+/* ===== VOYAGE SCREEN ===== */
+#voyageScreen{padding-top:64px;min-height:100vh;position:relative;overflow:hidden;}
+.ocean-bg{position:absolute;inset:0;top:64px;z-index:0;}
+.ocean-gradient{position:absolute;inset:0;background:linear-gradient(180deg,#B8E4FF 0%,#87CEEB 30%,#6CB4EE 60%,#5A9FD4 100%);}
+.wave{position:absolute;bottom:0;width:200%;height:100px;opacity:0.3;}
+.wave-1{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%23fff' d='M0,50 C360,0 720,100 1080,50 C1260,25 1350,75 1440,50 L1440,100 L0,100 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 100px;animation:wave1 6s ease-in-out infinite;bottom:0;}
+.wave-2{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%23fff' d='M0,60 C240,10 480,90 720,40 C960,0 1200,80 1440,60 L1440,100 L0,100 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 100px;animation:wave2 8s ease-in-out infinite;bottom:-10px;opacity:0.2;}
+.wave-3{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%23fff' d='M0,40 C180,80 360,0 540,60 C720,100 900,20 1080,60 C1260,100 1350,40 1440,60 L1440,100 L0,100 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 100px;animation:wave3 10s ease-in-out infinite;bottom:-20px;opacity:0.15;}
+.sun{position:absolute;top:40px;right:80px;width:80px;height:80px;background:radial-gradient(circle,#FFE066,#FFD93D,#F0A623);border-radius:50%;box-shadow:0 0 60px rgba(255,217,61,0.4);z-index:1;}
+
+.voyage-content{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+.voyage-header{text-align:center;margin-bottom:10px;}
+.voyage-back{position:absolute;top:80px;left:32px;z-index:20;padding:10px 20px;background:rgba(255,255,255,0.9);border:1.5px solid var(--slate-200);border-radius:12px;cursor:pointer;font-size:14px;font-weight:500;color:var(--slate-600);transition:var(--transition);backdrop-filter:blur(10px);font-family:var(--font);display:flex;align-items:center;gap:6px;}
+.voyage-back:hover{background:var(--white);border-color:var(--blue-300);color:var(--blue-500);}
+.voyage-title{font-size:24px;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,60,120,0.2);}
+.voyage-subtitle{font-size:14px;color:rgba(255,255,255,0.8);}
+
+/* Islands */
+.islands-area{position:relative;width:900px;height:420px;margin-top:10px;}
+.island{position:absolute;width:130px;height:130px;border-radius:50%;cursor:pointer;transition:var(--transition);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;border:3px solid rgba(255,255,255,0.8);box-shadow:0 6px 24px rgba(0,0,0,0.12);}
+.island:hover{transform:translateY(-10px) scale(1.08);box-shadow:0 12px 36px rgba(0,0,0,0.18);}
+.island:active{transform:translateY(-5px) scale(1.03);}
+.island-icon{font-size:32px;margin-bottom:4px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));}
+.island-name{font-size:12px;font-weight:600;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.15);}
+.island-locked{position:absolute;width:130px;height:130px;border-radius:50%;background:rgba(148,163,184,0.7);cursor:not-allowed;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:11;border:3px dashed var(--slate-400);opacity:0.7;}
+.island-locked .island-icon{filter:grayscale(1) brightness(0.6);}
+.island-locked .island-name{color:var(--slate-500);}
+.island-completed{border-color:var(--amber-300) !important;box-shadow:0 6px 24px rgba(245,166,35,0.3) !important;}
+.island-completed::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--amber-300);animation:glowPulse 2s infinite;}
+
+.island-1{left:5%;top:30%;background:linear-gradient(135deg,#4A90E2,#357ABD);}
+.island-2{left:28%;top:5%;background:linear-gradient(135deg,#FDCB6E,#F0A623);}
+.island-3{left:52%;top:30%;background:linear-gradient(135deg,#55EFC4,#00B894);}
+.island-4{left:76%;top:5%;background:linear-gradient(135deg,#A29BFE,#7C6FE0);}
+.island-5{left:76%;top:55%;background:linear-gradient(135deg,#B2BEC3,#95A5A6);}
+
+/* Mandatory tag */
+.mandatory-tag{position:absolute;top:-6px;right:-6px;background:var(--rose-400);color:#fff;font-size:10px;padding:2px 8px;border-radius:8px;font-weight:600;border:2px solid #fff;box-shadow:var(--shadow-sm);}
+
+/* Boat */
+.boat{position:absolute;z-index:12;font-size:36px;transition:all 1.2s cubic-bezier(0.25,0.46,0.45,0.94);filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));animation:boatBob 3s ease-in-out infinite;pointer-events:none;}
+.boat-wake{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:40px;height:8px;background:rgba(255,255,255,0.5);border-radius:50%;filter:blur(2px);}
+
+/* ===== DOCUMENT PANEL ===== */
+.doc-panel-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.3);backdrop-filter:blur(8px);z-index:200;display:none;align-items:center;justify-content:center;animation:fadeIn 0.3s ease;}
+.doc-panel-overlay.active{display:flex;}
+.doc-panel{background:var(--white);border-radius:var(--radius-xl);width:560px;max-height:70vh;overflow:hidden;box-shadow:var(--shadow-xl);animation:slideUp 0.4s ease;}
+.doc-panel-header{padding:24px 28px 16px;border-bottom:1px solid var(--slate-100);display:flex;align-items:center;justify-content:space-between;}
+.doc-panel-header h3{font-size:18px;font-weight:700;color:var(--slate-800);}
+.doc-panel-close{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--slate-200);background:var(--slate-50);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:var(--transition);color:var(--slate-500);font-family:var(--font);}
+.doc-panel-close:hover{background:var(--rose-50);border-color:var(--rose-200);color:var(--rose-400);}
+.doc-list{padding:16px 28px 24px;overflow-y:auto;max-height:50vh;}
+.doc-item{padding:14px 16px;border-radius:14px;border:1.5px solid var(--slate-100);margin-bottom:10px;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:14px;}
+.doc-item:hover{border-color:var(--blue-200);background:var(--blue-50);transform:translateX(4px);}
+.doc-item.completed{border-color:var(--emerald-200);background:var(--emerald-50);}
+.doc-item.completed .doc-item-title{color:var(--slate-500);}
+.doc-item-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.doc-item.completed .doc-item-icon{background:var(--emerald-100);color:var(--emerald-400);}
+.doc-item:not(.completed) .doc-item-icon{background:var(--blue-50);color:var(--blue-400);}
+.doc-item-info{flex:1;min-width:0;}
+.doc-item-title{font-size:14px;font-weight:600;color:var(--slate-700);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.doc-item-progress{height:4px;background:var(--slate-100);border-radius:4px;overflow:hidden;}
+.doc-item-progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--blue-400),var(--purple-300));transition:width 0.5s ease;}
+.doc-item-status{font-size:12px;color:var(--slate-400);flex-shrink:0;}
+
+/* ===== PDF VIEWER ===== */
+.pdf-viewer-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.5);backdrop-filter:blur(8px);z-index:300;display:none;flex-direction:column;}
+.pdf-viewer-overlay.active{display:flex;}
+.pdf-toolbar{height:56px;background:var(--white);border-bottom:1px solid var(--slate-200);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;}
+.pdf-toolbar-left{display:flex;align-items:center;gap:12px;}
+.pdf-back{padding:8px 16px;border-radius:10px;border:1.5px solid var(--slate-200);background:var(--slate-50);cursor:pointer;font-size:13px;font-weight:500;color:var(--slate-600);transition:var(--transition);display:flex;align-items:center;gap:6px;font-family:var(--font);}
+.pdf-back:hover{background:var(--blue-50);border-color:var(--blue-200);color:var(--blue-500);}
+.pdf-title{font-size:15px;font-weight:600;color:var(--slate-700);}
+.pdf-progress-mini{display:flex;align-items:center;gap:8px;}
+.pdf-progress-bar{width:120px;height:6px;background:var(--slate-100);border-radius:6px;overflow:hidden;}
+.pdf-progress-fill{height:100%;border-radius:6px;background:var(--emerald-400);transition:width 0.5s ease;}
+.pdf-progress-text{font-size:12px;color:var(--slate-500);}
+.pdf-complete-btn{padding:8px 20px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--emerald-400),var(--emerald-300));color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:var(--font);display:flex;align-items:center;gap:6px;}
+.pdf-complete-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(75,191,146,0.3);}
+.pdf-complete-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none;}
+.pdf-frame{flex:1;background:var(--slate-100);}
+.pdf-frame iframe{width:100%;height:100%;border:none;}
+
+/* ===== QUIZ SCREEN ===== */
+.quiz-container{max-width:700px;margin:80px auto 40px;padding:0 32px;}
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.quiz-progress{display:flex;gap:6px;}
+.quiz-dot{width:12px;height:12px;border-radius:50%;background:var(--slate-200);transition:var(--transition);}
+.quiz-dot.active{background:var(--blue-400);}
+.quiz-dot.correct{background:var(--emerald-400);}
+.quiz-dot.wrong{background:var(--rose-400);}
+.quiz-card{background:var(--white);border-radius:var(--radius-xl);padding:36px;box-shadow:var(--shadow-lg);animation:slideUp 0.4s ease;}
+.quiz-question-num{font-size:13px;color:var(--blue-400);font-weight:600;margin-bottom:8px;}
+.quiz-question{font-size:18px;font-weight:600;color:var(--slate-800);line-height:1.6;margin-bottom:28px;}
+.quiz-options{display:flex;flex-direction:column;gap:12px;}
+.quiz-option{padding:16px 20px;border-radius:14px;border:2px solid var(--slate-200);cursor:pointer;transition:var(--transition);font-size:15px;color:var(--slate-700);display:flex;align-items:center;gap:12px;background:var(--white);}
+.quiz-option:hover{border-color:var(--blue-300);background:var(--blue-50);}
+.quiz-option.selected{border-color:var(--blue-400);background:var(--blue-50);color:var(--blue-600);font-weight:600;}
+.quiz-option.correct{border-color:var(--emerald-400);background:var(--emerald-50);color:var(--emerald-400);}
+.quiz-option.wrong{border-color:var(--rose-400);background:var(--rose-50);color:var(--rose-400);}
+.quiz-option-letter{width:32px;height:32px;border-radius:8px;background:var(--slate-100);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--slate-500);flex-shrink:0;transition:var(--transition);}
+.quiz-option.selected .quiz-option-letter{background:var(--blue-400);color:#fff;}
+.quiz-option.correct .quiz-option-letter{background:var(--emerald-400);color:#fff;}
+.quiz-option.wrong .quiz-option-letter{background:var(--rose-400);color:#fff;}
+.quiz-nav{display:flex;justify-content:flex-end;margin-top:24px;gap:12px;}
+.quiz-btn{padding:12px 28px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:var(--font);}
+.quiz-btn-next{background:linear-gradient(135deg,var(--blue-400),var(--blue-500));color:#fff;}
+.quiz-btn-next:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(74,123,224,0.3);}
+.quiz-btn-next:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.quiz-result{text-align:center;padding:40px;}
+.quiz-result-score{font-size:64px;font-weight:900;background:linear-gradient(135deg,var(--blue-400),var(--purple-400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.quiz-result-label{font-size:16px;color:var(--slate-500);margin-top:8px;}
+
+/* ===== SHOP SCREEN ===== */
+#shopScreen{padding-top:64px;min-height:100vh;background:linear-gradient(180deg,#FFF9EB 0%,#FFF5F5 50%,#F3EEFF 100%);}
+.shop-container{max-width:1000px;margin:0 auto;padding:24px 32px 40px;}
+.shop-header{text-align:center;margin-bottom:24px;}
+.shop-header h2{font-size:24px;font-weight:700;color:var(--slate-800);margin-bottom:4px;}
+.shop-balance{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--amber-50),var(--amber-100));padding:10px 24px;border-radius:40px;border:2px solid var(--amber-200);margin-top:8px;}
+.shop-balance-count{font-size:20px;font-weight:700;color:var(--amber-400);}
+.shop-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:24px;}
+.shop-tab{padding:8px 20px;border-radius:20px;border:1.5px solid var(--slate-200);background:var(--white);cursor:pointer;font-size:14px;font-weight:500;color:var(--slate-500);transition:var(--transition);font-family:var(--font);}
+.shop-tab.active{background:var(--blue-400);color:#fff;border-color:var(--blue-400);}
+.shop-tab:hover:not(.active){border-color:var(--blue-200);color:var(--blue-500);}
+.shop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.shop-card{background:var(--white);border-radius:var(--radius-lg);overflow:hidden;border:2px solid var(--slate-100);transition:var(--transition);cursor:pointer;}
+.shop-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--blue-200);}
+.shop-card.limited{border-color:var(--amber-300);position:relative;}
+.shop-card.limited::before{content:'限定';position:absolute;top:12px;right:-24px;background:linear-gradient(135deg,var(--amber-400),var(--amber-300));color:#fff;font-size:11px;font-weight:700;padding:2px 28px;transform:rotate(45deg);z-index:1;}
+.shop-card-img{width:100%;height:160px;object-fit:cover;border-bottom:1px solid var(--slate-100);background:var(--slate-50);display:flex;align-items:center;justify-content:center;font-size:48px;overflow:hidden;}
+.shop-card-img img{width:100%;height:100%;object-fit:cover;}
+.shop-card-info{padding:16px;}
+.shop-card-name{font-size:15px;font-weight:600;color:var(--slate-700);margin-bottom:8px;}
+.shop-card-price{display:flex;align-items:center;justify-content:space-between;}
+.shop-card-beans{display:flex;align-items:center;gap:4px;font-size:14px;font-weight:700;color:var(--amber-400);}
+.shop-exchange-btn{padding:6px 16px;border-radius:8px;border:none;background:var(--blue-400);color:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:var(--font);}
+.shop-exchange-btn:hover{background:var(--blue-500);}
+.shop-exchange-btn:disabled{background:var(--slate-200);color:var(--slate-400);cursor:not-allowed;}
+.shop-back{position:absolute;top:80px;left:32px;z-index:20;padding:10px 20px;background:rgba(255,255,255,0.9);border:1.5px solid var(--slate-200);border-radius:12px;cursor:pointer;font-size:14px;font-weight:500;color:var(--slate-600);transition:var(--transition);font-family:var(--font);display:flex;align-items:center;gap:6px;}
+.shop-back:hover{background:var(--white);border-color:var(--blue-300);color:var(--blue-500);}
+
+/* ===== HURRICANE OVERLAY ===== */
+.hurricane-overlay{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;flex-direction:column;}
+.hurricane-overlay.active{display:flex;}
+.hurricane-bg{position:absolute;inset:0;background:rgba(30,20,50,0.7);animation:shake 0.5s ease-in-out infinite;}
+.hurricane-vortex{position:relative;z-index:2;font-size:100px;animation:tornado 1.5s linear infinite;margin-bottom:24px;}
+.hurricane-text{position:relative;z-index:2;font-size:28px;font-weight:900;color:#FFD93D;text-shadow:0 2px 12px rgba(255,165,0,0.5);animation:float 2s ease-in-out infinite;margin-bottom:12px;}
+.hurricane-subtext{position:relative;z-index:2;font-size:16px;color:rgba(255,255,255,0.8);margin-bottom:32px;}
+.hurricane-btn{position:relative;z-index:2;padding:14px 36px;background:linear-gradient(135deg,var(--amber-400),var(--amber-300));color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:var(--font);box-shadow:0 8px 24px rgba(245,166,35,0.3);}
+.hurricane-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(245,166,35,0.4);}
+
+/* ===== MODALS ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.3);backdrop-filter:blur(8px);z-index:400;display:none;align-items:center;justify-content:center;}
+.modal-overlay.active{display:flex;}
+.modal{background:var(--white);border-radius:var(--radius-xl);padding:36px;max-width:420px;width:90%;text-align:center;box-shadow:var(--shadow-xl);animation:slideUp 0.4s ease;}
+.modal-icon{font-size:48px;margin-bottom:16px;}
+.modal h3{font-size:20px;font-weight:700;color:var(--slate-800);margin-bottom:8px;}
+.modal p{font-size:14px;color:var(--slate-500);line-height:1.6;margin-bottom:24px;}
+.modal-btns{display:flex;gap:12px;justify-content:center;}
+.modal-btn{padding:12px 28px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:var(--font);}
+.modal-btn-primary{background:linear-gradient(135deg,var(--blue-400),var(--blue-500));color:#fff;}
+.modal-btn-primary:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(74,123,224,0.3);}
+.modal-btn-secondary{background:var(--slate-100);color:var(--slate-600);}
+.modal-btn-secondary:hover{background:var(--slate-200);}
+
+/* Points animation */
+.points-fly{position:fixed;z-index:999;font-size:16px;font-weight:700;color:var(--amber-400);pointer-events:none;animation:coinFly 1s ease-out forwards;}
+
+/* ===== NEW USER GUIDE ===== */
+.guide-overlay{position:fixed;inset:0;z-index:600;display:none;}
+.guide-overlay.active{display:block;}
+.guide-mask{position:absolute;inset:0;background:rgba(15,23,42,0.6);}
+.guide-spotlight{position:absolute;border:3px solid var(--amber-400);border-radius:16px;box-shadow:0 0 0 9999px rgba(15,23,42,0.6);z-index:2;transition:all 0.4s ease;}
+.guide-tooltip{position:absolute;z-index:3;background:var(--white);border-radius:var(--radius-lg);padding:20px 24px;max-width:320px;box-shadow:var(--shadow-xl);animation:slideUp 0.3s ease;}
+.guide-tooltip h4{font-size:16px;font-weight:700;color:var(--slate-800);margin-bottom:6px;}
+.guide-tooltip p{font-size:13px;color:var(--slate-500);line-height:1.5;margin-bottom:12px;}
+.guide-tooltip .guide-next{padding:8px 20px;border-radius:10px;border:none;background:var(--blue-400);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:var(--font);}
+
+/* ===== CONFETTI ===== */
+.confetti-container{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden;}
+.confetti-piece{position:absolute;width:10px;height:10px;top:-10px;animation:confetti 3s ease-in forwards;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1200px){
+  .map-board{width:900px;height:486px;}
+  .shop-grid{grid-template-columns:repeat(3,1fr);}
+  .islands-area{width:780px;height:400px;}
+}
+@media(max-width:768px){
+  .map-board{width:100%;height:auto;aspect-ratio:1334/720;}
+  .province-hotspot{font-size:12px;}
+  .islands-area{width:100%;height:350px;}
+  .island,.island-locked{width:100px;height:100px;}
+  .island-icon{font-size:24px;}
+  .island-name{font-size:10px;}
+  .shop-grid{grid-template-columns:repeat(2,1fr);}
+  .start-title{font-size:28px;}
+  .start-features{flex-direction:column;gap:16px;align-items:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== START SCREEN ===== -->
+<div id="startScreen" class="screen active">
+  <div class="start-clouds">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+  <div class="start-content">
+    <div class="brand-logo brand-logo--large">
+      <img src="../国民logo.png" alt="国民养老保险" class="brand-logo-img">
+    </div>
+    <div class="start-logo">⛵</div>
+    <h1 class="start-title">国民养老 · 新人航行计划</h1>
+    <p class="start-subtitle">探索知识海洋，开启你的职场冒险之旅</p>
+    <button class="start-btn" onclick="startGame()">🚀 开始冒险</button>
+    <div class="start-features">
+      <div class="start-feature">
+        <div class="start-feature-icon">🗺️</div>
+        <span>知识地图探索</span>
+      </div>
+      <div class="start-feature">
+        <div class="start-feature-icon">⛵</div>
+        <span>海洋航行学习</span>
+      </div>
+      <div class="start-feature">
+        <div class="start-feature-icon">🏆</div>
+        <span>积分兑换好礼</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAP SCREEN ===== -->
+<div id="mapScreen" class="screen">
+  <nav class="top-nav" id="topNav">
+    <div class="nav-left">
+      <div class="nav-avatar" onclick="toggleAvatarMenu(event)">👥</div>
+      <span class="nav-name">新航员</span>
+      <div class="avatar-dropdown" id="avatarDropdown1">
+        <div class="avatar-dropdown-item" onclick="showPointsDetail();closeAvatarMenu();">
+          <span class="item-icon">📊</span>积分明细
+        </div>
+        <div class="avatar-dropdown-divider"></div>
+        <div class="avatar-dropdown-item danger" id="resetIdentity1" onclick="confirmResetIdentity();closeAvatarMenu();">
+          <span class="item-icon">🔄</span>切换身份（重置进度）
+        </div>
+      </div>
+    </div>
+    <div class="nav-center">
+      <span class="bean-icon">🫘</span>
+      <span class="bean-count" id="navBeanCount">0</span>
+      <span style="font-size:13px;color:var(--amber-400);font-weight:500;">国小豆</span>
+    </div>
+    <div class="nav-right">
+      <button class="nav-btn" onclick="showScreen('shopScreen')">🎁 兑换商城</button>
+    </div>
+  </nav>
+
+  <div class="map-container">
+    <div class="brand-logo brand-logo--small brand-logo--light">
+      <img src="../国民logo.png" alt="国民养老保险" class="brand-logo-img">
+    </div>
+    <div class="map-header">
+      <h2>🗺️ 国民养老 · 知识地图</h2>
+      <p>点击机构节点，开启知识航行之旅</p>
+    </div>
+
+    <div class="map-board" id="mapBoard">
+      <img src="../分支机构地图.png" alt="分支机构地图" class="map-board-img" id="mapBoardImg">
+      <div class="province-hotspot hotspot-shandong" data-inst="shandong" onclick="enterInstitution('shandong')">山东</div>
+      <div class="province-hotspot hotspot-beijing" data-inst="beijing" onclick="enterInstitution('beijing')">北京</div>
+      <div class="province-hotspot hotspot-shanghai" data-inst="shanghai" onclick="enterInstitution('shanghai')">上海</div>
+      <div class="province-hotspot hotspot-zhejiang" data-inst="zhejiang" onclick="enterInstitution('zhejiang')">浙江</div>
+      <div class="province-hotspot hotspot-sichuan" data-inst="sichuan" onclick="enterInstitution('sichuan')">四川</div>
+      <div class="province-hotspot hotspot-chongqing" data-inst="chongqing" onclick="enterInstitution('chongqing')">重庆</div>
+      <div class="province-hotspot hotspot-guangdong" data-inst="guangdong" onclick="enterInstitution('guangdong')">广东</div>
+    </div>
+
+    <div class="map-progress">
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="totalProgress" style="width:0%"></div>
+      </div>
+      <div class="progress-info">
+        <span>总体学习进度</span>
+        <span id="totalProgressText">0%</span>
+      </div>
+      <div class="inst-progress-dots" id="instProgressDots"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VOYAGE SCREEN ===== -->
+<div id="voyageScreen" class="screen">
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="nav-avatar" onclick="toggleAvatarMenu(event)">👥</div>
+      <span class="nav-name">新航员</span>
+      <div class="avatar-dropdown" id="avatarDropdown2">
+        <div class="avatar-dropdown-item" onclick="showPointsDetail();closeAvatarMenu();">
+          <span class="item-icon">📊</span>积分明细
+        </div>
+        <div class="avatar-dropdown-divider"></div>
+        <div class="avatar-dropdown-item danger" id="resetIdentity2" onclick="confirmResetIdentity();closeAvatarMenu();">
+          <span class="item-icon">🔄</span>切换身份（重置进度）
+        </div>
+      </div>
+    </div>
+    <div class="nav-center">
+      <span class="bean-icon">🫘</span>
+      <span class="bean-count" id="navBeanCount2">0</span>
+      <span style="font-size:13px;color:var(--amber-400);font-weight:500;">国小豆</span>
+    </div>
+    <div class="nav-right">
+      <button class="nav-btn" onclick="showScreen('shopScreen')">🎁 兑换商城</button>
+    </div>
+  </nav>
+
+  <button class="voyage-back" onclick="backToMap()">← 返回地图</button>
+
+  <div class="ocean-bg">
+    <div class="ocean-gradient"></div>
+    <div class="wave wave-1"></div>
+    <div class="wave wave-2"></div>
+    <div class="wave wave-3"></div>
+    <div class="sun"></div>
+  </div>
+
+  <div class="voyage-content">
+    <div class="brand-logo brand-logo--small" style="margin-bottom:8px;">
+      <img src="../国民logo.png" alt="国民养老保险" class="brand-logo-img" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15)) brightness(1.1);">
+    </div>
+    <div class="voyage-header">
+      <h2 class="voyage-title" id="voyageTitle">知识海洋航行</h2>
+      <p class="voyage-subtitle" id="voyageSubtitle">点击岛屿探索知识板块</p>
+    </div>
+
+    <div class="islands-area" id="islandsArea">
+      <!-- Boat -->
+      <div class="boat" id="boat">⛵<div class="boat-wake"></div></div>
+
+      <!-- Island 1: 关于公司 -->
+      <div class="island island-1" data-island="about" onclick="openIsland('about')">
+        <div class="mandatory-tag">必修</div>
+        <div class="island-icon">🏢</div>
+        <div class="island-name">关于公司</div>
+      </div>
+
+      <!-- Island 2: 入职须知 -->
+      <div class="island island-2" data-island="onboarding" onclick="openIsland('onboarding')">
+        <div class="mandatory-tag">必修</div>
+        <div class="island-icon">📋</div>
+        <div class="island-name">入职须知</div>
+      </div>
+
+      <!-- Island 3: 办公指南 -->
+      <div class="island island-3" data-island="office" onclick="openIsland('office')">
+        <div class="island-icon">💻</div>
+        <div class="island-name">办公指南</div>
+      </div>
+
+      <!-- Island 4: 公司产品 -->
+      <div class="island island-4" data-island="products" onclick="openIsland('products')">
+        <div class="island-icon">📦</div>
+        <div class="island-name">公司产品</div>
+      </div>
+
+      <!-- Island 5: 题库 (locked initially) -->
+      <div class="island island-5 island-locked" id="quizIsland" data-island="quiz">
+        <div class="island-icon">📝</div>
+        <div class="island-name">题库</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== QUIZ SCREEN ===== -->
+<div id="quizScreen" class="screen">
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="nav-avatar" onclick="toggleAvatarMenu(event)">👥</div>
+      <span class="nav-name">新航员</span>
+      <div class="avatar-dropdown" id="avatarDropdown3">
+        <div class="avatar-dropdown-item" onclick="showPointsDetail();closeAvatarMenu();">
+          <span class="item-icon">📊</span>积分明细
+        </div>
+        <div class="avatar-dropdown-divider"></div>
+        <div class="avatar-dropdown-item danger" id="resetIdentity3" onclick="confirmResetIdentity();closeAvatarMenu();">
+          <span class="item-icon">🔄</span>切换身份（重置进度）
+        </div>
+      </div>
+    </div>
+    <div class="nav-center">
+      <span class="bean-icon">🫘</span>
+      <span class="bean-count" id="navBeanCount3">0</span>
+      <span style="font-size:13px;color:var(--amber-400);font-weight:500;">国小豆</span>
+    </div>
+    <div class="nav-right">
+      <button class="nav-btn" onclick="backToVoyage()">← 返回航行</button>
+    </div>
+  </nav>
+
+  <div class="brand-logo brand-logo--small brand-logo--light" style="margin:80px auto 0;max-width:700px;padding:0 32px;">
+    <img src="../国民logo.png" alt="国民养老保险" class="brand-logo-img">
+  </div>
+  <div class="quiz-container" id="quizContainer">
+    <!-- Quiz content rendered by JS -->
+  </div>
+</div>
+
+<!-- ===== SHOP SCREEN ===== -->
+<div id="shopScreen" class="screen">
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="nav-avatar" onclick="toggleAvatarMenu(event)">👥</div>
+      <span class="nav-name">新航员</span>
+      <div class="avatar-dropdown" id="avatarDropdown4">
+        <div class="avatar-dropdown-item" onclick="showPointsDetail();closeAvatarMenu();">
+          <span class="item-icon">📊</span>积分明细
+        </div>
+        <div class="avatar-dropdown-divider"></div>
+        <div class="avatar-dropdown-item danger" id="resetIdentity4" onclick="confirmResetIdentity();closeAvatarMenu();">
+          <span class="item-icon">🔄</span>切换身份（重置进度）
+        </div>
+      </div>
+    </div>
+    <div class="nav-center">
+      <span class="bean-icon">🫘</span>
+      <span class="bean-count" id="navBeanCount4">0</span>
+      <span style="font-size:13px;color:var(--amber-400);font-weight:500;">国小豆</span>
+    </div>
+    <div class="nav-right">
+      <button class="nav-btn" onclick="backFromShop()">← 返回</button>
+    </div>
+  </nav>
+
+  <div class="shop-container">
+    <div class="brand-logo brand-logo--small brand-logo--light">
+      <img src="../国民logo.png" alt="国民养老保险" class="brand-logo-img">
+    </div>
+    <div class="shop-header">
+      <h2>🎁 国小豆兑换商城</h2>
+      <div class="shop-balance">
+        <span style="font-size:22px;">🫘</span>
+        <span class="shop-balance-count" id="shopBalance">0</span>
+        <span style="font-size:13px;color:var(--amber-400);font-weight:500;">国小豆可用</span>
+      </div>
+    </div>
+
+    <div class="shop-tabs">
+      <button class="shop-tab active" onclick="filterShop('all',this)">全部</button>
+      <button class="shop-tab" onclick="filterShop('normal',this)">周边</button>
+      <button class="shop-tab" onclick="filterShop('limited',this)">限定</button>
+    </div>
+
+    <div class="shop-grid" id="shopGrid">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ===== DOCUMENT PANEL ===== -->
+<div class="doc-panel-overlay" id="docPanelOverlay">
+  <div class="doc-panel">
+    <div class="doc-panel-header">
+      <h3 id="docPanelTitle">文档列表</h3>
+      <button class="doc-panel-close" onclick="closeDocPanel()">✕</button>
+    </div>
+    <div class="doc-list" id="docList">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ===== PDF VIEWER ===== -->
+<div class="pdf-viewer-overlay" id="pdfViewerOverlay">
+  <div class="pdf-toolbar">
+    <div class="pdf-toolbar-left">
+      <button class="pdf-back" onclick="closePdf()">← 返回</button>
+      <span class="pdf-title" id="pdfTitle">文档标题</span>
+    </div>
+    <div class="pdf-progress-mini">
+      <div class="pdf-progress-bar"><div class="pdf-progress-fill" id="pdfProgressFill" style="width:0%"></div></div>
+      <span class="pdf-progress-text" id="pdfProgressText">0%</span>
+    </div>
+    <button class="pdf-complete-btn" id="pdfCompleteBtn" onclick="completeReading()">✓ 标记已读 (+国小豆)</button>
+  </div>
+  <div class="pdf-frame">
+    <iframe id="pdfFrame" src="" title="PDF预览"></iframe>
+  </div>
+</div>
+
+<!-- ===== HURRICANE OVERLAY ===== -->
+<div class="hurricane-overlay" id="hurricaneOverlay">
+  <div class="hurricane-bg"></div>
+  <div class="hurricane-vortex">🌪️</div>
+  <div class="hurricane-text">⚠️ 前方有飓风来袭！</div>
+  <div class="hurricane-subtext">请完成必修学习：企业文化理念体系 + 员工行为规范</div>
+  <button class="hurricane-btn" onclick="startMandatoryLearning()">前往学习 →</button>
+</div>
+
+<!-- ===== MODALS ===== -->
+<div class="modal-overlay" id="pointsModal">
+  <div class="modal">
+    <div class="modal-icon">📊</div>
+    <h3>国小豆积分明细</h3>
+    <p id="pointsDetailText">暂无积分记录</p>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-primary" onclick="closeModal('pointsModal')">确定</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="exchangeModal">
+  <div class="modal">
+    <div class="modal-icon" id="exchangeIcon">🎁</div>
+    <h3 id="exchangeTitle">确认兑换</h3>
+    <p id="exchangeText">确认使用国小豆兑换此商品？</p>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-secondary" onclick="closeModal('exchangeModal')">取消</button>
+      <button class="modal-btn modal-btn-primary" id="exchangeConfirmBtn" onclick="confirmExchange()">确认兑换</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="rewardModal">
+  <div class="modal">
+    <div class="modal-icon">🎉</div>
+    <h3 id="rewardTitle">恭喜获得奖励！</h3>
+    <p id="rewardText">+5 国小豆</p>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-primary" onclick="closeModal('rewardModal')">太棒了！</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="resetIdentityModal">
+  <div class="modal">
+    <div class="modal-icon">🔄</div>
+    <h3>确认切换身份？</h3>
+    <p id="resetIdentityText">切换为新员工身份后，所有学习进度、国小豆积分、兑换记录将被清空，此操作不可撤销。</p>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-secondary" onclick="closeModal('resetIdentityModal')">取消</button>
+      <button class="modal-btn modal-btn-primary" style="background:linear-gradient(135deg,var(--rose-400),var(--rose-300));" onclick="executeResetIdentity()">确认切换</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GUIDE OVERLAY ===== -->
+<div class="guide-overlay" id="guideOverlay">
+  <div class="guide-spotlight" id="guideSpotlight"></div>
+  <div class="guide-tooltip" id="guideTooltip">
+    <h4 id="guideTitle">欢迎！</h4>
+    <p id="guideText">这是你的知识航行地图</p>
+    <button class="guide-next" id="guideNextBtn" onclick="nextGuide()">下一步 →</button>
+  </div>
+</div>
+
+<script>
+// ==================== GAME STATE ====================
+const DEFAULT_STATE = {
+  points: 0,
+  pointsHistory: [],
+  visitedInstitutions: [],
+  completedInstitutions: [],
+  documentsRead: {},
+  quizScore: 0,
+  quizCompleted: false,
+  hurricaneTriggered: false,
+  hurricaneCompleted: false,
+  mandatoryDocs: { '企业文化理念体系': false, '员工行为规范': false },
+  currentInstitution: null,
+  shopExchanges: [],
+  currentScreen: 'startScreen',
+  previousScreen: 'mapScreen',
+  guideCompleted: false,
+  firstVisitInstitutions: {},
+};
+
+let state = {};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('guomin_navigate_state');
+    if (saved) {
+      state = { ...DEFAULT_STATE, ...JSON.parse(saved) };
+    } else {
+      state = { ...DEFAULT_STATE };
+    }
+  } catch(e) { state = { ...DEFAULT_STATE }; }
+}
+
+function saveState() {
+  try { localStorage.setItem('guomin_navigate_state', JSON.stringify(state)); } catch(e) {}
+}
+
+// ==================== INSTITUTION DATA ====================
+const INSTITUTIONS = {
+  beijing:   { name: '北京(总部)', icon: '🏛️', color: '#FF7675' },
+  shanghai:  { name: '上海', icon: '🏙️', color: '#74B9FF' },
+  shandong:  { name: '山东', icon: '⛰️', color: '#FDCB6E' },
+  sichuan:   { name: '四川', icon: '🐼', color: '#81ECEC' },
+  guangdong: { name: '广东', icon: '🌴', color: '#A29BFE' },
+  chongqing: { name: '重庆', icon: '🌆', color: '#FD79A8' },
+  zhejiang:  { name: '浙江', icon: '🌊', color: '#55EFC4' },
+};
+
+// ==================== DOCUMENT DATA ====================
+const ISLANDS = {
+  about: {
+    name: '关于公司', icon: '🏢', color: '#4A90E2',
+    docs: [
+      { id: '企业文化理念体系', title: '企业文化理念体系', file: '企业文化理念体系.pdf', mandatory: true, points: 10 },
+      { id: '品牌手册', title: '品牌手册', file: '品牌手册.pdf', points: 5 },
+      { id: '公司经营动态', title: '公司经营动态', file: '公司经营动态.pdf', points: 5 },
+    ]
+  },
+  onboarding: {
+    name: '入职须知', icon: '📋', color: '#F0A623',
+    docs: [
+      { id: '员工行为规范', title: '员工行为规范', file: '员工行为规范.pdf', mandatory: true, points: 10 },
+    ]
+  },
+  office: {
+    name: '办公指南', icon: '💻', color: '#00B894',
+    docs: [
+      { id: 'IT设备操作指南', title: '办公职场IT设备操作指南', file: '办公职场IT设备操作指南.pdf', points: 5 },
+      { id: '网络操作指南', title: '网络操作指南', file: '网络操作指南.pdf', points: 5 },
+      { id: '差旅指南', title: '差旅指南', file: '差旅指南.pdf', points: 5 },
+      { id: '财务指南', title: '财务指南', file: '财务指南.pdf', points: 5 },
+      { id: 'OA指南', title: 'OA指南', file: 'OA指南.pdf', points: 5 },
+      { id: 'HR指南', title: 'HR指南', file: 'HR指南.pdf', points: 5 },
+    ]
+  },
+  products: {
+    name: '公司产品', icon: '📦', color: '#7C6FE0',
+    docs: [
+      { id: '国民养老产品体系', title: '国民养老产品体系', file: '国民养老产品体系.pdf', points: 5 },
+      { id: '商业养老金产品介绍', title: '商业养老金产品介绍', file: '商业养老金产品介绍.pdf', points: 5 },
+      { id: '个人养老金法规政策汇编', title: '个人养老金法规政策汇编', file: '个人养老金法规政策汇编.pdf', points: 5 },
+    ]
+  },
+};
+
+const TOTAL_DOCS = Object.values(ISLANDS).reduce((sum, island) => sum + island.docs.length, 0);
+
+// ==================== QUIZ DATA ====================
+const QUIZ_DATA = [
+  { q: '国民养老保险股份有限公司的英文名称是什么？', options: ['Guominpension','Guomininsurance','GM','GI'], answer: 0 },
+  { q: '以下哪个不属于公司的核心价值观？', options: ['创新','创业','创造','创作'], answer: 3 },
+  { q: '公司品牌的主色调是什么？', options: ['红色','蓝色','绿色','黄色'], answer: 0 },
+  { q: '以下哪个是公司的商业养老金产品系列名称？', options: ['国泰民安系列','平安福系列','太平洋无忧系列','人寿康宁系列'], answer: 0 },
+  { q: '公司的社会责任理念是什么？', options: ['有情怀 有温度 有价值','让养老更安心','让生活更美好','让投资更稳健'], answer: 0 },
+  { q: '个人养老金制度从什么时候起开始全国推行？', options: ['2023年12月',' 2024年12月','2025年12月','2022年12月'], answer: 1 },
+  { q: '以下哪个不是公司的线上服务平台？', options: ['国民e站','国民之家','国民养老APP','赵钱孙李养老规划服务'], answer: 1 },
+  { q: '国泰民安三年期限产品的购买年龄范围是？', options: ['28天-70周岁','18周岁，无上限','18周岁，70周岁','28天，无上限'], answer: 1 },
+  { q: '公司目前没有哪种产品类别？', options: ['专属商业养老保险','宠物意外险','商业养老金','养老年金险'], answer: 1 },
+  { q: '合同审批需要在哪里提交流程？', options: ['预算系统','HR系统','OA系统','合同管理系统'], answer: 2 },
+];
+
+// ==================== SHOP DATA ====================
+const SHOP_ITEMS = [
+  { id: 'fridge', name: '品牌冰箱贴', price: 50, img: '../品牌冰箱贴.JPG', emoji: '🧲', limited: false },
+  { id: 'cup', name: '诺奖日历', price: 80, img: '../诺奖日历.JPG', emoji: '☕', limited: false },
+  { id: 'bag', name: '品牌帆布袋', price: 100, img: '../品牌帆布袋.JPG', emoji: '👜', limited: false },
+  { id: 'notebook', name: '品牌笔记本', price: 120, img: '../品牌笔记本.JPG', emoji: '📓', limited: false },
+  { id: 'doll', name: '桌面宠物', price: 150, img: '../桌面宠物.JPG', emoji: '🧸', limited: true },
+  { id: 'doll', name: '限定款玩偶', price: 300, img: '../数字IP玩偶.JPG', emoji: '🧸', limited: true },
+];
+
+// ==================== CURRENT DOC TRACKING ====================
+let currentDocId = null;
+let currentDocPoints = 0;
+let currentDocIsland = null;
+let pendingExchangeItem = null;
+let pdfReadTimer = null;
+let pdfReadProgress = 0;
+
+// ==================== SCREEN MANAGEMENT ====================
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  state.previousScreen = state.currentScreen;
+  state.currentScreen = screenId;
+  updateAllBeanCounts();
+  if (screenId === 'mapScreen') updateMapUI();
+  if (screenId === 'shopScreen') renderShop();
+  if (screenId === 'voyageScreen') updateVoyageUI();
+  saveState();
+}
+
+function startGame() {
+  showScreen('mapScreen');
+  // First visit bonus
+  if (!state.firstVisitInstitutions) state.firstVisitInstitutions = {};
+  // Show guide if first time
+  if (!state.guideCompleted) {
+    setTimeout(() => startGuide(), 600);
+  }
+}
+
+// ==================== MAP UI ====================
+function updateMapUI() {
+  updateProgress();
+  updateInstProgressDots();
+}
+
+function updateProgress() {
+  const readCount = Object.values(state.documentsRead).filter(v => v === true).length;
+  const pct = Math.round((readCount / TOTAL_DOCS) * 100);
+  document.getElementById('totalProgress').style.width = pct + '%';
+  document.getElementById('totalProgressText').textContent = pct + '%';
+}
+
+function updateInstProgressDots() {
+  const container = document.getElementById('instProgressDots');
+  container.innerHTML = '';
+  Object.entries(INSTITUTIONS).forEach(([key, inst]) => {
+    const done = state.completedInstitutions.includes(key);
+    const dot = document.createElement('div');
+    dot.className = 'inst-dot';
+    dot.innerHTML = `<div class="inst-dot-dot ${done?'done':''}"></div><span>${inst.name}</span>`;
+    container.appendChild(dot);
+  });
+}
+
+function enterInstitution(instKey) {
+  state.currentInstitution = instKey;
+
+  // First visit bonus
+  if (!state.firstVisitInstitutions[instKey]) {
+    state.firstVisitInstitutions[instKey] = true;
+    addPoints(5, '首次进入' + INSTITUTIONS[instKey].name);
+    showRewardModal('🎉 探索新大陆！', '首次进入' + INSTITUTIONS[instKey].name + '，获得 +5 国小豆');
+  }
+
+  if (!state.visitedInstitutions.includes(instKey)) {
+    state.visitedInstitutions.push(instKey);
+  }
+
+  document.getElementById('voyageTitle').textContent = INSTITUTIONS[instKey].name + ' · 知识海洋';
+  document.getElementById('voyageSubtitle').textContent = '点击岛屿探索知识板块';
+
+  showScreen('voyageScreen');
+  moveBoatToStart();
+
+  // Check quiz unlock
+  checkQuizUnlock();
+  saveState();
+}
+
+function backToMap() {
+  showScreen('mapScreen');
+}
+
+// ==================== VOYAGE / ISLANDS ====================
+function updateVoyageUI() {
+  // Update island completion states
+  Object.entries(ISLANDS).forEach(([key, island]) => {
+    const islandEl = document.querySelector(`.island[data-island="${key}"]`);
+    if (!islandEl) return;
+    const allDone = island.docs.every(d => state.documentsRead[d.id] === true);
+    if (allDone) {
+      islandEl.classList.add('island-completed');
+    } else {
+      islandEl.classList.remove('island-completed');
+    }
+  });
+
+  // Check hurricane trigger in voyage screen (after user has visited some islands)
+  // Trigger when user has opened at least 2 different islands
+  const visitedIslands = Object.keys(ISLANDS).filter(key =>
+    ISLANDS[key].docs.some(d => state.documentsRead[d.id] === true)
+  );
+  if (!state.hurricaneTriggered && !state.hurricaneCompleted && visitedIslands.length >= 2) {
+    state.hurricaneTriggered = true;
+    saveState();
+    setTimeout(() => triggerHurricane(), 2000);
+  }
+}
+
+function moveBoatToStart() {
+  const boat = document.getElementById('boat');
+  boat.style.left = '-20px';
+  boat.style.top = '50%';
+}
+
+function moveBoatToIsland(islandKey) {
+  const boat = document.getElementById('boat');
+  const islandEl = document.querySelector(`[data-island="${islandKey}"]`);
+  if (!islandEl) return;
+  const rect = islandEl.getBoundingClientRect();
+  const areaRect = document.getElementById('islandsArea').getBoundingClientRect();
+  boat.style.left = (rect.left - areaRect.left + rect.width/2 - 18) + 'px';
+  boat.style.top = (rect.bottom - areaRect.top - 40) + 'px';
+}
+
+function openIsland(islandKey) {
+  if (islandKey === 'quiz') {
+    if (isQuizUnlocked()) {
+      showScreen('quizScreen');
+      renderQuiz();
+    } else {
+      const readCount = Object.values(state.documentsRead).filter(v => v === true).length;
+      showRewardModal('🔒 暂未解锁', `还需完成 ${TOTAL_DOCS - readCount} 篇文档才能开启题库`);
+    }
+    return;
+  }
+  currentDocIsland = islandKey;
+  moveBoatToIsland(islandKey);
+  setTimeout(() => {
+    showDocPanel(islandKey);
+  }, 600);
+}
+
+function checkQuizUnlock() {
+  const quizIsland = document.getElementById('quizIsland');
+  if (isQuizUnlocked()) {
+    quizIsland.classList.remove('island-locked');
+    quizIsland.classList.add('island');
+    quizIsland.onclick = () => openIsland('quiz');
+  }
+}
+
+function isQuizUnlocked() {
+  return Object.values(ISLANDS).every(island =>
+    island.docs.every(d => state.documentsRead[d.id] === true)
+  );
+}
+
+function backToVoyage() {
+  showScreen('voyageScreen');
+}
+
+// ==================== DOCUMENT PANEL ====================
+function showDocPanel(islandKey) {
+  const island = ISLANDS[islandKey];
+  if (!island) return;
+
+  document.getElementById('docPanelTitle').textContent = island.name + ' · 文档列表';
+
+  const listEl = document.getElementById('docList');
+  listEl.innerHTML = '';
+
+  island.docs.forEach(doc => {
+    const read = state.documentsRead[doc.id] === true;
+    const item = document.createElement('div');
+    item.className = 'doc-item' + (read ? ' completed' : '');
+    item.onclick = () => openDocument(doc, islandKey);
+    item.innerHTML = `
+      <div class="doc-item-icon">${read ? '✅' : (doc.mandatory ? '⭐' : '📄')}</div>
+      <div class="doc-item-info">
+        <div class="doc-item-title">${doc.title}${doc.mandatory ? ' <span style="color:var(--rose-400);font-size:11px;">[必修]</span>' : ''}</div>
+        <div class="doc-item-progress"><div class="doc-item-progress-fill" style="width:${read?'100':'0'}%"></div></div>
+      </div>
+      <div class="doc-item-status">${read ? '已读' : '未读'}</div>
+    `;
+    listEl.appendChild(item);
+  });
+
+  document.getElementById('docPanelOverlay').classList.add('active');
+}
+
+function closeDocPanel() {
+  document.getElementById('docPanelOverlay').classList.remove('active');
+}
+
+// ==================== PDF VIEWER ====================
+function openDocument(doc, islandKey) {
+  currentDocId = doc.id;
+  currentDocPoints = doc.points;
+  currentDocIsland = islandKey;
+
+  closeDocPanel();
+
+  const alreadyRead = state.documentsRead[doc.id] === true;
+  document.getElementById('pdfTitle').textContent = doc.title;
+  document.getElementById('pdfCompleteBtn').disabled = false;
+  document.getElementById('pdfCompleteBtn').textContent = alreadyRead ? '✓ 已完成阅读' : '✓ 标记已读 (+' + doc.points + ' 国小豆)';
+
+  if (alreadyRead) {
+    document.getElementById('pdfProgressFill').style.width = '100%';
+    document.getElementById('pdfProgressText').textContent = '100%';
+  } else {
+    document.getElementById('pdfProgressFill').style.width = '0%';
+    document.getElementById('pdfProgressText').textContent = '0%';
+    startPdfTimer();
+  }
+
+  // Load PDF
+  const pdfFrame = document.getElementById('pdfFrame');
+  pdfFrame.src = '../' + doc.file;
+
+  document.getElementById('pdfViewerOverlay').classList.add('active');
+}
+
+function startPdfTimer() {
+  pdfReadProgress = 0;
+  if (pdfReadTimer) clearInterval(pdfReadTimer);
+  pdfReadTimer = setInterval(() => {
+    pdfReadProgress += 2;
+    if (pdfReadProgress >= 100) {
+      pdfReadProgress = 100;
+      clearInterval(pdfReadTimer);
+    }
+    document.getElementById('pdfProgressFill').style.width = pdfReadProgress + '%';
+    document.getElementById('pdfProgressText').textContent = pdfReadProgress + '%';
+  }, 300);
+}
+
+function completeReading() {
+  if (state.documentsRead[currentDocId]) {
+    closePdf();
+    return;
+  }
+
+  // Mark as read
+  state.documentsRead[currentDocId] = true;
+  if (pdfReadTimer) clearInterval(pdfReadTimer);
+  document.getElementById('pdfProgressFill').style.width = '100%';
+  document.getElementById('pdfProgressText').textContent = '100%';
+
+  // Add points
+  addPoints(currentDocPoints, '完成阅读: ' + currentDocId);
+
+  // Update button
+  const btn = document.getElementById('pdfCompleteBtn');
+  btn.disabled = true;
+  btn.textContent = '✓ 已完成阅读';
+
+  // Check mandatory docs
+  if (state.mandatoryDocs[currentDocId] !== undefined) {
+    state.mandatoryDocs[currentDocId] = true;
+  }
+
+  // Check hurricane completion
+  if (state.hurricaneTriggered && !state.hurricaneCompleted && state.mandatoryDocs['企业文化理念体系'] && state.mandatoryDocs['员工行为规范']) {
+    state.hurricaneCompleted = true;
+    addPoints(15, '完成飓风必修学习');
+    setTimeout(() => showRewardModal('🌀 飓风已平息！', '恭喜完成必修学习，额外获得 +15 国小豆！'), 800);
+  }
+
+  // Check island completion
+  if (currentDocIsland && ISLANDS[currentDocIsland]) {
+    const island = ISLANDS[currentDocIsland];
+    const allDone = island.docs.every(d => state.documentsRead[d.id] === true);
+    if (allDone) {
+      addPoints(50, '完成板块: ' + island.name);
+      setTimeout(() => showRewardModal('🏆 板块通关！', '恭喜完成「' + island.name + '」全部文档，获得 +50 国小豆！'), 1200);
+      showConfetti();
+    }
+  }
+
+  // Check institution completion
+  checkInstitutionCompletion();
+
+  // Check quiz unlock
+  checkQuizUnlock();
+
+  // Check overall completion
+  const readCount = Object.values(state.documentsRead).filter(v => v === true).length;
+  if (readCount === TOTAL_DOCS && !state.quizCompleted) {
+    // Quiz just became available
+    setTimeout(() => showRewardModal('📝 题库已解锁！', '恭喜完成所有文档学习，题库已开放！'), 2000);
+  }
+
+  saveState();
+  updateAllBeanCounts();
+}
+
+function checkInstitutionCompletion() {
+  if (!state.currentInstitution) return;
+  const allDocs = Object.values(ISLANDS).flatMap(island => island.docs);
+  const allDone = allDocs.every(d => state.documentsRead[d.id] === true);
+  if (allDone && !state.completedInstitutions.includes(state.currentInstitution)) {
+    state.completedInstitutions.push(state.currentInstitution);
+  }
+}
+
+function closePdf() {
+  if (pdfReadTimer) clearInterval(pdfReadTimer);
+  document.getElementById('pdfViewerOverlay').classList.remove('active');
+  document.getElementById('pdfFrame').src = '';
+  updateVoyageUI();
+  updateMapUI();
+}
+
+// ==================== QUIZ ====================
+let quizIndex = 0;
+let quizAnswers = [];
+let quizSelected = -1;
+let quizAnswered = false;
+
+function renderQuiz() {
+  quizIndex = 0;
+  quizAnswers = [];
+  quizSelected = -1;
+  quizAnswered = false;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  const container = document.getElementById('quizContainer');
+  if (quizIndex >= QUIZ_DATA.length) {
+    renderQuizResult();
+    return;
+  }
+
+  const q = QUIZ_DATA[quizIndex];
+  quizSelected = -1;
+  quizAnswered = false;
+
+  let dotsHtml = '';
+  QUIZ_DATA.forEach((_, i) => {
+    let cls = 'quiz-dot';
+    if (i < quizIndex) cls += quizAnswers[i] ? ' correct' : ' wrong';
+    if (i === quizIndex) cls += ' active';
+    dotsHtml += `<div class="${cls}"></div>`;
+  });
+
+  let optionsHtml = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, i) => {
+    optionsHtml += `<div class="quiz-option" id="quizOpt${i}" onclick="selectQuizOption(${i})">
+      <div class="quiz-option-letter">${letters[i]}</div>
+      <span>${opt}</span>
+    </div>`;
+  });
+
+  container.innerHTML = `
+    <div class="quiz-header">
+      <div class="quiz-progress">${dotsHtml}</div>
+      <span style="font-size:14px;color:var(--slate-400);">${quizIndex+1}/${QUIZ_DATA.length}</span>
+    </div>
+    <div class="quiz-card" style="animation:slideUp 0.4s ease;">
+      <div class="quiz-question-num">第 ${quizIndex+1} 题</div>
+      <div class="quiz-question">${q.q}</div>
+      <div class="quiz-options">${optionsHtml}</div>
+      <div class="quiz-nav">
+        <button class="quiz-btn quiz-btn-next" id="quizNextBtn" onclick="nextQuizQuestion()" disabled>下一题 →</button>
+      </div>
+    </div>
+  `;
+}
+
+function selectQuizOption(idx) {
+  if (quizAnswered) return;
+  quizSelected = idx;
+  quizAnswered = true;
+  const q = QUIZ_DATA[quizIndex];
+  const correct = idx === q.answer;
+  quizAnswers.push(correct);
+
+  // Update UI
+  QUIZ_DATA[quizIndex].options.forEach((_, i) => {
+    const el = document.getElementById('quizOpt' + i);
+    el.classList.remove('selected');
+    if (i === q.answer) el.classList.add('correct');
+    else if (i === idx && !correct) el.classList.add('wrong');
+  });
+
+  document.getElementById('quizNextBtn').disabled = false;
+  if (quizIndex === QUIZ_DATA.length - 1) {
+    document.getElementById('quizNextBtn').textContent = '查看结果 →';
+  }
+}
+
+function nextQuizQuestion() {
+  quizIndex++;
+  renderQuizQuestion();
+}
+
+function renderQuizResult() {
+  const correctCount = quizAnswers.filter(v => v).length;
+  const score = correctCount * 10;
+  state.quizScore = score;
+  state.quizCompleted = true;
+  addPoints(score, '完成题库答题 (答对' + correctCount + '题)');
+  saveState();
+
+  const container = document.getElementById('quizContainer');
+  let emoji = correctCount >= 8 ? '🏆' : correctCount >= 6 ? '🎉' : correctCount >= 4 ? '💪' : '📚';
+  let msg = correctCount >= 8 ? '太厉害了！知识达人！' : correctCount >= 6 ? '做得不错！继续加油！' : correctCount >= 4 ? '还需要多学习哦~' : '建议重新阅读文档再来挑战！';
+
+  container.innerHTML = `
+    <div class="quiz-card quiz-result">
+      <div style="font-size:64px;margin-bottom:16px;">${emoji}</div>
+      <div class="quiz-result-score">${score}</div>
+      <div class="quiz-result-label">答对 ${correctCount}/${QUIZ_DATA.length} 题</div>
+      <p style="margin-top:12px;font-size:15px;color:var(--slate-600);">${msg}</p>
+      <p style="margin-top:8px;font-size:14px;color:var(--amber-400);font-weight:600;">获得 +${score} 国小豆</p>
+      <div class="quiz-nav" style="justify-content:center;margin-top:24px;">
+        <button class="quiz-btn quiz-btn-next" onclick="backToVoyage()">返回航行 →</button>
+        <button class="quiz-btn quiz-btn-next" style="background:linear-gradient(135deg,var(--purple-400),var(--purple-500));" onclick="renderQuiz()">重新答题</button>
+      </div>
+    </div>
+  `;
+
+  showConfetti();
+}
+
+// ==================== HURRICANE ====================
+function triggerHurricane() {
+  document.getElementById('hurricaneOverlay').classList.add('active');
+}
+
+function startMandatoryLearning() {
+  document.getElementById('hurricaneOverlay').classList.remove('active');
+  openIsland('about');
+}
+
+// ==================== POINTS SYSTEM ====================
+function addPoints(amount, reason) {
+  state.points += amount;
+  state.pointsHistory.unshift({ amount, reason, time: new Date().toLocaleString('zh-CN') });
+  updateAllBeanCounts();
+  flyPointsAnimation(amount);
+}
+
+function updateAllBeanCounts() {
+  ['navBeanCount','navBeanCount2','navBeanCount3','navBeanCount4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = state.points;
+  });
+  const shopBal = document.getElementById('shopBalance');
+  if (shopBal) shopBal.textContent = state.points;
+}
+
+function flyPointsAnimation(amount) {
+  const el = document.createElement('div');
+  el.className = 'points-fly';
+  el.textContent = '+' + amount + ' 🫘';
+  el.style.left = '50%';
+  el.style.top = '80px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1200);
+}
+
+function openPointsDetail() {
+  const text = state.pointsHistory.length > 0
+    ? state.pointsHistory.slice(0, 15).map(h => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--slate-100);font-size:13px;"><span style="color:var(--slate-500);">${h.reason}</span><span style="font-weight:600;color:${h.amount>0?'var(--amber-400)':'var(--rose-400)'};">${h.amount>0?'+':''}${h.amount}</span></div>`).join('')
+    : '暂无积分记录';
+  document.getElementById('pointsDetailText').innerHTML = `<div style="text-align:right;margin-bottom:8px;font-size:14px;font-weight:700;color:var(--amber-400);">总计: ${state.points} 国小豆</div>` + text;
+  document.getElementById('pointsModal').classList.add('active');
+}
+
+// ==================== SHOP ====================
+function renderShop(filter) {
+  filter = filter || 'all';
+  const grid = document.getElementById('shopGrid');
+  grid.innerHTML = '';
+
+  SHOP_ITEMS.filter(item => {
+    if (filter === 'limited') return item.limited;
+    if (filter === 'normal') return !item.limited;
+    return true;
+  }).forEach(item => {
+    const exchanged = state.shopExchanges.includes(item.id);
+    const canAfford = state.points >= item.price;
+    const card = document.createElement('div');
+    card.className = 'shop-card' + (item.limited ? ' limited' : '');
+    card.innerHTML = `
+      <div class="shop-card-img">${item.img ? `<img src="${item.img}" alt="${item.name}" onerror="this.parentElement.innerHTML='${item.emoji}'">` : item.emoji}</div>
+      <div class="shop-card-info">
+        <div class="shop-card-name">${item.name}</div>
+        <div class="shop-card-price">
+          <div class="shop-card-beans">🫘 ${item.price}</div>
+          <button class="shop-exchange-btn" ${!canAfford||exchanged?'disabled':''} onclick="exchangeItem('${item.id}')">${exchanged?'已兑换':'兑换'}</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function filterShop(filter, btn) {
+  document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderShop(filter);
+}
+
+function exchangeItem(itemId) {
+  const item = SHOP_ITEMS.find(i => i.id === itemId);
+  if (!item || state.points < item.price) return;
+  pendingExchangeItem = item;
+  document.getElementById('exchangeIcon').textContent = item.emoji;
+  document.getElementById('exchangeTitle').textContent = '确认兑换「' + item.name + '」？';
+  document.getElementById('exchangeText').textContent = `将消耗 ${item.price} 国小豆，当前余额 ${state.points} 国小豆`;
+  document.getElementById('exchangeModal').classList.add('active');
+}
+
+function confirmExchange() {
+  if (!pendingExchangeItem) return;
+  state.points -= pendingExchangeItem.price;
+  state.shopExchanges.push(pendingExchangeItem.id);
+  state.pointsHistory.unshift({ amount: -pendingExchangeItem.price, reason: '兑换: ' + pendingExchangeItem.name, time: new Date().toLocaleString('zh-CN') });
+  closeModal('exchangeModal');
+  showRewardModal('🎁 兑换成功！', '恭喜获得「' + pendingExchangeItem.name + '」\n消耗 ' + pendingExchangeItem.price + ' 国小豆');
+  updateAllBeanCounts();
+  renderShop();
+  pendingExchangeItem = null;
+  saveState();
+}
+
+function backFromShop() {
+  showScreen(state.previousScreen === 'shopScreen' ? 'mapScreen' : state.previousScreen);
+}
+
+// ==================== AVATAR DROPDOWN ====================
+function toggleAvatarMenu(e) {
+  e.stopPropagation();
+  const dropdowns = document.querySelectorAll('.avatar-dropdown');
+  const isAnyOpen = Array.from(dropdowns).some(d => d.classList.contains('active'));
+  // Close all first
+  dropdowns.forEach(d => d.classList.remove('active'));
+  // If none was open, open the one in the clicked avatar's parent
+  if (!isAnyOpen) {
+    const parent = e.currentTarget.closest('.nav-left');
+    if (parent) {
+      const dd = parent.querySelector('.avatar-dropdown');
+      if (dd) dd.classList.add('active');
+    }
+  }
+  updateResetButtonState();
+}
+
+function closeAvatarMenu() {
+  document.querySelectorAll('.avatar-dropdown').forEach(d => d.classList.remove('active'));
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-left')) {
+    closeAvatarMenu();
+  }
+});
+
+function updateResetButtonState() {
+  const isNew = state.points === 0;
+  document.querySelectorAll('[id^="resetIdentity"]').forEach(el => {
+    if (isNew) {
+      el.style.opacity = '0.4';
+      el.style.pointerEvents = 'none';
+      el.title = '当前已是新员工身份';
+    } else {
+      el.style.opacity = '1';
+      el.style.pointerEvents = 'auto';
+      el.title = '';
+    }
+  });
+}
+
+function confirmResetIdentity() {
+  if (state.points === 0) return;
+  const text = '当前积分：' + state.points + ' 国小豆\n已完成文档：' + Object.values(state.documentsRead).filter(v => v).length + '/' + TOTAL_DOCS + '\n\n切换为新员工身份后，所有学习进度、国小豆积分、兑换记录将被清空，此操作不可撤销。';
+  document.getElementById('resetIdentityText').textContent = text;
+  document.getElementById('resetIdentityModal').classList.add('active');
+}
+
+function executeResetIdentity() {
+  // Reset all game state
+  state = { ...DEFAULT_STATE };
+  saveState();
+  closeModal('resetIdentityModal');
+  // Navigate back to start screen
+  showScreen('startScreen');
+  // Show success feedback
+  setTimeout(() => {
+    showRewardModal('✅ 身份切换成功', '已切换为新员工，学习进度已全部清空，祝你在新的航行中收获满满！');
+  }, 300);
+}
+
+// ==================== MODALS ====================
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+}
+
+function showRewardModal(title, text) {
+  document.getElementById('rewardTitle').textContent = title;
+  document.getElementById('rewardText').textContent = text;
+  document.getElementById('rewardModal').classList.add('active');
+}
+
+// ==================== NEW USER GUIDE ====================
+const guideSteps = [
+  { title: '欢迎加入国民养老！', text: '这是你的知识航行地图，点击地图上的省份名称开启学习之旅', target: '.map-board', pos: {top: '10px', left: '50%', transform: 'translateX(-50%)'} },
+  { title: '你的积分', text: '国小豆是学习积分，阅读文档、完成答题都可以获得，快来兑换好礼吧！', target: '.nav-center', pos: {top: '70px', left: '50%', transform: 'translateX(-50%)'} },
+  { title: '开始探索吧！', text: '点击任意省份名称开始你的知识航行冒险（只能选择一个哦）', target: '.province-hotspot', pos: {top: '55%', left: '50%', transform: 'translateX(-50%)'} },
+];
+
+let guideStep = 0;
+
+function startGuide() {
+  guideStep = 0;
+  document.getElementById('guideOverlay').classList.add('active');
+  showGuideStep();
+}
+
+function showGuideStep() {
+  const step = guideSteps[guideStep];
+  if (!step) {
+    endGuide();
+    return;
+  }
+  document.getElementById('guideTitle').textContent = step.title;
+  document.getElementById('guideText').textContent = step.text;
+
+  const isLast = guideStep === guideSteps.length - 1;
+  document.getElementById('guideNextBtn').textContent = isLast ? '开始冒险！' : '下一步 →';
+
+  // Position spotlight
+  const target = document.querySelector(step.target);
+  if (target) {
+    const rect = target.getBoundingClientRect();
+    const spotlight = document.getElementById('guideSpotlight');
+    spotlight.style.top = (rect.top - 8) + 'px';
+    spotlight.style.left = (rect.left - 8) + 'px';
+    spotlight.style.width = (rect.width + 16) + 'px';
+    spotlight.style.height = (rect.height + 16) + 'px';
+  }
+
+  // Position tooltip
+  const tooltip = document.getElementById('guideTooltip');
+  tooltip.style.top = step.pos.top;
+  tooltip.style.left = step.pos.left;
+  tooltip.style.transform = step.pos.transform;
+}
+
+function nextGuide() {
+  guideStep++;
+  if (guideStep >= guideSteps.length) {
+    endGuide();
+  } else {
+    showGuideStep();
+  }
+}
+
+function endGuide() {
+  document.getElementById('guideOverlay').classList.remove('active');
+  state.guideCompleted = true;
+  saveState();
+}
+
+// ==================== CONFETTI ====================
+function showConfetti() {
+  const container = document.createElement('div');
+  container.className = 'confetti-container';
+  document.body.appendChild(container);
+
+  const colors = ['#FF7675','#74B9FF','#FDCB6E','#55EFC4','#A29BFE','#FD79A8','#81ECEC','#FFD93D'];
+  for (let i = 0; i < 50; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = Math.random() * 2 + 's';
+    piece.style.animationDuration = (2 + Math.random() * 2) + 's';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    piece.style.width = (6 + Math.random() * 8) + 'px';
+    piece.style.height = (6 + Math.random() * 8) + 'px';
+    container.appendChild(piece);
+  }
+
+  setTimeout(() => container.remove(), 4000);
+}
+
+// ==================== INIT ====================
+function init() {
+  loadState();
+  updateAllBeanCounts();
+  // If returning, go to last screen directly
+  if (state.guideCompleted && state.currentScreen !== 'startScreen') {
+    document.getElementById('startScreen').classList.remove('active');
+    document.getElementById(state.currentScreen).classList.add('active');
+    if (state.currentScreen === 'mapScreen') {
+      updateMapUI();
+    }
+    if (state.currentScreen === 'shopScreen') renderShop();
+    if (state.currentScreen === 'voyageScreen') updateVoyageUI();
+  }
+}
+
+init();
+</script>
+</body>
+</html>
