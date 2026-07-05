@@ -17,6 +17,11 @@ public class GlobalExceptionHandler {
     return error(HttpStatus.BAD_REQUEST, "BAD_REQUEST", e.getMessage());
   }
 
+  @ExceptionHandler(com.gmnl.orientation.user.AuthService.InvalidCredentialsException.class)
+  public ResponseEntity<ApiError> invalidCredentials(com.gmnl.orientation.user.AuthService.InvalidCredentialsException e) {
+    return error(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", e.getMessage());
+  }
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ApiError> internal(Exception e) {
     return error(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL", "服务器内部错误");
