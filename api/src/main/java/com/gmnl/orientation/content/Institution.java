@@ -1,8 +1,6 @@
 package com.gmnl.orientation.content;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "institutions")
@@ -20,9 +18,6 @@ public class Institution {
   @Column(name = "\"order\"", nullable = false)
   private Integer order = 0;
 
-  @OneToMany(mappedBy = "institutionId")
-  private List<Island> islands = new ArrayList<>();
-
   public Long getId() { return id; }
   public void setId(Long id) { this.id = id; }
   public String getKey() { return key; }
@@ -31,6 +26,4 @@ public class Institution {
   public void setName(String name) { this.name = name; }
   public Integer getOrder() { return order; }
   public void setOrder(Integer order) { this.order = order; }
-  public List<Island> getIslands() { return islands; }
-  public void setIslands(List<Island> islands) { this.islands = islands; }
 }
