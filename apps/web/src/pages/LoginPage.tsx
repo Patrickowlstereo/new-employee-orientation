@@ -25,34 +25,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ maxWidth: 360, margin: '80px auto', fontFamily: 'sans-serif' }}>
-      <h2>新人航行计划 · 登录</h2>
-      <form onSubmit={submit}>
-        <div style={{ marginBottom: 12 }}>
+    <div className="login-wrap">
+      <div className="login-card">
+        <img src="/brand-logo.png" alt="国民养老保险" className="login-logo" />
+        <div className="login-title">新人航行计划</div>
+        <div className="login-subtitle">登录开启你的知识海洋之旅</div>
+        <form onSubmit={submit}>
           <input
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="姓名全拼"
-            style={{ width: '100%', padding: 8, boxSizing: 'border-box' }}
+            className="login-field"
           />
-        </div>
-        <div style={{ marginBottom: 12 }}>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="密码"
-            style={{ width: '100%', padding: 8, boxSizing: 'border-box' }}
+            className="login-field"
           />
-        </div>
-        {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
-        <button type="submit" disabled={busy} style={{ width: '100%', padding: 10 }}>
-          {busy ? '登录中…' : '登录'}
-        </button>
-      </form>
-      <p style={{ color: '#888', fontSize: 12, marginTop: 16 }}>
-        试点账号 admin / admin12345
-      </p>
+          {error && <div className="login-error">{error}</div>}
+          <button type="submit" disabled={busy} className="btn-primary login-btn">
+            {busy ? '登录中…' : '登录'}
+          </button>
+        </form>
+        <p className="login-hint">试点账号 admin / admin12345</p>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { fetchDocs } from '../api/content';
-import { docFileUrl } from '../api/content';
+import { docStreamUrl } from '../api/content';
 import { useProgressStore } from '../stores/progressStore';
 import client from '../api/client';
 import { categorizeFileType } from '@gmnl/shared';
@@ -53,25 +52,7 @@ export default function DocPage() {
 
   const currentPct = aggregate?.documents.find((p) => p.docId === Number(docId))?.progressPct ?? 0;
 
-  // 按文件类型取 blob 预览（图片/视频/音频/PDF）；office/压缩等仅下载。
-  // 注：整文件入内存，大视频流式预览留待阶段 6。
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [previewError, setPreviewError] = useState(false);
-  useEffect(() => {
-    if (!doc?.fileType) { setPreviewUrl(null); setPreviewError(false); return; }
-    const cat = categorizeFileType(doc.fileType);
-    if (cat !== 'IMAGE' && cat !== 'VIDEO' && cat !== 'AUDIO' && cat !== 'DOCUMENT') {
-      setPreviewUrl(null); return;
-    }
-    if (cat === 'DOCUMENT' && doc.fileType !== 'pdf') { setPreviewUrl(null); return; }
-    let url: string | null = null;
-    let cancelled = false;
-    client.get(`/docs/${doc.id}/file`, { responseType: 'blob' })
-      .then((res) => { if (cancelled) return; url = URL.createObjectURL(res.data); setPreviewUrl(url); })
-      .catch(() => { if (!cancelled) setPreviewError(true); });
-    return () => { cancelled = true; if (url) URL.revokeObjectURL(url); };
-  }, [doc]);
-
+  // 媒体走流式直链(后端 Range 206,<video> 等原生 seek/分片,不占内存);下载另走 blob。
   const download = async () => {
     if (!doc) return;
     const res = await client.get(`/docs/${doc.id}/file`, { responseType: 'blob' });
@@ -85,52 +66,44 @@ export default function DocPage() {
 
   const renderPreview = () => {
     if (!doc?.fileType) {
-      return <div style={{ color: '#999' }}>该文档尚未上传文件（占位）</div>;
+      return <div style={{ color: 'var(--slate-400)' }}>该文档尚未上传文件（占位）</div>;
     }
     const cat = categorizeFileType(doc.fileType);
-    if (previewError) {
-      return <div style={{ color: 'red' }}>预览加载失败，请使用下载</div>;
+    const url = docStreamUrl(doc.id);
+    if (cat === 'IMAGE') {
+      return <img src={url} alt={doc.title} style={{ maxWidth: '100%', borderRadius: 8 }} />;
     }
-    if (previewUrl) {
-      if (cat === 'IMAGE') {
-        return <img src={previewUrl} alt={doc.title} style={{ maxWidth: '100%', borderRadius: 8 }} />;
-      }
-      if (cat === 'VIDEO') {
-        return <video src={previewUrl} controls style={{ maxWidth: '100%', borderRadius: 8 }} />;
-      }
-      if (cat === 'AUDIO') {
-        return <audio src={previewUrl} controls style={{ width: '100%' }} />;
-      }
-      if (cat === 'DOCUMENT' && doc.fileType === 'pdf') {
-        return <iframe src={previewUrl} title={doc.title} style={{ width: '100%', height: '70vh', border: '1px solid #eee', borderRadius: 8 }} />;
-      }
+    if (cat === 'VIDEO') {
+      return <video src={url} controls style={{ maxWidth: '100%', borderRadius: 8 }} />;
     }
-    // office/压缩等不支持浏览器内预览的类型，或加载中
-    if (cat === 'DOCUMENT' || cat === 'ARCHIVE' || cat === 'OTHER') {
-      return <div style={{ color: '#999' }}>该类型不支持在线预览，请下载查看。</div>;
+    if (cat === 'AUDIO') {
+      return <audio src={url} controls style={{ width: '100%' }} />;
     }
-    return <div style={{ color: '#999' }}>预览加载中…</div>;
+    if (cat === 'DOCUMENT' && doc.fileType === 'pdf') {
+      return <iframe src={url} title={doc.title} style={{ width: '100%', height: '70vh', border: '1px solid var(--slate-200)', borderRadius: 8 }} />;
+    }
+    return <div style={{ color: 'var(--slate-400)' }}>该类型不支持在线预览，请下载查看。</div>;
   };
 
   return (
-    <div style={{ fontFamily: 'sans-serif', padding: 24 }}>
-      {error && <div style={{color:'red',padding:16}}>{error}</div>}
-      <Link to={doc ? `/island/${doc.islandId}` : '/'}>← 返回</Link>
+    <div className="page-shell">
+      {error && <div style={{ color: 'red', padding: 16 }}>{error}</div>}
+      <Link to={doc ? `/island/${doc.islandId}` : '/'} className="page-link-back">← 返回</Link>
       {doc && (
         <>
-          <h1>{doc.title}</h1>
-          <div style={{ height: 8, background: '#eee', borderRadius: 4, margin: '12px 0' }}>
-            <div style={{ width: `${currentPct}%`, height: '100%', background: '#4BBF92', borderRadius: 4 }} />
+          <h1 className="page-title">{doc.title}</h1>
+          <div className="doc-progress" style={{ height: 8 }}>
+            <div style={{ width: `${currentPct}%` }} />
           </div>
-          <div style={{ color: '#888', marginBottom: 16 }}>当前进度 {currentPct}%</div>
+          <div style={{ color: 'var(--slate-500)', fontSize: 13, margin: '8px 0 16px' }}>当前进度 {currentPct}%</div>
           {doc.fileType && (
             <div style={{ marginBottom: 16 }}>
-              <button onClick={download}>下载文件（{doc.fileType.toUpperCase()}）</button>
+              <button className="btn-secondary" onClick={download}>下载文件（{doc.fileType.toUpperCase()}）</button>
             </div>
           )}
           <div style={{ marginTop: 8 }}>{renderPreview()}</div>
           <div style={{ marginTop: 24 }}>
-            <button onClick={() => completeDoc(Number(docId))}>标记完成</button>
+            <button className="btn-primary" onClick={() => completeDoc(Number(docId))}>标记完成</button>
           </div>
         </>
       )}

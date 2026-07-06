@@ -20,21 +20,34 @@ export default function IslandPage() {
   const progMap = new Map<number, number>();
   aggregate?.documents.forEach((p) => progMap.set(p.docId, p.progressPct));
 
+  // 返回该小岛所属机构页;无文档时回首页
+  const backTo = docs[0] ? `/institution/${docs[0].institutionId}` : '/';
+
   return (
-    <div style={{ fontFamily: 'sans-serif', padding: 24 }}>
-      {error && <div style={{color:'red',padding:16}}>{error}</div>}
-      <Link to="/">← 返回</Link>
-      <h1>小岛文档</h1>
-      {docs.map((d) => (
-        <Link key={d.id} to={`/doc/${d.id}`} style={{ textDecoration: 'none', color: '#333' }}>
-          <div style={{ padding: 12, marginBottom: 8, border: '1px solid #eee', borderRadius: 8 }}>
-            <div>{d.required ? '★' : '○'} {d.title}</div>
-            <div style={{ height: 6, background: '#eee', borderRadius: 3, marginTop: 8 }}>
-              <div style={{ width: `${progMap.get(d.id) ?? 0}%`, height: '100%', background: '#4A7BE0', borderRadius: 3 }} />
+    <div className="page-shell">
+      {error && <div style={{ color: 'red', padding: 16 }}>{error}</div>}
+      <Link to={backTo} className="page-link-back">← 返回群岛</Link>
+      <h1 className="page-title">小岛文档</h1>
+      {docs.map((d) => {
+        const pct = progMap.get(d.id) ?? 0;
+        return (
+          <Link key={d.id} to={`/doc/${d.id}`} className="doc-card">
+            <div className="doc-card-title">
+              <span className={d.required ? 'req-star' : 'opt-dot'}>{d.required ? '★' : '○'}</span>
+              {d.title}
+              {d.fileType && (
+                <span style={{ marginLeft: 8, fontSize: 12, color: 'var(--slate-400)', fontWeight: 400 }}>
+                  {d.fileType.toUpperCase()}
+                </span>
+              )}
             </div>
-          </div>
-        </Link>
-      ))}
+            <div className="doc-progress"><div style={{ width: `${pct}%` }} /></div>
+          </Link>
+        );
+      })}
+      {docs.length === 0 && !error && (
+        <div style={{ color: 'var(--slate-400)', padding: 16 }}>该小岛暂无文档</div>
+      )}
     </div>
   );
 }

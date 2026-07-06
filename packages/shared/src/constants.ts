@@ -56,3 +56,27 @@ export const FILE_CATEGORY_LABELS: Record<FileCategory, string> = {
   ARCHIVE: '压缩包',
   OTHER: '其他',
 };
+
+/** 机构在中国地图首页的浮动定位与展示信息(键 = Institution.key)。 */
+export interface InstitutionGeo {
+  top: string;   // 相对地图容器的百分比
+  left: string;
+  emoji: string;
+  label: string;
+  img: string;   // /institutions/xxx.png
+}
+
+export const INSTITUTION_GEO: Record<string, InstitutionGeo> = {
+  BJ: { top: '10%', left: '60%', emoji: '🏛️', label: '北京(总部)', img: '/institutions/beijing.png' },
+  SD: { top: '22%', left: '66%', emoji: '⛰️', label: '山东', img: '/institutions/shandong.png' },
+  SH: { top: '43%', left: '76%', emoji: '🏙️', label: '上海', img: '/institutions/shanghai.png' },
+  ZJ: { top: '52%', left: '74%', emoji: '🌊', label: '浙江', img: '/institutions/zhejiang.png' },
+  GD: { top: '70%', left: '64%', emoji: '🌴', label: '广东', img: '/institutions/guangdong.png' },
+  SC: { top: '50%', left: '35%', emoji: '🐼', label: '四川', img: '/institutions/sichuan.png' },
+  CQ: { top: '47%', left: '47%', emoji: '🌆', label: '重庆', img: '/institutions/chongqing.png' },
+};
+
+/** 兜底:未在 INSTITUTION_GEO 中的机构居中展示。 */
+export const INSTITUTION_GEO_FALLBACK: InstitutionGeo = {
+  top: '45%', left: '50%', emoji: '🏢', label: '', img: '',
+};
