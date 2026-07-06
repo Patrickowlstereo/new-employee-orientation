@@ -2,6 +2,8 @@ package com.gmnl.orientation.content;
 
 import jakarta.persistence.*;
 
+import java.time.Instant;
+
 @Entity
 @Table(name = "docs")
 public class Doc {
@@ -27,8 +29,14 @@ public class Doc {
   @Column(name = "file_path", length = 256)
   private String filePath;
 
-  @Column(name = "file_type", length = 8)
+  @Column(name = "file_type", length = 16)
   private String fileType;
+
+  @Column(name = "file_uploaded_at")
+  private Instant fileUploadedAt;
+
+  @Column(name = "file_uploaded_by")
+  private Long fileUploadedBy;
 
   @Column(name = "\"order\"", nullable = false)
   private Integer order = 0;
@@ -52,6 +60,10 @@ public class Doc {
   public void setFilePath(String filePath) { this.filePath = filePath; }
   public String getFileType() { return fileType; }
   public void setFileType(String fileType) { this.fileType = fileType; }
+  public Instant getFileUploadedAt() { return fileUploadedAt; }
+  public void setFileUploadedAt(Instant fileUploadedAt) { this.fileUploadedAt = fileUploadedAt; }
+  public Long getFileUploadedBy() { return fileUploadedBy; }
+  public void setFileUploadedBy(Long fileUploadedBy) { this.fileUploadedBy = fileUploadedBy; }
   public Integer getOrder() { return order; }
   public void setOrder(Integer order) { this.order = order; }
   public Boolean getActive() { return active; }

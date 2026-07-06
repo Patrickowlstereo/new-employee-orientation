@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -22,6 +23,19 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(com.gmnl.orientation.user.AuthService.InvalidCredentialsException.class)
   public ResponseEntity<ApiError> invalidCredentials(com.gmnl.orientation.user.AuthService.InvalidCredentialsException e) {
     return error(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", e.getMessage());
+  }
+
+  // 透传 ResponseStatusException 的状态码（如 404/403），避免被下方兜底吞成 500。
+  // 比 @ExceptionHandler(Exception.class) 更具体，Spring 会优先匹配。
+  @ExceptionHandler(ResponseStatusException.class)
+  public ResponseEntity<ApiError> responseStatus(ResponseStatusException e) {
+    HttpStatus status = HttpStatus.resolve(e.getStatusCode().value());
+    if (status == null) status = HttpStatus.INTERNAL_SERVER_ERROR;
+    String code = status == HttpStatus.NOT_FOUND ? "NOT_FOUND"
+        : status == HttpStatus.FORBIDDEN ? "FORBIDDEN"
+        : status.name();
+    String message = e.getReason() != null ? e.getReason() : status.getReasonPhrase();
+    return error(status, code, message);
   }
 
   @ExceptionHandler(Exception.class)

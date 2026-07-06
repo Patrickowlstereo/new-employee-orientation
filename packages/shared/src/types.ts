@@ -23,7 +23,11 @@ export interface Island {
   institutionId: number;
 }
 
-export type DocFileType = 'pdf' | 'docx' | 'pptx' | 'xlsx';
+// 文件扩展名（小写、无点）。阶段 4 起支持文档/图片/视频/音频/压缩等全面类型，故放宽为 string。
+export type DocFileType = string;
+
+// 文件大类，与后端 FileTypeSupport.Category 对应
+export type FileCategory = 'DOCUMENT' | 'IMAGE' | 'VIDEO' | 'AUDIO' | 'ARCHIVE' | 'OTHER';
 
 export interface Doc {
   id: number;
@@ -76,4 +80,20 @@ export interface ChangePasswordRequest {
 export interface UpsertProgressRequest {
   status: DocStatus;
   progressPct: number;
+}
+
+// 后台管理用：含文件大类与上传审计的文档视图
+export interface AdminDoc {
+  id: number;
+  title: string;
+  category: string | null;
+  institutionId: number;
+  islandId: number;
+  required: boolean;
+  fileType: DocFileType | null;
+  fileCategory: FileCategory;
+  order: number;
+  active: boolean;
+  uploadedAt: string | null;
+  uploadedByName: string | null;
 }

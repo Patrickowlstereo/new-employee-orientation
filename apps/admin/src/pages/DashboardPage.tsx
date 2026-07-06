@@ -1,15 +1,20 @@
-import { Button } from 'antd';
-import { useAuthStore } from '../stores/authStore';
+import { Card, Typography } from 'antd';
+import { Link } from 'react-router-dom';
+
+const { Title, Paragraph } = Typography;
 
 export default function DashboardPage() {
-  const user = useAuthStore((s) => s.user);
-  const logout = useAuthStore((s) => s.logout);
   return (
-    <div style={{ padding: 24 }}>
-      <h1>管理后台 · 概览</h1>
-      <p>欢迎，{user?.name}（{user?.username}）</p>
-      <p>后台管理功能（用户/机构/小岛/文档/统计）将在后续计划实现。</p>
-      <Button onClick={logout}>退出</Button>
-    </div>
+    <Card>
+      <Title level={4}>管理后台 · 概览</Title>
+      <Paragraph>
+        阶段 4 已开放「文档管理」：管理员可在后台直接上传/替换/删除学习文件（文档、图片、视频、音频、压缩包），
+        无需找开发改代码。
+      </Paragraph>
+      <Paragraph type="secondary">
+        后续阶段将补充：用户/机构/小岛维护、全员学习完成率统计。
+      </Paragraph>
+      <Link to="/admin/docs">→ 前往文档管理</Link>
+    </Card>
   );
 }

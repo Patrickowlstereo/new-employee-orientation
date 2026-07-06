@@ -61,9 +61,11 @@ public class ContentController {
           .body(new ApiError("NO_FILE", "文件不存在"));
     }
     String filename = URLEncoder.encode(file.getName(), StandardCharsets.UTF_8).replace("+", "%20");
+    // 按扩展名回真实 MIME，供学习端 blob 预览（图片/视频/音频/PDF）正确识别；下载行为不变。
+    MediaType contentType = FileTypeSupport.mediaTypeOf(doc.getFileType());
     return ResponseEntity.ok()
         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + filename)
-        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+        .contentType(contentType)
         .contentLength(file.length())
         .body(new FileSystemResource(file));
   }
