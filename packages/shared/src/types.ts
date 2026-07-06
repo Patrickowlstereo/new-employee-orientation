@@ -97,3 +97,53 @@ export interface AdminDoc {
   uploadedAt: string | null;
   uploadedByName: string | null;
 }
+
+// 后台内容 CRUD 请求
+export interface InstitutionUpsertRequest {
+  key: string;
+  name: string;
+  order: number | null;
+}
+export interface IslandUpsertRequest {
+  key: string;
+  name: string;
+  order: number | null;
+  institutionId: number;
+}
+export interface DocUpsertRequest {
+  title: string;
+  category: string | null;
+  institutionId: number;
+  islandId: number;
+  required: boolean;
+  order: number | null;
+  active: boolean;
+}
+
+// 全员学习统计
+export interface UserStats {
+  userId: number;
+  name: string;
+  username: string;
+  requiredTotal: number;
+  requiredCompleted: number;
+  completionPct: number;
+  lastReadAt: string | null;
+  islandsCompleted: number;
+  islandsTotal: number;
+}
+export interface IslandCompletion {
+  islandId: number;
+  islandName: string;
+  institutionName: string;
+  completedUsers: number;
+  totalLearners: number;
+  completionPct: number;
+}
+export interface StatsOverview {
+  totalUsers: number;
+  totalLearners: number;
+  completedAllRequired: number;
+  avgCompletionPct: number;
+  islands: IslandCompletion[];
+}

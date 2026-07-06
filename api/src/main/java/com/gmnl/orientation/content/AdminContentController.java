@@ -1,6 +1,7 @@
 package com.gmnl.orientation.content;
 
 import com.gmnl.orientation.user.CurrentUserResolver;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,24 @@ public class AdminContentController {
   @GetMapping
   public List<AdminDocDto> list() {
     return service.listDocs();
+  }
+
+  /** 新建文档行（文件另走 /upload）。 */
+  @PostMapping
+  public AdminDocDto create(@Valid @RequestBody DocUpsertRequest req) {
+    return service.createDoc(req);
+  }
+
+  /** 更新文档行（标题/分类/小岛/必修/序号/启用）。 */
+  @PutMapping("/{id}")
+  public AdminDocDto update(@PathVariable Long id, @Valid @RequestBody DocUpsertRequest req) {
+    return service.updateDoc(id, req);
+  }
+
+  /** 删除文档行（有学习记录则拒绝，建议改用停用）。 */
+  @DeleteMapping("/{id}")
+  public void deleteRow(@PathVariable Long id) {
+    service.deleteDocRow(id);
   }
 
   /** 上传/替换某文档的文件（multipart: file=...）。 */

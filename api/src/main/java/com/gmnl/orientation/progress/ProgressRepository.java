@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface ProgressRepository extends JpaRepository<Progress, ProgressId> {
   List<Progress> findByUserId(Long userId);
+  long countByDocId(Long docId);
 }

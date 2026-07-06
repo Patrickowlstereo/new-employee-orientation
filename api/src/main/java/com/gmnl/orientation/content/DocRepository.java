@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface DocRepository extends JpaRepository<Doc, Long> {
   List<Doc> findByIslandIdAndActiveTrueOrderByOrderAsc(Long islandId);
+  long countByIslandId(Long islandId);
 }

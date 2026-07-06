@@ -1,5 +1,6 @@
 package com.gmnl.orientation.content;
 
+import com.gmnl.orientation.progress.ProgressRepository;
 import com.gmnl.orientation.user.User;
 import com.gmnl.orientation.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,16 +21,22 @@ import static org.mockito.Mockito.*;
 class AdminContentServiceTest {
 
   private DocRepository docRepo;
+  private InstitutionRepository institutionRepo;
+  private IslandRepository islandRepo;
   private UserRepository userRepo;
+  private ProgressRepository progressRepo;
   private DocFileStorage storage;
   private AdminContentService service;
 
   @BeforeEach
   void setup() {
     docRepo = mock(DocRepository.class);
+    institutionRepo = mock(InstitutionRepository.class);
+    islandRepo = mock(IslandRepository.class);
     userRepo = mock(UserRepository.class);
+    progressRepo = mock(ProgressRepository.class);
     storage = mock(DocFileStorage.class);
-    service = new AdminContentService(docRepo, userRepo, storage);
+    service = new AdminContentService(docRepo, institutionRepo, islandRepo, userRepo, progressRepo, storage);
   }
 
   @Test
@@ -125,6 +132,86 @@ class AdminContentServiceTest {
 
     assertNull(result.get(0).uploadedByName());
     assertEquals("张三", result.get(1).uploadedByName());
+  }
+
+  // ===== 阶段 5 内容 CRUD =====
+
+  @Test
+  void createInstitutionSavesAndReturnsDto() {
+    InstitutionDto dto = service.createInstitution(new InstitutionUpsertRequest("TEST", "测试机构", 5));
+    assertEquals("TEST", dto.key());
+    assertEquals("测试机构", dto.name());
+    assertEquals(5, dto.order());
+    verify(institutionRepo).save(any(Institution.class));
+  }
+
+  @Test
+  void deleteInstitutionRefusesWhenHasIslands() {
+    when(institutionRepo.existsById(1L)).thenReturn(true);
+    when(islandRepo.countByInstitutionId(1L)).thenReturn(3L);
+    assertThrows(IllegalArgumentException.class, () -> service.deleteInstitution(1L));
+    verify(institutionRepo, never()).deleteById(anyLong());
+  }
+
+  @Test
+  void deleteInstitutionSucceedsWhenNoIslands() {
+    when(institutionRepo.existsById(1L)).thenReturn(true);
+    when(islandRepo.countByInstitutionId(1L)).thenReturn(0L);
+    service.deleteInstitution(1L);
+    verify(institutionRepo).deleteById(1L);
+  }
+
+  @Test
+  void deleteIslandRefusesWhenHasDocs() {
+    when(islandRepo.existsById(10L)).thenReturn(true);
+    when(docRepo.countByIslandId(10L)).thenReturn(2L);
+    assertThrows(IllegalArgumentException.class, () -> service.deleteIsland(10L));
+    verify(islandRepo, never()).deleteById(anyLong());
+  }
+
+  @Test
+  void createDocValidatesIslandAndInstitutionMatch() {
+    Island isl = new Island();
+    isl.setId(10L);
+    isl.setInstitutionId(1L);
+    when(islandRepo.findById(10L)).thenReturn(Optional.of(isl));
+    DocUpsertRequest req = new DocUpsertRequest("新文档", "cat", 1L, 10L, true, 0, true);
+    AdminDocDto dto = service.createDoc(req);
+    assertEquals("新文档", dto.title());
+    assertTrue(dto.required());
+    verify(docRepo).save(any(Doc.class));
+  }
+
+  @Test
+  void createDocRejectsInstitutionMismatch() {
+    Island isl = new Island();
+    isl.setId(10L);
+    isl.setInstitutionId(1L);
+    when(islandRepo.findById(10L)).thenReturn(Optional.of(isl));
+    DocUpsertRequest req = new DocUpsertRequest("新文档", null, 2L, 10L, true, 0, true);
+    assertThrows(IllegalArgumentException.class, () -> service.createDoc(req));
+    verify(docRepo, never()).save(any(Doc.class));
+  }
+
+  @Test
+  void deleteDocRowRefusesWhenHasProgress() {
+    Doc doc = doc(1L);
+    when(docRepo.findById(1L)).thenReturn(Optional.of(doc));
+    when(progressRepo.countByDocId(1L)).thenReturn(5L);
+    assertThrows(IllegalArgumentException.class, () -> service.deleteDocRow(1L));
+    verify(docRepo, never()).delete(any(Doc.class));
+  }
+
+  @Test
+  void deleteDocRowDeletesFileAndDocWhenNoProgress() {
+    Doc doc = doc(1L);
+    doc.setFilePath("docs/1/x.pdf");
+    doc.setFileType("pdf");
+    when(docRepo.findById(1L)).thenReturn(Optional.of(doc));
+    when(progressRepo.countByDocId(1L)).thenReturn(0L);
+    service.deleteDocRow(1L);
+    verify(storage).delete("docs/1/x.pdf");
+    verify(docRepo).delete(doc);
   }
 
   private Doc doc(long id) {

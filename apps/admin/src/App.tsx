@@ -4,6 +4,9 @@ import { useAuthStore } from './stores/authStore';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import DocsManagePage from './pages/DocsManagePage';
+import InstitutionsPage from './pages/InstitutionsPage';
+import IslandsPage from './pages/IslandsPage';
+import StatsPage from './pages/StatsPage';
 import AdminLayout from './components/AdminLayout';
 
 function RequireAdmin({ children }: { children: React.ReactNode }) {
@@ -22,6 +25,9 @@ export default function App() {
       <Route path="/admin/" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
         <Route index element={<DashboardPage />} />
         <Route path="docs" element={<DocsManagePage />} />
+        <Route path="institutions" element={<InstitutionsPage />} />
+        <Route path="islands" element={<IslandsPage />} />
+        <Route path="stats" element={<StatsPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/admin/" replace />} />
     </Routes>

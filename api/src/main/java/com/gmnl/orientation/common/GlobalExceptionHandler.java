@@ -1,7 +1,10 @@
 package com.gmnl.orientation.common;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +21,20 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ApiError> badRequest(IllegalArgumentException e) {
     return error(HttpStatus.BAD_REQUEST, "BAD_REQUEST", e.getMessage());
+  }
+
+  // @Valid 校验失败（如 @NotBlank）→ 400，返回首个字段错误，而非被兜底吞成 500。
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ApiError> validation(MethodArgumentNotValidException e) {
+    FieldError fe = e.getBindingResult().getFieldError();
+    String message = fe != null ? fe.getField() + ": " + fe.getDefaultMessage() : "参数校验失败";
+    return error(HttpStatus.BAD_REQUEST, "VALIDATION", message);
+  }
+
+  // 唯一约束冲突等数据完整性问题 → 400，提示编码/名称可能重复。
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<ApiError> dataIntegrity(DataIntegrityViolationException e) {
+    return error(HttpStatus.BAD_REQUEST, "DATA_CONFLICT", "数据冲突，编码或名称可能重复");
   }
 
   @ExceptionHandler(com.gmnl.orientation.user.AuthService.InvalidCredentialsException.class)

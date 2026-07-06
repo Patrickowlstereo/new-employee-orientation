@@ -15,6 +15,9 @@ export default function AdminLayout() {
   const items = [
     { key: '/admin/', label: '概览' },
     { key: '/admin/docs', label: '文档管理' },
+    { key: '/admin/institutions', label: '机构管理' },
+    { key: '/admin/islands', label: '小岛管理' },
+    { key: '/admin/stats', label: '统计报表' },
   ];
 
   return (

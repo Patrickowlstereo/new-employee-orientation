@@ -6,4 +6,5 @@ import java.util.List;
 public interface IslandRepository extends JpaRepository<Island, Long> {
   List<Island> findByInstitutionIdOrderByOrderAsc(Long institutionId);
   List<Island> findAllByOrderByOrderAsc();
+  long countByInstitutionId(Long institutionId);
 }
