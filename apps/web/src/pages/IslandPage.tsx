@@ -7,12 +7,13 @@ import type { Doc } from '@gmnl/shared';
 export default function IslandPage() {
   const { islandId } = useParams();
   const [docs, setDocs] = useState<Doc[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const aggregate = useProgressStore((s) => s.aggregate);
   const loadProgress = useProgressStore((s) => s.loadProgress);
 
   useEffect(() => {
     if (!islandId) return;
-    fetchDocs(Number(islandId)).then(setDocs);
+    fetchDocs(Number(islandId)).then(setDocs).catch(() => setError('加载失败，请重试'));
     loadProgress();
   }, [islandId, loadProgress]);
 
@@ -21,6 +22,7 @@ export default function IslandPage() {
 
   return (
     <div style={{ fontFamily: 'sans-serif', padding: 24 }}>
+      {error && <div style={{color:'red',padding:16}}>{error}</div>}
       <Link to="/">← 返回</Link>
       <h1>小岛文档</h1>
       {docs.map((d) => (

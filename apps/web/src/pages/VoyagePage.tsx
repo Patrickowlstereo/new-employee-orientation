@@ -7,13 +7,14 @@ import type { Institution, IslandStateView } from '@gmnl/shared';
 
 export default function VoyagePage() {
   const [institutions, setInstitutions] = useState<Institution[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const aggregate = useProgressStore((s) => s.aggregate);
   const loadProgress = useProgressStore((s) => s.loadProgress);
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
 
   useEffect(() => {
-    fetchInstitutions().then(setInstitutions);
+    fetchInstitutions().then(setInstitutions).catch(() => setError('加载失败，请重试'));
     loadProgress();
   }, [loadProgress]);
 
@@ -22,6 +23,7 @@ export default function VoyagePage() {
 
   return (
     <div style={{ fontFamily: 'sans-serif', padding: 24 }}>
+      {error && <div style={{color:'red',padding:16}}>{error}</div>}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 24 }}>
         <h1>新人航行计划</h1>
         <div>

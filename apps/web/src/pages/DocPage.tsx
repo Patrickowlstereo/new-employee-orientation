@@ -9,6 +9,7 @@ import type { Doc, DocStatus } from '@gmnl/shared';
 export default function DocPage() {
   const { docId } = useParams();
   const [doc, setDoc] = useState<Doc | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const upsertProgress = useProgressStore((s) => s.upsertProgress);
   const completeDoc = useProgressStore((s) => s.completeDoc);
   const aggregate = useProgressStore((s) => s.aggregate);
@@ -18,7 +19,7 @@ export default function DocPage() {
   // 进入即 READING
   useEffect(() => {
     if (!docId) return;
-    fetchDoc(Number(docId)).then(setDoc);
+    fetchDoc(Number(docId)).then(setDoc).catch(() => setError('加载失败，请重试'));
     upsertProgress(Number(docId), 'READING', 1);
   }, [docId, upsertProgress]);
 
@@ -32,6 +33,7 @@ export default function DocPage() {
       const now = Date.now();
       if (pct - lastReportRef.current >= 5 && now - lastReportTime() >= 10000) {
         lastReportRef.current = pct;
+        lastReportTs = now;
         upsertProgress(Number(docId), 'READING', pct);
       }
     };
@@ -63,6 +65,7 @@ export default function DocPage() {
 
   return (
     <div style={{ fontFamily: 'sans-serif', padding: 24 }}>
+      {error && <div style={{color:'red',padding:16}}>{error}</div>}
       <Link to={doc ? `/island/${doc.islandId}` : '/'}>← 返回</Link>
       {doc && (
         <>

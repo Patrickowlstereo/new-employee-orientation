@@ -1,6 +1,8 @@
 package com.gmnl.orientation.content;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
@@ -47,6 +49,6 @@ public class ContentService {
   public Doc getDocEntity(Long id) {
     return docRepo.findById(id)
         .filter(Doc::getActive)
-        .orElseThrow(() -> new IllegalArgumentException("文档不存在"));
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "文档不存在"));
   }
 }

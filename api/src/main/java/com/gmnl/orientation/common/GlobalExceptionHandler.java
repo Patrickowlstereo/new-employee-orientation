@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+  private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
   public static ResponseEntity<ApiError> error(HttpStatus status, String code, String message) {
     return ResponseEntity.status(status).body(new ApiError(code, message));
   }
@@ -24,6 +26,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ApiError> internal(Exception e) {
+    log.error("Unhandled exception", e);
     return error(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL", "服务器内部错误");
   }
 }
