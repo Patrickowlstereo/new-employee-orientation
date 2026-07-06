@@ -13,6 +13,7 @@ api/target/
 node_modules/
 dist/
 .pnpm-store/
+*.tsbuildinfo
 
 # 本地配置与上传
 api/src/main/resources/application-local.yml
