@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>国民养老 · 新人航行计划</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -26,16 +27,17 @@
 body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);overflow-x:hidden;min-height:100vh;}
 .screen{display:none;width:100%;min-height:100vh;position:relative;}
 .screen.active{display:flex;flex-direction:column;animation:fadeIn 0.5s ease;}
+.screen.screen-fade-out{animation:fadeOut 0.6s ease forwards;pointer-events:none;}
+@keyframes fadeOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(0.97)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes floatSlow{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-15px) rotate(3deg)}}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 @keyframes bounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-20px)}50%{transform:translateY(-10px)}70%{transform:translateY(-15px)}}
 @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-@keyframes wave1{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(-40px) translateY(-10px)}100%{transform:translateX(0) translateY(0)}}
-@keyframes wave2{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(32px) translateY(-8px)}100%{transform:translateX(0) translateY(0)}}
-@keyframes wave3{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(-24px) translateY(-14px)}100%{transform:translateX(0) translateY(0)}}
-@keyframes wave4{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(18px) translateY(-6px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes mouseRipple{0%{transform:translate(-50%,-50%) scale(0);opacity:0.5}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+@keyframes sparkleFloat{0%,100%{opacity:0;transform:translateY(0) scale(0.3)}30%{opacity:0.9;transform:translateY(-6px) scale(1)}60%{opacity:0.4;transform:translateY(-3px) scale(0.7)}}
+@keyframes swellDrift{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 @keyframes causticDrift{0%,100%{transform:translateX(0) translateY(0) skewX(0deg);opacity:0.07}33%{transform:translateX(4%) translateY(-2%) skewX(3deg);opacity:0.13}66%{transform:translateX(-3%) translateY(1%) skewX(-2deg);opacity:0.09}}
 @keyframes foamPulse{0%,100%{opacity:0;transform:scaleX(0.6)}50%{opacity:0.75;transform:scaleX(1)}}
 @keyframes boatBob{0%,100%{transform:translateY(0) rotate(-2deg)}25%{transform:translateY(-8px) rotate(1deg)}75%{transform:translateY(-4px) rotate(-3deg)}}
@@ -49,6 +51,25 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes progressFill{from{width:0}to{width:var(--fill)}}
 @keyframes confetti{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(400px) rotate(720deg);opacity:0}}
+@keyframes wave1{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(-25px) translateY(-8px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes wave2{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(20px) translateY(-6px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes wave3{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(-15px) translateY(-10px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes bannerFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes contourGlowPulse{0%,100%{filter:drop-shadow(0 8px 20px rgba(0,50,100,0.35)) drop-shadow(0 0 10px rgba(74,144,226,0.35)) drop-shadow(0 0 22px rgba(74,144,226,0.12))}50%{filter:drop-shadow(0 8px 20px rgba(0,50,100,0.35)) drop-shadow(0 0 18px rgba(74,144,226,0.55)) drop-shadow(0 0 36px rgba(74,144,226,0.25))}}
+@keyframes contourGlowGold{0%,100%{filter:drop-shadow(0 0 14px rgba(255,200,50,0.4)) drop-shadow(0 0 28px rgba(255,185,30,0.18)) drop-shadow(0 8px 24px rgba(0,50,120,0.35))}50%{filter:drop-shadow(0 0 24px rgba(255,200,50,0.6)) drop-shadow(0 0 44px rgba(255,185,30,0.35)) drop-shadow(0 8px 24px rgba(0,50,120,0.35))}}
+@keyframes lockPulse{0%,100%{opacity:0.35}50%{opacity:0.5}}
+/* ===== CULTURE QUIZ KEYFRAMES (企业文化答题) ===== */
+@keyframes cq-correctPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@keyframes cq-shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes cq-fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cq-bounceIn{0%{transform:scale(0.3);opacity:0}50%{transform:scale(1.1)}70%{transform:scale(0.9)}100%{transform:scale(1);opacity:1}}
+@keyframes cq-slideInRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes cq-float-anim{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes cq-sparkleFly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
+@keyframes cq-comboPopup{0%{transform:translate(-50%,-50%) scale(0.5);opacity:0}30%{transform:translate(-50%,-50%) scale(1.3);opacity:1}100%{transform:translate(-50%,-80%) scale(1);opacity:0}}
+@keyframes cq-slideOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-40px)}}
+@keyframes cq-slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+
 
 /* ===== TOP NAV ===== */
 .top-nav{position:fixed;top:0;left:0;right:0;height:64px;background:rgba(250,248,245,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--slate-200);display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:100;}
@@ -75,23 +96,6 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 .nav-btn{padding:8px 16px;border-radius:12px;border:1.5px solid var(--slate-200);background:var(--white);cursor:pointer;font-size:14px;font-weight:500;color:var(--slate-600);transition:var(--transition);display:flex;align-items:center;gap:6px;}
 .nav-btn:hover{border-color:var(--blue-300);color:var(--blue-500);background:var(--blue-50);}
 
-/* ===== START SCREEN ===== */
-#startScreen{justify-content:center;align-items:center;background:linear-gradient(180deg,#FAF8F5 0%,#F5F2EC 40%,#F0EDE6 100%);min-height:100vh;overflow:hidden;}
-.start-clouds{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
-.cloud{position:absolute;background:rgba(255,255,255,0.5);border-radius:50%;filter:blur(2px);}
-.cloud::before,.cloud::after{content:'';position:absolute;background:inherit;border-radius:50%;}
-.cloud-1{width:120px;height:40px;top:15%;animation:cloudFloat 35s linear infinite;}
-.cloud-1::before{width:50px;height:50px;top:-25px;left:20px;}
-.cloud-1::after{width:40px;height:40px;top:-15px;left:55px;}
-.cloud-2{width:90px;height:30px;top:25%;animation:cloudFloat 45s linear infinite;animation-delay:-10s;opacity:0.6;}
-.cloud-2::before{width:35px;height:35px;top:-18px;left:15px;}
-.cloud-2::after{width:30px;height:30px;top:-12px;left:40px;}
-.cloud-3{width:140px;height:45px;top:60%;animation:cloudFloat 55s linear infinite;animation-delay:-25s;opacity:0.5;}
-.cloud-3::before{width:55px;height:55px;top:-30px;left:25px;}
-.cloud-3::after{width:45px;height:45px;top:-20px;left:65px;}
-.start-content{text-align:center;z-index:2;animation:slideUp 0.8s ease;}
-.start-logo{width:120px;height:120px;margin:0 auto 24px;background:var(--white);border-radius:32px;display:flex;align-items:center;justify-content:center;font-size:56px;box-shadow:0 4px 24px rgba(0,0,0,0.06);animation:floatSlow 4s ease-in-out infinite;}
-
 /* ===== BRAND LOGO ===== */
 .brand-logo{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 24px;margin-bottom:16px;}
 .brand-logo-img{height:80px;width:auto;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.08));}
@@ -99,101 +103,6 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 .brand-logo--small .brand-logo-img{height:64px;}
 .brand-logo--light{background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border-radius:12px;border:1px solid rgba(255,255,255,0.5);}
 .brand-logo--dark{background:rgba(15,23,42,0.06);backdrop-filter:blur(8px);border-radius:12px;border:1px solid rgba(15,23,42,0.08);}
-.start-title{font-size:42px;font-weight:900;color:var(--slate-800);margin-bottom:12px;letter-spacing:2px;}
-.start-subtitle{font-size:18px;color:var(--slate-400);margin-bottom:40px;font-weight:400;letter-spacing:1px;}
-.start-btn{padding:16px 48px;background:var(--slate-800);color:#fff;border:none;border-radius:14px;font-size:18px;font-weight:600;cursor:pointer;transition:var(--transition);box-shadow:0 4px 16px rgba(0,0,0,0.08);font-family:var(--font);}
-.start-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.12);background:var(--slate-700);}
-.start-btn:active{transform:translateY(0);}
-.start-features{display:flex;gap:32px;justify-content:center;margin-top:48px;}
-.start-feature{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--slate-500);font-size:13px;}
-.start-feature-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--white);box-shadow:var(--shadow-sm);}
-
-/* ===== MAP SCREEN ===== */
-#mapScreen{padding-top:64px;min-height:100vh;background:#E8F4FA;}
-.map-container{flex:1;display:flex;flex-direction:column;align-items:center;padding:20px 0 0 0;position:relative;overflow:hidden;}
-.map-header{text-align:center;margin-bottom:20px;}
-.map-header h2{font-size:22px;font-weight:700;color:var(--slate-800);margin-bottom:4px;}
-.map-header p{font-size:14px;color:var(--slate-500);}
-
-/* Water-system map */
-.map-board{
-  position:relative;flex:1;width:100%;margin:0;
-  border-radius:0;overflow:hidden;
-  box-shadow:none;
-  background:linear-gradient(180deg,#E8F4FA 0%,#D6ECF6 30%,#C8E4F2 60%,#BDDEF0 100%);
-}
-.water-streams{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;}
-
-/* Water spot wrapper */
-.water-spot{position:absolute;z-index:5;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform 0.3s ease;}
-.water-spot:hover{transform:translateY(-4px) scale(1.05);}
-.water-spot:hover .water-shape{box-shadow:0 0 20px rgba(60,160,210,0.5);}
-.water-label{font-size:13px;font-weight:600;color:#2C5F7C;text-shadow:0 1px 2px rgba(255,255,255,0.5);letter-spacing:0.5px;}
-
-/* Water shape — organic blob for each system */
-.water-shape{
-  width:90px;height:70px;
-  border-radius:45% 55% 50% 50% / 48% 52% 45% 55%;
-  background:radial-gradient(ellipse at 40% 35%,rgba(140,210,240,0.9),rgba(70,160,210,0.7));
-  box-shadow:0 0 12px rgba(60,140,200,0.3),inset 0 -4px 8px rgba(0,0,80,0.1);
-  transition:box-shadow 0.3s ease;
-  position:relative;
-}
-.water-shape::after{
-  content:'';position:absolute;top:20%;left:25%;width:30%;height:25%;
-  background:rgba(255,255,255,0.35);border-radius:50%;
-}
-/* Distinct shapes per water system */
-.yongding-shape{border-radius:50% 50% 48% 52% / 45% 55% 52% 48%;width:95px;height:72px;background:radial-gradient(ellipse at 40% 30%,rgba(150,220,248,0.9),rgba(60,145,200,0.7));}
-.baotu-shape{border-radius:55% 45% 52% 48% / 48% 48% 52% 52%;width:78px;height:68px;background:radial-gradient(ellipse at 45% 35%,rgba(130,210,245,0.9),rgba(50,155,210,0.7));}
-.huangpu-shape{border-radius:42% 58% 48% 52% / 50% 45% 55% 50%;width:100px;height:62px;background:radial-gradient(ellipse at 35% 35%,rgba(135,215,242,0.9),rgba(55,150,205,0.7));}
-.xihu-shape{border-radius:50% 50% 50% 50% / 55% 55% 45% 45%;width:72px;height:55px;background:radial-gradient(ellipse at 45% 30%,rgba(145,220,245,0.9),rgba(65,160,215,0.7));}
-.zhujiang-shape{border-radius:40% 60% 50% 50% / 52% 48% 52% 48%;width:105px;height:66px;background:radial-gradient(ellipse at 38% 35%,rgba(140,215,240,0.9),rgba(55,150,205,0.7));}
-.jialing-shape{border-radius:48% 52% 50% 50% / 45% 55% 48% 52%;width:88px;height:70px;background:radial-gradient(ellipse at 42% 32%,rgba(140,215,242,0.9),rgba(58,148,208,0.7));}
-.dujiangyan-shape{border-radius:52% 48% 48% 52% / 50% 48% 52% 50%;width:82px;height:68px;background:radial-gradient(ellipse at 40% 35%,rgba(145,218,245,0.9),rgba(62,152,210,0.7));}
-
-/* Water spot positions */
-.water-yongding{left:44%;top:8%;}
-.water-baotu{left:61%;top:32%;}
-.water-huangpu{left:74%;top:18%;}
-.water-xihu{left:68%;top:48%;}
-.water-zhujiang{left:60%;top:68%;}
-.water-jialing{left:32%;top:48%;}
-.water-dujiangyan{left:18%;top:38%;}
-
-/* Hover tooltip */
-.water-tooltip{
-  position:absolute;z-index:50;
-  display:none;
-  background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);
-  border-radius:16px;padding:20px 24px;
-  box-shadow:0 12px 40px rgba(0,0,0,0.15);
-  border:1px solid rgba(100,180,220,0.3);
-  min-width:320px;max-width:400px;
-  gap:20px;
-  pointer-events:none;
-}
-.water-tooltip.show{display:flex;flex-direction:row;}
-.water-tooltip-left{flex:1;min-width:0;}
-.water-tooltip-watername{font-size:18px;font-weight:700;color:#1A4A6B;margin-bottom:8px;}
-.water-tooltip-desc{font-size:13px;color:#4A7A95;line-height:1.6;}
-.water-tooltip-right{
-  flex-shrink:0;
-  display:flex;align-items:center;
-  padding-left:20px;border-left:1px solid rgba(100,180,220,0.2);
-}
-.water-tooltip-instname{font-size:15px;font-weight:600;color:#B82222;white-space:nowrap;}
-
-/* Map progress bar */
-.map-progress{margin-top:16px;width:1000px;max-width:95vw;}
-.progress-bar-container{background:var(--slate-100);border-radius:12px;height:10px;overflow:hidden;position:relative;}
-.progress-bar-fill{height:100%;border-radius:12px;background:linear-gradient(90deg,var(--blue-400),var(--purple-300),var(--rose-300));transition:width 0.8s ease;position:relative;}
-.progress-bar-fill::after{content:'';position:absolute;right:0;top:0;width:20px;height:100%;background:rgba(255,255,255,0.4);border-radius:0 12px 12px 0;animation:shimmer 2s infinite;}
-.progress-info{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--slate-500);}
-.inst-progress-dots{display:flex;gap:12px;justify-content:center;margin-top:8px;}
-.inst-dot{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--slate-500);}
-.inst-dot-dot{width:8px;height:8px;border-radius:50%;background:var(--slate-300);}
-.inst-dot-dot.done{background:var(--emerald-400);}
 
 /* ===== VOYAGE SCREEN ===== */
 #voyageScreen{padding-top:64px;min-height:100vh;position:relative;overflow:hidden;}
@@ -234,11 +143,52 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
   position:absolute;inset:0;z-index:2;pointer-events:none;
   background:radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(30,100,160,0.15) 100%);
 }
-.wave{position:absolute;bottom:0;width:200%;height:120px;pointer-events:none;}
-.wave-1{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%23fff' d='M0,28 C240,-8 480,72 720,28 C960,-8 1200,72 1440,28 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 120px;animation:wave1 6.5s ease-in-out infinite;bottom:0;opacity:0.32;z-index:3;}
-.wave-2{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%23C8E8F8' d='M0,42 C180,12 360,74 540,42 C720,12 900,74 1080,42 C1260,12 1380,55 1440,42 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 120px;animation:wave2 9s ease-in-out infinite;bottom:-12px;opacity:0.28;z-index:3;}
-.wave-3{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%23A0D0EE' d='M0,62 C360,36 720,88 1080,62 C1260,49 1350,76 1440,62 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 120px;animation:wave3 11.5s ease-in-out infinite;bottom:-22px;opacity:0.22;z-index:3;}
-.wave-4{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%2378B8E0' d='M0,78 C240,58 480,96 720,78 C960,60 1200,96 1440,78 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 120px;animation:wave4 15s ease-in-out infinite;bottom:-32px;opacity:0.18;z-index:3;}
+/* 鼠标涟漪层 — 覆盖海面，跟随鼠标产生波纹 */
+.mouse-ripples-layer{
+  position:absolute;inset:0;top:64px;
+  z-index:4;pointer-events:none;overflow:hidden;
+}
+.mouse-ripple{
+  position:absolute;
+  border-radius:50%;
+  border:1.5px solid rgba(255,255,255,0.4);
+  background:radial-gradient(circle,rgba(255,255,255,0.12) 0%,rgba(200,240,255,0.05) 40%,transparent 70%);
+  animation:mouseRipple 1.2s ease-out forwards;
+}
+
+/* 水面闪光 — 零星的光点跳跃 */
+.ocean-sparkles-group{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden;}
+.ocean-sparkle{
+  position:absolute;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,240,0.9) 0%,rgba(255,252,210,0.4) 40%,transparent 70%);
+  box-shadow:0 0 6px rgba(255,252,210,0.5),0 0 14px rgba(255,252,200,0.2);
+  animation:sparkleFloat 2.5s ease-in-out infinite;
+}
+.ocean-sparkles-group .ocean-sparkle:nth-child(1){left:15%;top:18%;animation-delay:0s;}
+.ocean-sparkles-group .ocean-sparkle:nth-child(2){left:32%;top:52%;animation-delay:0.5s;animation-duration:2.8s;}
+.ocean-sparkles-group .ocean-sparkle:nth-child(3){left:48%;top:28%;animation-delay:1s;animation-duration:2.2s;}
+.ocean-sparkles-group .ocean-sparkle:nth-child(4){left:68%;top:48%;animation-delay:1.5s;}
+.ocean-sparkles-group .ocean-sparkle:nth-child(5){left:80%;top:22%;animation-delay:2s;animation-duration:2.6s;}
+.ocean-sparkles-group .ocean-sparkle:nth-child(6){left:22%;top:70%;animation-delay:0.7s;animation-duration:3s;}
+.ocean-sparkles-group .ocean-sparkle:nth-child(7){left:55%;top:65%;animation-delay:1.8s;}
+.ocean-sparkles-group .ocean-sparkle:nth-child(8){left:90%;top:38%;animation-delay:2.4s;animation-duration:2.4s;}
+.ocean-sparkles-group .ocean-sparkle:nth-child(9){left:38%;top:85%;animation-delay:3.2s;}
+.ocean-sparkles-group .ocean-sparkle:nth-child(10){left:75%;top:78%;animation-delay:2.9s;animation-duration:2.7s;}
+
+/* 暗涌光带 — 极淡的横向水纹，隐约可见 */
+.ocean-swells-group{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden;}
+.ocean-swell{
+  position:absolute;
+  width:100%;height:1px;
+  left:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.015) 25%,rgba(255,255,255,0.03) 50%,rgba(255,255,255,0.015) 75%,transparent 100%);
+  animation:swellDrift 8s ease-in-out infinite;
+}
+.ocean-swells-group .ocean-swell:nth-child(1){top:25%;animation-delay:0s;animation-duration:8s;}
+.ocean-swells-group .ocean-swell:nth-child(2){top:50%;animation-delay:2s;animation-duration:9s;}
+.ocean-swells-group .ocean-swell:nth-child(3){top:75%;animation-delay:4s;animation-duration:7.5s;}
 
 .voyage-content{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
 .voyage-header{text-align:center;margin-bottom:10px;}
@@ -247,109 +197,179 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 .voyage-title{font-size:20px;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,60,120,0.2);line-height:1.4;}
 .voyage-subtitle{font-size:14px;color:rgba(255,255,255,0.65);}
 
-/* Islands — irregular coastline shapes */
+/* Islands — using real extracted island photo, exact match to island.jpg */
 .islands-area{position:relative;width:900px;height:420px;margin-top:10px;}
+
+/* === CONNECTION LINES SVG === */
+.island-connections-svg{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:5;pointer-events:none;
+}
+.island-connection-path{
+  fill:none;stroke-width:3;
+  stroke-linecap:round;stroke-linejoin:round;
+  filter:url(#waterFlowGlow);
+  transition:all 0.6s ease;
+}
+.island-connection-path.conn-active{
+  stroke:#4DA8E8;stroke-dasharray:none;opacity:0.85;
+}
+.island-connection-path.conn-inactive{
+  stroke:#64748B;stroke-dasharray:8,5;opacity:0.3;
+}
+
+/* === BASE ISLAND === */
 .island{
-  position:absolute;width:152px;height:128px;
-  border-radius:0;
-  clip-path:polygon(18% 8%, 42% 2%, 65% 10%, 82% 6%, 96% 22%, 100% 45%, 92% 68%, 98% 85%, 80% 98%, 55% 100%, 32% 95%, 14% 100%, 4% 82%, 0% 55%, 8% 30%, 2% 14%);
+  position:absolute;width:170px;height:155px;
   cursor:pointer;
-  transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   z-index:10;
-  box-shadow:
-    0 14px 28px rgba(0,60,140,0.3),
-    0 4px 8px rgba(0,40,100,0.18);
+  filter:drop-shadow(0 8px 20px rgba(0,50,100,0.35));
 }
-/* Sandy beach shadow in water below each island */
-.island::before{
-  content:'';
-  position:absolute;bottom:-20px;left:5%;width:90%;height:20px;
-  background:radial-gradient(ellipse,rgba(20,100,180,0.28) 0%,rgba(40,140,210,0.1) 55%,transparent 78%);
-  border-radius:50%;
-  z-index:-1;
-  clip-path:none;
+.island-img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  z-index:0;
+}
+/* === HOVER === */
+.island:hover{
+  transform:translateY(-8px) scale(1.07);
+  filter:drop-shadow(0 14px 30px rgba(0,50,100,0.45)) brightness(1.06);
+}
+.island:active{transform:translateY(-3px) scale(1.02);}
+
+/* Island label */
+.island-name{
+  font-size:13px;font-weight:700;color:#fff;
+  text-shadow:0 1px 4px rgba(0,0,0,0.6),0 0 10px rgba(0,0,0,0.4);
+  letter-spacing:0.5px;
+  position:relative;z-index:2;
+}
+
+/* === LOCK ICON OVERLAY === */
+.island-lock-overlay{
+  position:absolute;inset:0;z-index:3;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+  opacity:0;transform:scale(0.5);
   transition:all 0.35s ease;
 }
-.island:hover{
-  transform:translateY(-10px) scale(1.07);
-  box-shadow:
-    0 22px 38px rgba(0,60,140,0.35),
-    0 6px 14px rgba(0,40,100,0.22);
-}
-.island:hover::before{bottom:-24px;width:96%;left:2%;opacity:0.7;}
-.island:active{transform:translateY(-4px) scale(1.03);}
-.island-icon{
-  font-size:32px;margin-bottom:4px;
-  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.22));
-  transition:transform 0.2s ease;
-}
-.island:hover .island-icon{transform:scale(1.1) translateY(-2px);}
-.island-name{
-  font-size:12.5px;font-weight:700;color:#fff;
-  text-shadow:0 1px 4px rgba(0,0,0,0.45),0 0 8px rgba(0,0,0,0.2);
+.island-lock-icon{
+  font-size:40px;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+  text-shadow:0 0 12px rgba(0,0,0,0.5);
 }
 
-/* Locked island — fog of war */
+/* === TOOLTIP === */
+.island-tooltip{
+  position:absolute;bottom:-42px;left:50%;transform:translateX(-50%);
+  background:rgba(30,41,59,0.92);color:#fff;
+  padding:6px 14px;border-radius:8px;
+  font-size:12px;font-weight:500;
+  white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity 0.25s ease;
+  z-index:20;letter-spacing:0.5px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+.island-tooltip::before{
+  content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+  border-left:6px solid transparent;border-right:6px solid transparent;
+  border-bottom:6px solid rgba(30,41,59,0.92);
+}
+
+/* === PROGRESS BADGE === */
+.island-progress-badge{
+  position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
+  background:rgba(15,23,42,0.85);color:#93C5FD;
+  padding:3px 10px;border-radius:10px;
+  font-size:11px;font-weight:600;
+  white-space:nowrap;z-index:12;
+  letter-spacing:0.5px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.25);
+  transition:opacity 0.35s ease;
+  pointer-events:none;
+}
+
+/* === GLOW RING (unlocked / learning) — contour-hugging aura === */
+.island-glow-ring{
+  position:absolute;inset:-8px;z-index:-1;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 0.5s ease;
+  background:transparent;
+}
+/* Single soft aura layer that follows island contour via drop-shadow on parent */
+
+/* === LOCKED ISLAND — dark overlay + lock === */
 .island-locked{
-  width:152px;height:128px;
-  clip-path:inherit;
-  background:
-    radial-gradient(ellipse at 45% 45%, rgba(100,120,160,0.55) 0%, rgba(50,65,100,0.75) 100%) !important;
   cursor:not-allowed;
-  opacity:0.5;
-  box-shadow:0 6px 20px rgba(0,40,100,0.2) !important;
-  filter:saturate(0.2) brightness(0.8);
+  filter:grayscale(0.8) brightness(0.35) saturate(0.05) drop-shadow(0 4px 10px rgba(0,20,50,0.2)) !important;
 }
-.island-locked::before{display:none;}
-.island-locked .island-icon{filter:grayscale(1) brightness(0.55) blur(0.5px);}
-.island-locked .island-name{color:rgba(180,200,240,0.6);}
-.island-locked:hover{transform:none;box-shadow:0 6px 20px rgba(0,40,100,0.2) !important;}
+.island-locked .island-img{
+  filter:grayscale(1) brightness(0.3);
+}
+.island-locked .island-name{
+  color:rgba(148,163,184,0.35);
+}
+.island-locked .island-lock-overlay{
+  opacity:1;transform:scale(1);
+}
+.island-locked:hover{
+  transform:none !important;
+  filter:grayscale(0.8) brightness(0.35) saturate(0.05) drop-shadow(0 4px 10px rgba(0,20,50,0.2)) !important;
+}
+.island-locked:hover .island-tooltip{
+  opacity:1;
+}
 
-/* Completed glow — warm gold */
+/* === UNLOCKED / LEARNING ISLAND — contour-hugging glow === */
+.island-unlocked{
+  cursor:pointer;
+  animation:contourGlowPulse 2.8s ease-in-out infinite;
+  filter:drop-shadow(0 8px 20px rgba(0,50,100,0.35)) drop-shadow(0 0 12px rgba(74,144,226,0.3)) drop-shadow(0 0 24px rgba(74,144,226,0.12));
+}
+.island-unlocked .island-glow-ring{
+  opacity:1;
+}
+.island-unlocked:hover{
+  transform:translateY(-8px) scale(1.07);
+  filter:drop-shadow(0 14px 30px rgba(0,50,100,0.45)) drop-shadow(0 0 20px rgba(74,144,226,0.5)) drop-shadow(0 0 36px rgba(74,144,226,0.22)) brightness(1.06);
+}
+
+/* === COMPLETED ISLAND — golden contour glow === */
 .island-completed{
-  box-shadow:0 0 0 4px rgba(255,200,50,0.3),0 0 32px rgba(255,185,30,0.4),0 14px 28px rgba(0,60,140,0.3) !important;
+  animation:contourGlowGold 3s ease-in-out infinite;
+  filter:drop-shadow(0 0 14px rgba(255,200,50,0.45)) drop-shadow(0 0 30px rgba(255,185,30,0.2)) drop-shadow(0 8px 24px rgba(0,50,120,0.35)) !important;
+  cursor:pointer;
 }
-.island-completed::after{
-  content:'';position:absolute;inset:-10px;
-  clip-path:polygon(18% 5%, 42% 0%, 65% 8%, 82% 4%, 99% 21%, 103% 46%, 95% 70%, 101% 87%, 82% 101%, 55% 103%, 30% 98%, 12% 103%, 1% 84%, -3% 54%, 5% 28%, 0% 11%);
-  border:2.5px solid rgba(255,200,60,0.5);
-  animation:glowPulse 2.5s ease-in-out infinite;pointer-events:none;
+.island-completed .island-img{
+  /* no circular border — glow provided by contour drop-shadow on parent */
+}
+.island-completed:hover{
+  transform:translateY(-8px) scale(1.07);
+  filter:drop-shadow(0 0 28px rgba(255,200,50,0.65)) drop-shadow(0 14px 32px rgba(0,50,120,0.45)) brightness(1.08) !important;
+}
+.island-completed .island-name{
+  color:#FFF;
+  text-shadow:0 0 12px rgba(255,200,50,0.8),0 1px 4px rgba(0,0,0,0.5);
+}
+/* Completed islands show green check badge */
+.island-completed .island-progress-badge{
+  background:rgba(34,197,94,0.9);color:#fff;
+}
+.island-completed .island-glow-ring{
+  opacity:0.35;
+  background:radial-gradient(ellipse at center, rgba(255,200,50,0.12) 0%, transparent 70%);
 }
 
-/* 4 distinct island silhouettes — each with its own irregular coastline */
-.island-1{
-  left:3%;top:32%;
-  clip-path:polygon(22% 5%, 50% 0%, 72% 8%, 90% 4%, 100% 28%, 96% 55%, 100% 78%, 84% 98%, 58% 100%, 30% 96%, 8% 100%, 0% 72%, 6% 42%, 0% 18%);
-  background:
-    radial-gradient(ellipse at 50% 90%, rgba(248,230,155,0.78) 0%, transparent 38%),
-    radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.3) 0%, transparent 42%),
-    radial-gradient(ellipse at 48% 52%, #96CCF5 0%, #4492DC 46%, #2168B0 78%, #103A72 100%);
-}
-.island-2{
-  left:27%;top:6%;
-  clip-path:polygon(15% 10%, 38% 0%, 60% 6%, 78% 0%, 96% 16%, 100% 42%, 92% 65%, 100% 82%, 88% 98%, 62% 100%, 38% 96%, 18% 100%, 4% 80%, 0% 52%, 10% 26%, 4% 8%);
-  background:
-    radial-gradient(ellipse at 50% 90%, rgba(248,230,155,0.85) 0%, transparent 38%),
-    radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.3) 0%, transparent 42%),
-    radial-gradient(ellipse at 48% 52%, #FFE8A0 0%, #F2BC2A 46%, #CC8C10 78%, #7A5005 100%);
-}
-.island-3{
-  left:51%;top:32%;
-  clip-path:polygon(28% 2%, 55% 0%, 76% 8%, 94% 5%, 100% 32%, 98% 58%, 100% 80%, 85% 100%, 60% 96%, 35% 100%, 12% 92%, 0% 68%, 4% 40%, 0% 20%, 12% 6%);
-  background:
-    radial-gradient(ellipse at 50% 90%, rgba(248,230,155,0.78) 0%, transparent 38%),
-    radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.3) 0%, transparent 42%),
-    radial-gradient(ellipse at 48% 52%, #90F2D8 0%, #2ABE98 46%, #158068 78%, #073E2E 100%);
-}
-.island-4{
-  left:75%;top:6%;
-  clip-path:polygon(20% 8%, 44% 0%, 68% 6%, 86% 2%, 100% 24%, 98% 50%, 100% 74%, 90% 96%, 64% 100%, 40% 98%, 18% 100%, 2% 78%, 0% 50%, 6% 24%, 0% 10%);
-  background:
-    radial-gradient(ellipse at 50% 90%, rgba(248,230,155,0.78) 0%, transparent 38%),
-    radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.3) 0%, transparent 42%),
-    radial-gradient(ellipse at 48% 52%, #D2BEFF 0%, #7E62E4 46%, #5040A8 78%, #2A1870 100%);
-}
+/* === 4 ISLAND POSITIONS === */
+.island-1{left:3%;top:30%;}
+.island-2{left:26%;top:4%;}
+.island-3{left:50%;top:30%;}
+.island-4{left:73%;top:4%;}
 
 /* Mandatory tag — hidden */
 .mandatory-tag{display:none;}
@@ -405,6 +425,11 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 /* ===== PDF VIEWER ===== */
 .pdf-viewer-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.5);backdrop-filter:blur(8px);z-index:300;display:none;flex-direction:column;}
 .pdf-viewer-overlay.active{display:flex;}
+
+/* 企业文化转盘 overlay */
+.wheel-overlay{position:fixed;inset:0;z-index:350;display:none;}
+.wheel-overlay.active{display:block;}
+.wheel-overlay iframe{width:100%;height:100%;border:none;}
 .pdf-toolbar{height:56px;background:var(--white);border-bottom:1px solid var(--slate-200);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;}
 .pdf-toolbar-left{display:flex;align-items:center;gap:12px;}
 .pdf-back{padding:8px 16px;border-radius:10px;border:1.5px solid var(--slate-200);background:var(--slate-50);cursor:pointer;font-size:13px;font-weight:500;color:var(--slate-600);transition:var(--transition);display:flex;align-items:center;gap:6px;font-family:var(--font);}
@@ -479,14 +504,6 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 .shop-back:hover{background:var(--white);border-color:var(--blue-300);color:var(--blue-500);}
 
 /* ===== HURRICANE OVERLAY ===== */
-.hurricane-overlay{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;flex-direction:column;}
-.hurricane-overlay.active{display:flex;}
-.hurricane-bg{position:absolute;inset:0;background:rgba(30,20,50,0.7);animation:shake 0.5s ease-in-out infinite;}
-.hurricane-vortex{position:relative;z-index:2;font-size:100px;animation:tornado 1.5s linear infinite;margin-bottom:24px;}
-.hurricane-text{position:relative;z-index:2;font-size:28px;font-weight:900;color:#FFD93D;text-shadow:0 2px 12px rgba(255,165,0,0.5);animation:float 2s ease-in-out infinite;margin-bottom:12px;}
-.hurricane-subtext{position:relative;z-index:2;font-size:16px;color:rgba(255,255,255,0.8);margin-bottom:32px;}
-.hurricane-btn{position:relative;z-index:2;padding:14px 36px;background:linear-gradient(135deg,var(--amber-400),var(--amber-300));color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:var(--font);box-shadow:0 8px 24px rgba(245,166,35,0.3);}
-.hurricane-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(245,166,35,0.4);}
 
 /* ===== MODALS ===== */
 .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.3);backdrop-filter:blur(8px);z-index:400;display:none;align-items:center;justify-content:center;}
@@ -525,14 +542,10 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
   .islands-area{width:780px;height:400px;}
 }
 @media(max-width:768px){
-  .water-label{font-size:11px;}
   .islands-area{width:100%;height:350px;}
   .island,.island-locked{width:112px;height:96px;}
-  .island-icon{font-size:26px;}
   .island-name{font-size:10.5px;}
   .shop-grid{grid-template-columns:repeat(2,1fr);}
-  .start-title{font-size:28px;}
-  .start-features{flex-direction:column;gap:16px;align-items:center;}
 }
 
 /* ===== VIDEO PLAYER ===== */
@@ -651,161 +664,278 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
   animation: tornado 0.8s linear infinite;
   z-index: 5; pointer-events: none;
 }
+
+/* ===== CULTURE QUIZ STYLES (企业文化答题) ===== */
+#cultureQuizScreen {
+  background: linear-gradient(135deg, #e8f0fe 0%, #d4e4fc 30%, #c3d9fa 60%, #dbeafe 100%);
+  user-select: none; -webkit-user-select: none;
+}
+#cultureQuizScreen.active {
+  display: flex; flex-direction: column;
+  padding-top: 64px;
+  min-height: 100vh;
+}
+#cultureQuizWrapper {
+  --cq-blue-50: #f0f5ff; --cq-blue-100: #dbeafe;
+  --cq-blue-200: #bfdbfe; --cq-blue-400: #60a5fa;
+  --cq-blue-500: #3b82f6; --cq-blue-600: #2563eb;
+  --cq-blue-700: #1d4ed8;
+  --cq-green-400: #4ade80; --cq-green-500: #22c55e;
+  --cq-red-400: #f87171; --cq-red-500: #ef4444;
+  --cq-amber-400: #fbbf24;
+  --cq-gray-100: #f3f4f6; --cq-gray-200: #e5e7eb;
+  --cq-gray-400: #9ca3af; --cq-gray-600: #4b5563;
+  --cq-gray-800: #1f2937; --cq-white: #ffffff;
+  --cq-shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --cq-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  --cq-shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+  font-family: var(--font);
+  width: 100%; max-width: 640px;
+  margin: 0 auto;
+  position: relative;
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+
+#cultureQuizWrapper .cq-app-container { width: 100%; max-width: 640px; }
+
+/* Top bar */
+#cultureQuizWrapper .cq-top-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; padding: 0 4px;
+}
+#cultureQuizWrapper .cq-back-btn {
+  background: var(--cq-white); border: 1px solid var(--cq-gray-200);
+  border-radius: 12px; padding: 8px 14px; font-size: 14px;
+  color: var(--cq-gray-600); cursor: pointer;
+  display: flex; align-items: center; gap: 4px;
+  transition: all 0.2s; box-shadow: var(--cq-shadow-sm);
+  font-family: var(--font);
+}
+#cultureQuizWrapper .cq-back-btn:hover { background: var(--cq-gray-100); }
+
+#cultureQuizWrapper .cq-progress-indicator { display: flex; gap: 8px; }
+#cultureQuizWrapper .cq-progress-dot {
+  width: 36px; height: 8px; border-radius: 4px;
+  background: var(--cq-gray-200); transition: all 0.3s;
+}
+#cultureQuizWrapper .cq-progress-dot.cq-active { background: var(--cq-blue-500); width: 48px; }
+#cultureQuizWrapper .cq-progress-dot.cq-done { background: var(--cq-green-500); width: 36px; }
+
+#cultureQuizWrapper .cq-score-badge {
+  background: var(--cq-white); border: 2px solid var(--cq-amber-400);
+  border-radius: 20px; padding: 6px 14px; font-size: 14px;
+  font-weight: 700; color: var(--cq-gray-800);
+  display: flex; align-items: center; gap: 4px;
+  box-shadow: var(--cq-shadow-sm);
+}
+#cultureQuizWrapper .cq-score-badge .cq-combo { font-size: 12px; color: var(--cq-amber-400); margin-left: 2px; }
+
+/* Card */
+#cultureQuizWrapper .cq-card {
+  background: var(--cq-white); border-radius: 24px; padding: 32px 28px;
+  box-shadow: var(--cq-shadow-lg); min-height: 420px;
+  position: relative; overflow: hidden; transition: all 0.4s ease;
+}
+
+/* Question badge */
+#cultureQuizWrapper .cq-question-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--cq-blue-50); color: var(--cq-blue-600);
+  font-size: 13px; font-weight: 600; padding: 6px 14px;
+  border-radius: 20px; margin-bottom: 16px;
+}
+#cultureQuizWrapper .cq-question-text {
+  font-size: 18px; font-weight: 600; color: var(--cq-gray-800);
+  line-height: 1.6; margin-bottom: 8px;
+}
+#cultureQuizWrapper .cq-question-subtitle {
+  font-size: 14px; color: var(--cq-gray-400); margin-bottom: 24px;
+}
+
+/* Options (Q1) */
+#cultureQuizWrapper .cq-options-list { display: flex; flex-direction: column; gap: 12px; }
+#cultureQuizWrapper .cq-option-btn {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; border: 2px solid var(--cq-gray-200);
+  border-radius: 16px; background: var(--cq-white);
+  cursor: pointer; transition: all 0.2s ease;
+  font-size: 16px; color: var(--cq-gray-800);
+  position: relative; font-family: var(--font);
+}
+#cultureQuizWrapper .cq-option-btn:hover {
+  border-color: var(--cq-blue-400); background: var(--cq-blue-50);
+  transform: translateX(4px);
+}
+#cultureQuizWrapper .cq-option-btn:active { transform: scale(0.98); }
+#cultureQuizWrapper .cq-option-letter {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--cq-gray-100); display: flex;
+  align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px; color: var(--cq-gray-600);
+  flex-shrink: 0; transition: all 0.3s;
+}
+#cultureQuizWrapper .cq-option-btn:hover .cq-option-letter { background: var(--cq-blue-100); color: var(--cq-blue-600); }
+#cultureQuizWrapper .cq-option-btn.cq-correct {
+  border-color: var(--cq-green-500); background: #f0fdf4;
+  animation: cq-correctPulse 0.6s ease;
+}
+#cultureQuizWrapper .cq-option-btn.cq-correct .cq-option-letter { background: var(--cq-green-500); color: white; }
+#cultureQuizWrapper .cq-option-btn.cq-wrong {
+  border-color: var(--cq-red-500); background: #fef2f2;
+  animation: cq-shake 0.5s ease;
+}
+#cultureQuizWrapper .cq-option-btn.cq-wrong .cq-option-letter { background: var(--cq-red-500); color: white; }
+#cultureQuizWrapper .cq-option-btn.cq-show-correct { border-color: var(--cq-green-500); background: #f0fdf4; }
+#cultureQuizWrapper .cq-option-btn.cq-show-correct .cq-option-letter { background: var(--cq-green-500); color: white; }
+#cultureQuizWrapper .cq-option-btn.cq-disabled { pointer-events: none; opacity: 0.85; }
+
+/* Drag-and-drop (Q2) */
+#cultureQuizWrapper .cq-drag-container { display: flex; flex-direction: column; gap: 20px; }
+#cultureQuizWrapper .cq-drop-zone {
+  min-height: 80px; border: 3px dashed var(--cq-blue-200);
+  border-radius: 16px; padding: 16px;
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  background: var(--cq-blue-50); transition: all 0.3s;
+}
+#cultureQuizWrapper .cq-drop-zone.cq-drag-over {
+  border-color: var(--cq-blue-500); background: #e0edff;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+}
+#cultureQuizWrapper .cq-drop-zone-label {
+  font-size: 13px; color: var(--cq-gray-400);
+  width: 100%; text-align: center; pointer-events: none;
+}
+#cultureQuizWrapper .cq-drop-zone.cq-has-words .cq-drop-zone-label { display: none; }
+
+#cultureQuizWrapper .cq-fragment-pool {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center; padding: 8px 0;
+}
+
+#cultureQuizWrapper .cq-word-chip {
+  padding: 10px 18px; background: var(--cq-white);
+  border: 2px solid var(--cq-blue-200); border-radius: 12px;
+  font-size: 17px; font-weight: 600; color: var(--cq-gray-800);
+  cursor: grab; transition: all 0.2s ease;
+  box-shadow: var(--cq-shadow-sm); position: relative;
+  font-family: var(--font);
+}
+#cultureQuizWrapper .cq-word-chip:active { cursor: grabbing; }
+#cultureQuizWrapper .cq-word-chip:hover {
+  border-color: var(--cq-blue-500); transform: translateY(-2px);
+  box-shadow: var(--cq-shadow);
+}
+#cultureQuizWrapper .cq-word-chip.cq-dragging { opacity: 0.5; transform: scale(0.95); }
+#cultureQuizWrapper .cq-word-chip.cq-in-drop { background: var(--cq-blue-50); border-color: var(--cq-blue-400); cursor: pointer; }
+#cultureQuizWrapper .cq-word-chip.cq-in-drop:hover { background: #fee2e2; border-color: var(--cq-red-400); }
+#cultureQuizWrapper .cq-word-chip.cq-wrong-order {
+  border-color: var(--cq-amber-400); background: #fffbeb;
+  animation: cq-shake 0.5s ease;
+}
+#cultureQuizWrapper .cq-word-chip.cq-correct-pos { border-color: var(--cq-green-500); background: #f0fdf4; }
+#cultureQuizWrapper .cq-word-chip.cq-distractor-picked {
+  border-color: var(--cq-red-500); background: #fef2f2;
+  animation: cq-shake 0.5s ease;
+}
+
+/* Submit button */
+#cultureQuizWrapper .cq-submit-btn {
+  width: 100%; padding: 16px; border: none; border-radius: 16px;
+  background: var(--cq-blue-500); color: white;
+  font-size: 17px; font-weight: 700; cursor: pointer;
+  transition: all 0.3s; margin-top: 8px; letter-spacing: 1px;
+  font-family: var(--font);
+}
+#cultureQuizWrapper .cq-submit-btn:hover { background: var(--cq-blue-600); transform: translateY(-1px); box-shadow: var(--cq-shadow); }
+#cultureQuizWrapper .cq-submit-btn:active { transform: scale(0.98); }
+#cultureQuizWrapper .cq-submit-btn:disabled {
+  background: var(--cq-gray-200); color: var(--cq-gray-400);
+  cursor: not-allowed; transform: none; box-shadow: none;
+}
+
+/* Feedback */
+#cultureQuizWrapper .cq-feedback {
+  text-align: center; padding: 12px; border-radius: 12px;
+  font-size: 15px; font-weight: 600; margin-top: 12px;
+  animation: cq-fadeInUp 0.3s ease; display: none;
+}
+#cultureQuizWrapper .cq-feedback.cq-show { display: block; }
+#cultureQuizWrapper .cq-feedback.cq-success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+#cultureQuizWrapper .cq-feedback.cq-error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+#cultureQuizWrapper .cq-feedback.cq-warning { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+
+#cultureQuizWrapper .cq-correct-answer-hint {
+  text-align: center; font-size: 16px; color: var(--cq-green-500);
+  font-weight: 700; margin-top: 8px; animation: cq-fadeInUp 0.4s ease;
+}
+
+/* Completion screen */
+#cultureQuizWrapper .cq-completion-screen { text-align: center; padding: 20px 0; }
+#cultureQuizWrapper .cq-completion-emoji { font-size: 64px; animation: cq-bounceIn 0.6s ease; }
+#cultureQuizWrapper .cq-completion-title { font-size: 24px; font-weight: 700; color: var(--cq-gray-800); margin: 16px 0 8px; }
+#cultureQuizWrapper .cq-completion-score {
+  font-size: 48px; font-weight: 800;
+  background: linear-gradient(135deg, var(--cq-blue-500), var(--cq-green-500));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+#cultureQuizWrapper .cq-completion-detail { font-size: 14px; color: var(--cq-gray-400); margin: 16px 0 24px; line-height: 1.8; }
+#cultureQuizWrapper .cq-completion-mission {
+  font-size: 16px; font-weight: 600; color: var(--cq-blue-700);
+  background: var(--cq-blue-50); padding: 12px 20px;
+  border-radius: 12px; margin: 12px 0 24px; line-height: 1.6;
+}
+#cultureQuizWrapper .cq-restart-btn {
+  padding: 14px 40px; border: 2px solid var(--cq-blue-500);
+  border-radius: 16px; background: white; color: var(--cq-blue-600);
+  font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s;
+  font-family: var(--font);
+}
+#cultureQuizWrapper .cq-restart-btn:hover { background: var(--cq-blue-50); transform: translateY(-1px); }
+
+/* Sparkles */
+#cultureQuizWrapper .cq-sparkle-container {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none; z-index: 999;
+}
+#cultureQuizWrapper .cq-sparkle {
+  position: absolute; width: 8px; height: 8px; border-radius: 50%;
+  animation: cq-sparkleFly 1s ease-out forwards;
+}
+
+/* Combo popup */
+.cq-combo-popup {
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px; font-weight: 800; color: var(--cq-amber-400);
+  pointer-events: none; z-index: 1000;
+  animation: cq-comboPopup 1.2s ease-out forwards;
+  text-shadow: 0 2px 8px rgba(251,191,36,0.4);
+}
+
+/* Screen transition */
+#cultureQuizWrapper .cq-card.cq-slide-out { animation: cq-slideOut 0.35s ease forwards; }
+#cultureQuizWrapper .cq-card.cq-slide-in { animation: cq-slideIn 0.4s ease forwards; }
+
+/* Screen toggle */
+#cultureQuizWrapper .cq-screen { display: none; }
+#cultureQuizWrapper .cq-screen.cq-active { display: block; animation: cq-slideInRight 0.4s ease; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  #cultureQuizWrapper .cq-card { padding: 24px 18px; border-radius: 20px; }
+  #cultureQuizWrapper .cq-question-text { font-size: 16px; }
+  #cultureQuizWrapper .cq-option-btn { padding: 14px 16px; font-size: 15px; }
+  #cultureQuizWrapper .cq-word-chip { padding: 8px 14px; font-size: 15px; }
+  #cultureQuizWrapper .cq-drop-zone { min-height: 60px; padding: 12px; }
+}
+
 </style>
 </head>
 <body>
 
-<!-- ===== START SCREEN ===== -->
-<div id="startScreen" class="screen active">
-  <div class="start-clouds">
-    <div class="cloud cloud-1"></div>
-    <div class="cloud cloud-2"></div>
-    <div class="cloud cloud-3"></div>
-  </div>
-  <div class="start-content">
-    <div class="brand-logo brand-logo--large">
-      <img src="../国民logo.png" alt="国民养老保险" class="brand-logo-img">
-    </div>
-    <div class="start-logo">⛵</div>
-    <h1 class="start-title">国民养老 · 新人航行计划</h1>
-    <p class="start-subtitle">探索知识海洋，开启你的职场冒险之旅</p>
-    <button class="start-btn" onclick="startGame()">🚀 开始冒险</button>
-    <div class="start-features">
-      <div class="start-feature">
-        <div class="start-feature-icon">🗺️</div>
-        <span>知识地图探索</span>
-      </div>
-      <div class="start-feature">
-        <div class="start-feature-icon">⛵</div>
-        <span>海洋航行学习</span>
-      </div>
-      <div class="start-feature">
-        <div class="start-feature-icon">🏆</div>
-        <span>积分兑换好礼</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== MAP SCREEN ===== -->
-<div id="mapScreen" class="screen">
-  <nav class="top-nav" id="topNav">
-    <div class="nav-left">
-      <img src="../国民logo.png" alt="国民养老保险" class="nav-logo">
-      <div class="nav-avatar" onclick="toggleAvatarMenu(event)">👥</div>
-      <span class="nav-name">新航员</span>
-      <div class="avatar-dropdown" id="avatarDropdown1">
-        <div class="avatar-dropdown-item" onclick="showPointsDetail();closeAvatarMenu();">
-          <span class="item-icon">📊</span>积分明细
-        </div>
-        <div class="avatar-dropdown-divider"></div>
-        <div class="avatar-dropdown-item danger" id="resetIdentity1" onclick="confirmResetIdentity();closeAvatarMenu();">
-          <span class="item-icon">🔄</span>切换身份（重置进度）
-        </div>
-      </div>
-    </div>
-    <div class="nav-center">
-      <span class="bean-icon">🫘</span>
-      <span class="bean-count" id="navBeanCount">0</span>
-      <span style="font-size:13px;color:var(--amber-400);font-weight:500;">国小豆</span>
-    </div>
-    <div class="nav-right">
-      <button class="nav-btn" onclick="showScreen('shopScreen')">🎁 兑换商城</button>
-    </div>
-  </nav>
-
-  <div class="map-container">
-    <div class="map-board" id="mapBoard">
-      <!-- SVG connecting streams -->
-      <svg class="water-streams" viewBox="0 0 1000 540" preserveAspectRatio="none">
-        <defs>
-          <filter id="streamGlow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <!-- Yongding -> Baotu -->
-        <path d="M500 110 C530 130,560 150,590 170 C620 190,640 210,660 230" stroke="rgba(100,180,230,0.5)" stroke-width="2.5" fill="none" filter="url(#streamGlow)"/>
-        <!-- Yongding -> Jialing -->
-        <path d="M480 120 C440 180,400 250,380 300" stroke="rgba(100,180,230,0.45)" stroke-width="2" fill="none"/>
-        <!-- Baotu -> Huangpu -->
-        <path d="M680 250 C720 260,760 240,790 210" stroke="rgba(100,180,230,0.5)" stroke-width="2.5" fill="none" filter="url(#streamGlow)"/>
-        <!-- Huangpu -> Xihu -->
-        <path d="M790 230 C800 260,790 290,760 310" stroke="rgba(100,180,230,0.45)" stroke-width="2" fill="none"/>
-        <!-- Xihu -> Zhujiang -->
-        <path d="M750 330 C740 370,720 400,700 430" stroke="rgba(100,180,230,0.45)" stroke-width="2" fill="none"/>
-        <!-- Jialing -> Zhujiang -->
-        <path d="M400 320 C480 380,560 400,680 440" stroke="rgba(100,180,230,0.4)" stroke-width="2" fill="none"/>
-        <!-- Yongding -> Dujiangyan -->
-        <path d="M460 120 C380 160,300 220,260 280" stroke="rgba(100,180,230,0.45)" stroke-width="2" fill="none"/>
-        <!-- Dujiangyan -> Jialing -->
-        <path d="M280 300 C320 310,350 315,380 320" stroke="rgba(100,180,230,0.4)" stroke-width="2" fill="none"/>
-        <!-- Jialing -> Zhujiang direct -->
-        <path d="M400 340 C480 400,560 430,680 440" stroke="rgba(100,180,230,0.35)" stroke-width="1.5" fill="none" stroke-dasharray="6,3"/>
-        <!-- Baotu -> Jialing -->
-        <path d="M650 260 C580 280,480 300,420 320" stroke="rgba(100,180,230,0.35)" stroke-width="1.5" fill="none" stroke-dasharray="6,3"/>
-      </svg>
-
-      <!-- Water bodies -->
-      <div class="water-spot water-yongding" id="waterBeijing" data-inst="beijing"
-           onmouseenter="showWaterTooltip(event,'beijing')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('beijing')">
-        <div class="water-shape yongding-shape"></div>
-        <span class="water-label">永定河</span>
-      </div>
-
-      <div class="water-spot water-baotu" id="waterShandong" data-inst="shandong"
-           onmouseenter="showWaterTooltip(event,'shandong')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('shandong')">
-        <div class="water-shape baotu-shape"></div>
-        <span class="water-label">趵突泉</span>
-      </div>
-
-      <div class="water-spot water-huangpu" id="waterShanghai" data-inst="shanghai"
-           onmouseenter="showWaterTooltip(event,'shanghai')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('shanghai')">
-        <div class="water-shape huangpu-shape"></div>
-        <span class="water-label">黄浦江</span>
-      </div>
-
-      <div class="water-spot water-xihu" id="waterZhejiang" data-inst="zhejiang"
-           onmouseenter="showWaterTooltip(event,'zhejiang')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('zhejiang')">
-        <div class="water-shape xihu-shape"></div>
-        <span class="water-label">西湖</span>
-      </div>
-
-      <div class="water-spot water-zhujiang" id="waterGuangdong" data-inst="guangdong"
-           onmouseenter="showWaterTooltip(event,'guangdong')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('guangdong')">
-        <div class="water-shape zhujiang-shape"></div>
-        <span class="water-label">珠江</span>
-      </div>
-
-      <div class="water-spot water-jialing" id="waterChongqing" data-inst="chongqing"
-           onmouseenter="showWaterTooltip(event,'chongqing')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('chongqing')">
-        <div class="water-shape jialing-shape"></div>
-        <span class="water-label">嘉陵江</span>
-      </div>
-
-      <div class="water-spot water-dujiangyan" id="waterSichuan" data-inst="sichuan"
-           onmouseenter="showWaterTooltip(event,'sichuan')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('sichuan')">
-        <div class="water-shape dujiangyan-shape"></div>
-        <span class="water-label">都江堰</span>
-      </div>
-
-      <!-- Hover tooltip -->
-      <div class="water-tooltip" id="waterTooltip">
-        <div class="water-tooltip-left">
-          <div class="water-tooltip-watername" id="tooltipWaterName"></div>
-          <div class="water-tooltip-desc" id="tooltipWaterDesc"></div>
-        </div>
-        <div class="water-tooltip-right">
-          <div class="water-tooltip-instname" id="tooltipInstName"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="map-header" style="position:absolute;bottom:28px;left:0;right:0;text-align:center;margin-bottom:0;">
-      <p style="color:rgba(44,95,124,0.7);font-size:13px;">溯流而下，开启知识航行之旅</p>
-    </div>
-  </div>
-</div>
-
 <!-- ===== VOYAGE SCREEN ===== -->
-<div id="voyageScreen" class="screen">
+<div id="voyageScreen" class="screen active">
   <nav class="top-nav">
     <div class="nav-left">
       <img src="../国民logo.png" alt="国民养老保险" class="nav-logo">
@@ -837,14 +967,36 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
     <div class="ocean-gradient"></div>
     <div class="ocean-shimmer"></div>
     <div class="ocean-depth"></div>
-    <div class="wave wave-1"></div>
-    <div class="wave wave-2"></div>
-    <div class="wave wave-3"></div>
-    <div class="wave wave-4"></div>
+    <!-- 水面闪光 -->
+    <div class="ocean-sparkles-group">
+      <div class="ocean-sparkle"></div><div class="ocean-sparkle"></div><div class="ocean-sparkle"></div><div class="ocean-sparkle"></div>
+      <div class="ocean-sparkle"></div><div class="ocean-sparkle"></div><div class="ocean-sparkle"></div><div class="ocean-sparkle"></div>
+      <div class="ocean-sparkle"></div><div class="ocean-sparkle"></div>
+    </div>
+    <!-- 暗涌光带 -->
+    <div class="ocean-swells-group">
+      <div class="ocean-swell"></div><div class="ocean-swell"></div><div class="ocean-swell"></div>
+    </div>
   </div>
 
   <div class="voyage-content">
     <div class="islands-area" id="islandsArea">
+      <!-- SVG Connection Lines -->
+      <svg class="island-connections-svg" viewBox="0 0 900 420" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <filter id="waterFlowGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <path class="island-connection-path" id="conn-1-2" d="M 112,200 C 160,170 220,120 319,94"/>
+        <path class="island-connection-path" id="conn-2-3" d="M 319,94 C 380,70 440,140 535,200"/>
+        <path class="island-connection-path" id="conn-3-4" d="M 535,200 C 590,170 650,120 742,94"/>
+      </svg>
+
       <!-- Boat — SVG sailing vessel -->
       <div class="boat" id="boat">
         <svg class="boat-svg" viewBox="0 0 60 58" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -868,30 +1020,52 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
         <div class="boat-wake"></div>
       </div>
 
-      <!-- Island 1: 文化岛 -->
-      <div class="island island-1" data-island="about" onclick="openIsland('about')">
-
-        <div class="island-icon">🏢</div>
-        <div class="island-name">文化岛</div>
+      <!-- Island 1: 企业文化 -->
+      <div class="island island-1 island-unlocked" data-island="about" onclick="openIsland('about')">
+        <div class="island-glow-ring"></div>
+        <img class="island-img" src="island_extracted.png" alt="">
+        <div class="island-lock-overlay">
+          <span class="island-lock-icon">🔒</span>
+        </div>
+        <div class="island-name">企业文化</div>
+        <div class="island-progress-badge" id="progress-about">学习进度：0%</div>
+        <div class="island-tooltip">需完成前一个岛屿</div>
       </div>
 
       <!-- Island 2: 入职须知 -->
-      <div class="island island-2" data-island="onboarding" onclick="openIsland('onboarding')">
-
-        <div class="island-icon">📋</div>
+      <div class="island island-2 island-locked" data-island="onboarding" id="islandOnboarding">
+        <div class="island-glow-ring"></div>
+        <img class="island-img" src="island_extracted.png" alt="">
+        <div class="island-lock-overlay">
+          <span class="island-lock-icon">🔒</span>
+        </div>
         <div class="island-name">入职须知</div>
+        <div class="island-progress-badge" id="progress-onboarding">学习进度：0%</div>
+        <div class="island-tooltip">需完成前一个岛屿</div>
       </div>
 
-      <!-- Island 3: 办公指南 -->
+      <!-- Island 3: 赵钱孙李 -->
       <div class="island island-3 island-locked" id="islandOffice" data-island="office">
-        <div class="island-icon">💻</div>
-        <div class="island-name">办公指南</div>
+        <div class="island-glow-ring"></div>
+        <img class="island-img" src="island_extracted.png" alt="">
+        <div class="island-lock-overlay">
+          <span class="island-lock-icon">🔒</span>
+        </div>
+        <div class="island-name">赵钱孙李</div>
+        <div class="island-progress-badge" id="progress-office">学习进度：0%</div>
+        <div class="island-tooltip">需完成前一个岛屿</div>
       </div>
 
       <!-- Island 4: 公司产品 -->
       <div class="island island-4 island-locked" id="islandProducts" data-island="products">
-        <div class="island-icon">📦</div>
+        <div class="island-glow-ring"></div>
+        <img class="island-img" src="island_extracted.png" alt="">
+        <div class="island-lock-overlay">
+          <span class="island-lock-icon">🔒</span>
+        </div>
         <div class="island-name">公司产品</div>
+        <div class="island-progress-badge" id="progress-products">学习进度：0%</div>
+        <div class="island-tooltip">需完成前一个岛屿</div>
       </div>
 
     </div>
@@ -930,6 +1104,122 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
   </div>
   <div class="quiz-container" id="quizContainer">
     <!-- Quiz content rendered by JS -->
+  </div>
+</div>
+
+
+<!-- ===== CULTURE QUIZ SCREEN (企业文化答题) ===== -->
+<div id="cultureQuizScreen" class="screen">
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="nav-avatar" onclick="toggleAvatarMenu(event)">👥</div>
+      <span class="nav-name">新航员</span>
+      <div class="avatar-dropdown" id="avatarDropdownCQ">
+        <div class="avatar-dropdown-item" onclick="showPointsDetail();closeAvatarMenu();">
+          <span class="item-icon">📊</span>积分明细
+        </div>
+        <div class="avatar-dropdown-divider"></div>
+        <div class="avatar-dropdown-item danger" onclick="confirmResetIdentity();closeAvatarMenu();">
+          <span class="item-icon">🔄</span>切换身份（重置进度）
+        </div>
+      </div>
+    </div>
+    <div class="nav-center">
+      <span class="bean-icon">🫘</span>
+      <span class="bean-count" id="navBeanCountCQ">0</span>
+      <span style="font-size:13px;color:var(--amber-400);font-weight:500;">国小豆</span>
+    </div>
+    <div class="nav-right">
+      <button class="nav-btn" onclick="CultureQuiz.backToVoyage()">← 返回航行</button>
+    </div>
+  </nav>
+
+  <div id="cultureQuizWrapper">
+    <div class="cq-sparkle-container" id="cqSparkleContainer"></div>
+
+    <div class="cq-app-container">
+      <div class="cq-top-bar">
+        <button class="cq-back-btn" onclick="CultureQuiz.restart()">
+          <span>←</span> 重新开始
+        </button>
+        <div class="cq-progress-indicator" id="cqProgressIndicator">
+          <div class="cq-progress-dot" id="cqDot1"></div>
+          <div class="cq-progress-dot" id="cqDot2"></div>
+        </div>
+        <div class="cq-score-badge" id="cqScoreBadge">
+          <span>⭐</span> <span id="cqScoreValue">0</span>
+          <span class="cq-combo" id="cqComboText"></span>
+        </div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="cq-card cq-screen cq-active" id="cqScreen1">
+        <div class="cq-question-badge">
+          <span>📝</span> 第 1 题 / 共 2 题
+        </div>
+        <div class="cq-question-text">
+          "践行国家发展战略，共筑国民美好生活"是企业文化中的什么内容？
+        </div>
+        <div class="cq-question-subtitle">🤔 请选择一个正确答案</div>
+
+        <div class="cq-options-list" id="cqOptionsList">
+          <button class="cq-option-btn" data-answer="A" onclick="CultureQuiz.checkQ1(this, 'A')">
+            <span class="cq-option-letter">A</span><span>愿景</span>
+          </button>
+          <button class="cq-option-btn" data-answer="B" onclick="CultureQuiz.checkQ1(this, 'B')">
+            <span class="cq-option-letter">B</span><span>价值观</span>
+          </button>
+          <button class="cq-option-btn" data-answer="C" onclick="CultureQuiz.checkQ1(this, 'C')">
+            <span class="cq-option-letter">C</span><span>使命</span>
+          </button>
+          <button class="cq-option-btn" data-answer="D" onclick="CultureQuiz.checkQ1(this, 'D')">
+            <span class="cq-option-letter">D</span><span>发展理念</span>
+          </button>
+        </div>
+
+        <div class="cq-feedback" id="cqFeedback1"></div>
+        <div class="cq-correct-answer-hint" id="cqCorrectHint1" style="display:none;"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="cq-card cq-screen" id="cqScreen2">
+        <div class="cq-question-badge">
+          <span>🧩</span> 第 2 题 / 共 2 题 — 词语拼图
+        </div>
+        <div class="cq-question-text">
+          请拖拽所有词语碎片，按官方正确顺序还原【公司使命】完整语句
+        </div>
+        <div class="cq-question-subtitle">👆 将正确词语拖入上方拼图区，干扰词留在下方即可</div>
+
+        <div class="cq-drag-container">
+          <div class="cq-drop-zone" id="cqDropZone">
+            <span class="cq-drop-zone-label">⬇ 将词语碎片拖拽到此处拼成完整句子</span>
+          </div>
+          <div class="cq-fragment-pool" id="cqFragmentPool"></div>
+          <button class="cq-submit-btn" id="cqSubmitBtn2" onclick="CultureQuiz.checkQ2()" disabled>
+            ✅ 提交答案
+          </button>
+        </div>
+
+        <div class="cq-feedback" id="cqFeedback2"></div>
+        <div class="cq-correct-answer-hint" id="cqCorrectHint2" style="display:none;"></div>
+      </div>
+
+      <!-- Completion -->
+      <div class="cq-card cq-screen" id="cqScreenComplete">
+        <div class="cq-completion-screen">
+          <div class="cq-completion-emoji" id="cqCompletionEmoji">🎉</div>
+          <div class="cq-completion-title">学习完成！</div>
+          <div class="cq-completion-score" id="cqCompletionScore">0</div>
+          <div style="font-size:14px;color:var(--cq-gray-400);margin-top:4px;">总分</div>
+          <div class="cq-completion-detail" id="cqCompletionDetail"></div>
+          <div class="cq-completion-mission">
+            ✨ 公司使命：践行国家发展战略，共筑国民美好生活
+          </div>
+          <button class="cq-restart-btn" onclick="CultureQuiz.restart()">🔄 再来一次</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -997,6 +1287,19 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
   </div>
 </div>
 
+<!-- ===== CULTURAL WHEEL OVERLAY (转盘游戏) ===== -->
+<div class="wheel-overlay" id="wheelOverlay">
+  <iframe id="wheelFrame" src="" title="企业文化知识转盘"></iframe>
+</div>
+
+<!-- ===== OFFICE PROTOTYPE OVERLAY (赵钱孙李功能指南) ===== -->
+<div class="wheel-overlay" id="prototypeOverlay" style="display:none;">
+  <div style="position:absolute;top:16px;right:24px;z-index:10;">
+    <button onclick="closeOfficePrototype()" style="padding:10px 20px;border-radius:10px;border:none;background:rgba(0,0,0,0.7);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);backdrop-filter:blur(8px);">✕ 关闭指南</button>
+  </div>
+  <iframe id="prototypeFrame" src="" title="赵钱孙李功能指南" style="width:100%;height:100%;border:none;"></iframe>
+</div>
+
 <!-- ===== MEDIA VIEWER (PDF / Video) ===== -->
 <div class="pdf-viewer-overlay" id="mediaViewerOverlay">
   <div class="pdf-toolbar">
@@ -1011,15 +1314,6 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
     <button class="pdf-complete-btn" id="pdfCompleteBtn" onclick="completeReading()">✓ 标记已读 (+国小豆)</button>
   </div>
   <div id="mediaContent" style="flex:1;display:flex;background:#1a1a2e;"></div>
-</div>
-
-<!-- ===== HURRICANE OVERLAY ===== -->
-<div class="hurricane-overlay" id="hurricaneOverlay">
-  <div class="hurricane-bg"></div>
-  <div class="hurricane-vortex">🌪️</div>
-  <div class="hurricane-text">⚠️ 前方有飓风来袭！</div>
-  <div class="hurricane-subtext">请完成必修学习：企业文化理念体系 + 员工行为规范</div>
-  <button class="hurricane-btn" onclick="startMandatoryLearning()">前往学习 →</button>
 </div>
 
 <!-- ===== MODALS ===== -->
@@ -1089,15 +1383,13 @@ const DEFAULT_STATE = {
   documentsRead: {},
   quizScore: 0,
   quizCompleted: false,
-  hurricaneTriggered: false,
-  hurricaneCompleted: false,
-  mandatoryDocs: { '企业文化理念体系': false, '员工行为规范': false },
   currentInstitution: null,
   shopExchanges: [],
-  currentScreen: 'startScreen',
-  previousScreen: 'mapScreen',
+  currentScreen: 'voyageScreen',
+  previousScreen: 'voyageScreen',
   guideCompleted: false,
   firstVisitInstitutions: {},
+  prototypeVisited: {},
 };
 
 let state = {};
@@ -1141,32 +1433,17 @@ const WATER_SYSTEMS = {
 };
 
 function showWaterTooltip(event, instKey) {
-  var ws = WATER_SYSTEMS[instKey];
-  if (!ws) return;
-  document.getElementById('tooltipWaterName').textContent = ws.waterName;
-  document.getElementById('tooltipWaterDesc').textContent = ws.waterDesc;
-  document.getElementById('tooltipInstName').textContent = ws.instName;
-  var tooltip = document.getElementById('waterTooltip');
-  tooltip.classList.add('show');
-  // Position tooltip near cursor but within board
-  var board = document.getElementById('mapBoard');
-  var boardRect = board.getBoundingClientRect();
-  var x = event.clientX - boardRect.left + 20;
-  var y = event.clientY - boardRect.top - 10;
-  if (x + 340 > boardRect.width) x = event.clientX - boardRect.left - 360;
-  if (y + 120 > boardRect.height) y = boardRect.height - 130;
-  tooltip.style.left = x + 'px';
-  tooltip.style.top = y + 'px';
+  // Tooltip replaced by China map droplet hover effects
 }
 
 function hideWaterTooltip() {
-  document.getElementById('waterTooltip').classList.remove('show');
+  // Tooltip replaced by China map droplet hover effects
 }
 
 // ==================== DOCUMENT DATA ====================
 const ISLANDS = {
   about: {
-    name: '文化岛', icon: '🏢', color: '#4A90E2',
+    name: '企业文化', icon: '🏢', color: '#4A90E2',
     docs: [
       { id: '企业文化理念体系', title: '企业文化理念体系', file: '企业文化理念体系.mp4', type: 'video', mandatory: true, points: 10, poster: '' },
       { id: '品牌手册', title: '品牌手册', file: '品牌手册.mp4', type: 'video', points: 5, poster: '' },
@@ -1176,18 +1453,14 @@ const ISLANDS = {
   onboarding: {
     name: '入职须知', icon: '📋', color: '#F0A623',
     docs: [
-      { id: '员工行为规范', title: '员工行为规范', file: '入职指引.mp4', type: 'video', mandatory: true, points: 10, poster: '' },
+      { id: 'HR系统须知', title: 'HR系统须知', file: '入职指引.mp4', type: 'video', mandatory: true, points: 10, poster: '' },
+      { id: '财务报销须知', title: '财务报销须知', file: 'scripts/finicialsystem.mp4', type: 'video', points: 5, poster: '' },
     ]
   },
   office: {
-    name: '办公指南', icon: '💻', color: '#00B894',
+    name: '赵钱孙李', icon: '💻', color: '#00B894',
     docs: [
-      { id: 'IT设备操作指南', title: '办公职场IT设备操作指南', file: '办公职场IT设备操作指南.mp4', type: 'video', points: 5, poster: '' },
-      { id: '网络操作指南', title: '网络操作指南', file: '网络操作指南.mp4', type: 'video', points: 5, poster: '' },
-      { id: '差旅指南', title: '差旅指南', file: '差旅指南.mp4', type: 'video', points: 5, poster: '' },
-      { id: '财务指南', title: '财务指南', file: '财务指南.mp4', type: 'video', points: 5, poster: '' },
-      { id: 'OA指南', title: 'OA指南', file: 'OA指南.mp4', type: 'video', points: 5, poster: '' },
-      { id: 'HR指南', title: 'HR指南', file: 'HR指南.mp4', type: 'video', points: 5, poster: '' },
+      { id: '赵钱孙李功能指南', title: '赵钱孙李功能指南', file: '赵钱孙李功能指南_交互原型.html', type: 'prototype', points: 10, poster: '' },
     ]
   },
   products: {
@@ -1216,6 +1489,20 @@ const QUIZ_DATA = {
       type: 'multi',
       options: ['OA系统', 'HR系统', '预算系统', '费控系统', '企业微信'],
       answer: [0, 1, 2, 3],
+    },
+  ],
+  '财务报销须知': [
+    {
+      q: '报销要在该笔费用发生（   ）天内完成？',
+      type: 'single',
+      options: ['30天', '60天', '90天', '180天'],
+      answer: [2],
+    },
+    {
+      q: '（     ）元以上的报销必须打款至对公账户？',
+      type: 'single',
+      options: ['5000元', '500元', '50000元', '50元'],
+      answer: [0],
     },
   ],
   about: [],
@@ -1248,46 +1535,33 @@ function showScreen(screenId) {
   state.previousScreen = state.currentScreen;
   state.currentScreen = screenId;
   updateAllBeanCounts();
-  if (screenId === 'mapScreen') updateMapUI();
   if (screenId === 'shopScreen') renderShop();
   if (screenId === 'voyageScreen') updateVoyageUI();
   saveState();
 }
 
 function startGame() {
-  showScreen('mapScreen');
+  showScreen('voyageScreen');
   // Preload all videos for smooth playback
   preloadAllVideos();
-  // First visit bonus
-  if (!state.firstVisitInstitutions) state.firstVisitInstitutions = {};
   // Show guide if first time
   if (!state.guideCompleted) {
     setTimeout(() => startGuide(), 600);
   }
 }
 
-// ==================== MAP UI ====================
-function updateMapUI() {
-  // Map UI is now full-screen water system — no progress bar
-}
+// Enter institution directly from home page banners
+// Set institution from URL param (called from map.html via ?inst=XXX)
+function setInstitutionFromURL(instKey) {
+  if (!instKey || !INSTITUTIONS[instKey]) return;
 
-function updateProgress() {
-  // Progress bar removed from map screen
-}
-
-function updateInstProgressDots() {
-  // Institution dots removed from map screen
-}
-
-function enterInstitution(instKey) {
   state.currentInstitution = instKey;
 
-  // First visit bonus
   var instName = WATER_SYSTEMS[instKey] ? WATER_SYSTEMS[instKey].instName : INSTITUTIONS[instKey].name;
-  if (!state.firstVisitInstitutions[instKey]) {
+  var isFirstVisit = !state.firstVisitInstitutions[instKey];
+  if (isFirstVisit) {
     state.firstVisitInstitutions[instKey] = true;
     addPoints(5, '首次进入' + instName);
-    showRewardModal('🎉 欢迎加入！', '欢迎加入' + instName + '，获得 +5 国小豆');
   }
 
   if (!state.visitedInstitutions.includes(instKey)) {
@@ -1298,61 +1572,136 @@ function enterInstitution(instKey) {
 
   showScreen('voyageScreen');
   moveBoatToStart();
-
   saveState();
+
+  // Show welcome reward only on first visit
+  if (isFirstVisit) {
+    setTimeout(function() {
+      showRewardModal('🎉 欢迎加入！', '欢迎加入' + instName + '，获得 +5 国小豆');
+    }, 500);
+  }
 }
 
 function backToMap() {
-  showScreen('mapScreen');
+  saveState();
+  window.location.href = 'map.html';
 }
 
 // ==================== VOYAGE / ISLANDS ====================
 function updateVoyageUI() {
-  // Check if 文化岛 is completed -> unlock other islands
-  var cultureDone = ISLANDS.about.docs.every(function(d) { return state.documentsRead[d.id] === true; });
-  var lockedIslands = ['office', 'products'];
-  lockedIslands.forEach(function(key) {
-    var el = document.querySelector('[data-island="' + key + '"]');
-    if (!el) return;
-    if (cultureDone) {
-      el.classList.remove('island-locked');
-      el.classList.add('island');
-      el.onclick = function() { openIsland(key); };
-    } else {
-      el.classList.add('island-locked');
-      el.onclick = null;
-    }
-  });
+  var islandOrder = ['about', 'onboarding', 'office', 'products'];
 
-  // Update island completion states
-  Object.entries(ISLANDS).forEach(function(entry) {
-    var key = entry[0];
-    var island = entry[1];
+  // Calculate completion status and progress for each island
+  islandOrder.forEach(function(key, idx) {
     var islandEl = document.querySelector('[data-island="' + key + '"]');
     if (!islandEl) return;
-    var allDone = island.docs.every(function(d) { return state.documentsRead[d.id] === true; });
-    if (allDone) {
-      islandEl.classList.add('island-completed');
-    } else {
-      islandEl.classList.remove('island-completed');
+
+    var island = ISLANDS[key];
+    var totalDocs = island.docs.length;
+    var readCount = island.docs.filter(function(d) { return state.documentsRead[d.id] === true; }).length;
+    var allDone = totalDocs > 0 && readCount >= totalDocs;
+    var progressPct = totalDocs > 0 ? Math.round(readCount / totalDocs * 100) : 0;
+
+    // Update progress badge
+    var badge = document.getElementById('progress-' + key);
+    if (badge) {
+      if (allDone) {
+        badge.textContent = '✅ 已完成';
+      } else {
+        badge.textContent = '学习进度：' + progressPct + '%';
+      }
     }
+
+    // Determine island state: locked, unlocked, or completed
+    var isLocked = false;
+    if (idx > 0) {
+      var prevKey = islandOrder[idx - 1];
+      var prevIsland = ISLANDS[prevKey];
+      // Special: 第三个岛屿(赵钱孙李) — 第二个岛屿至少完成1项即可解锁
+      if (key === 'office') {
+        var prevAnyDone = prevIsland.docs.some(function(d) { return state.documentsRead[d.id] === true; });
+        isLocked = !prevAnyDone;
+      } else {
+        // 其他岛屿: 前一个岛屿全部完成才解锁
+        var prevAllDone = prevIsland.docs.every(function(d) { return state.documentsRead[d.id] === true; });
+        isLocked = !prevAllDone;
+      }
+    }
+    // Island 0 (about) is never locked
+
+    // Reset all state classes
+    islandEl.classList.remove('island-locked', 'island-unlocked', 'island-completed');
+
+    if (isLocked) {
+      // LOCKED state
+      islandEl.classList.add('island-locked');
+      var prevName = ISLANDS[islandOrder[idx-1]].name;
+      var lockMsg = (key === 'office')
+        ? '需先在「' + prevName + '」完成至少一项学习或考试，即可解锁此岛屿！'
+        : '需先完成「' + prevName + '」全部学习内容，才能解锁此岛屿！';
+      islandEl.onclick = function(e) {
+        showRewardModal('🔒 岛屿未解锁', lockMsg);
+      };
+      // Hide progress badge for locked islands
+      if (badge) badge.style.opacity = '0';
+    } else if (allDone) {
+      // COMPLETED state — golden border, clickable for review
+      islandEl.classList.add('island-completed');
+      islandEl.onclick = function(e) {
+        openIsland(key);
+      };
+      if (badge) badge.style.opacity = '1';
+    } else {
+      // UNLOCKED / LEARNING state — halo glow
+      islandEl.classList.add('island-unlocked');
+      islandEl.onclick = function(e) {
+        openIsland(key);
+      };
+      if (badge) badge.style.opacity = '1';
+    }
+
+    // Update connection lines
+    updateConnectionLines();
   });
 
-  // Check hurricane trigger in voyage screen (after user has visited some islands)
-  // Trigger when user has opened at least 2 different islands
-  const visitedIslands = Object.keys(ISLANDS).filter(key =>
-    ISLANDS[key].docs.some(d => state.documentsRead[d.id] === true)
-  );
-  if (!state.hurricaneTriggered && !state.hurricaneCompleted && visitedIslands.length >= 2) {
-    state.hurricaneTriggered = true;
-    saveState();
-    setTimeout(() => triggerHurricane(), 2000);
-  }
+}
+
+// Draw connection lines between islands (水流路径)
+function updateConnectionLines() {
+  var islandOrder = ['about', 'onboarding', 'office', 'products'];
+  var connections = [
+    { id: 'conn-1-2', fromIdx: 0, toIdx: 1 },
+    { id: 'conn-2-3', fromIdx: 1, toIdx: 2 },
+    { id: 'conn-3-4', fromIdx: 2, toIdx: 3 },
+  ];
+
+  connections.forEach(function(conn) {
+    var pathEl = document.getElementById(conn.id);
+    if (!pathEl) return;
+
+    var fromKey = islandOrder[conn.fromIdx];
+    var toKey = islandOrder[conn.toIdx];
+
+    // A connection is "active" (blue water flow) if the "to" island is unlocked or completed
+    // i.e., the "from" island must be completed first
+    var fromIsland = ISLANDS[fromKey];
+    var fromDone = fromIsland.docs.every(function(d) { return state.documentsRead[d.id] === true; });
+    var toIsland = ISLANDS[toKey];
+    var toDone = toIsland.docs.every(function(d) { return state.documentsRead[d.id] === true; });
+
+    // Connection is active if the "from" island is completed (bridge is open)
+    pathEl.classList.remove('conn-active', 'conn-inactive');
+    if (fromDone) {
+      pathEl.classList.add('conn-active');
+    } else {
+      pathEl.classList.add('conn-inactive');
+    }
+  });
 }
 
 function moveBoatToStart() {
   const boat = document.getElementById('boat');
-  // Park next to 文化岛 (island-1)
+  // Park next to 企业文化 (island-1)
   boat.style.left = '11%';
   boat.style.top = '68%';
 }
@@ -1371,9 +1720,23 @@ function openIsland(islandKey) {
   // Check if island is locked
   var islandEl = document.querySelector('[data-island="' + islandKey + '"]');
   if (islandEl && islandEl.classList.contains('island-locked')) {
-    showRewardModal('🔒 暂未解锁', '请先完成「文化岛」的学习，解锁其他岛屿！');
+    showRewardModal('🔒 暂未解锁', '请先完成「企业文化」的学习，解锁其他岛屿！');
     return;
   }
+  // 企业文化 — 先打开转盘游戏
+  if (islandKey === 'about') {
+    openWheel();
+    return;
+  }
+  // 赵钱孙李 — 直接打开交互原型
+  if (islandKey === 'office') {
+    moveBoatToIsland(islandKey);
+    setTimeout(function() {
+      openOfficePrototype();
+    }, 600);
+    return;
+  }
+
   currentDocIsland = islandKey;
   // Preload this island's videos before showing the doc panel
   preloadIslandVideos(islandKey);
@@ -1382,6 +1745,64 @@ function openIsland(islandKey) {
     showDocPanel(islandKey);
   }, 600);
 }
+
+// ==================== CULTURAL WHEEL (转盘) ====================
+function openWheel() {
+  var overlay = document.getElementById('wheelOverlay');
+  var frame = document.getElementById('wheelFrame');
+  frame.src = '企业文化转盘.html';
+  overlay.classList.add('active');
+}
+
+function closeWheel() {
+  var overlay = document.getElementById('wheelOverlay');
+  overlay.classList.remove('active');
+  document.getElementById('wheelFrame').src = '';
+}
+
+// ==================== OFFICE PROTOTYPE (赵钱孙李功能指南) ====================
+function openOfficePrototype() {
+  var overlay = document.getElementById('prototypeOverlay');
+  var frame = document.getElementById('prototypeFrame');
+  frame.src = '../../scripts/赵钱孙李功能指南_交互原型.html';
+  overlay.style.display = 'block';
+
+  // Mark as visited
+  if (!state.prototypeVisited['office']) {
+    state.prototypeVisited['office'] = true;
+    // Auto-mark the doc as read
+    state.documentsRead['赵钱孙李功能指南'] = true;
+    addPoints(10, '完成学习: 赵钱孙李功能指南');
+    // Check island completion
+    var allDone = ISLANDS['office'].docs.every(function(d) { return state.documentsRead[d.id] === true; });
+    if (allDone) {
+      addPoints(50, '完成板块: ' + ISLANDS['office'].name);
+      setTimeout(function() { showRewardModal('🏆 板块通关！', '恭喜完成「' + ISLANDS['office'].name + '」全部内容，获得 +50 国小豆！'); }, 800);
+      showConfetti();
+    }
+    saveState();
+    updateAllBeanCounts();
+    updateVoyageUI();
+  }
+}
+
+function closeOfficePrototype() {
+  var overlay = document.getElementById('prototypeOverlay');
+  overlay.style.display = 'none';
+  document.getElementById('prototypeFrame').src = '';
+  updateVoyageUI();
+}
+
+// Listen for postMessage from the 转盘 iframe
+window.addEventListener('message', function(event) {
+  if (event.data === 'startCultureExam') {
+    closeWheel();
+    // Small delay to let the overlay close animation finish
+    setTimeout(function() {
+      CultureQuiz.start();
+    }, 300);
+  }
+});
 
 function checkAllIslandsUnlocked() {
   // Check if all islands are completed (for future use)
@@ -1474,14 +1895,18 @@ function startPdfTimer() {
   }, 300);
 }
 
-function completeReading() {
-  if (state.documentsRead[currentDocId]) {
-    closePdf();
+function completeReading(optDocId) {
+  var docId = optDocId || currentDocId;
+  if (state.documentsRead[docId]) {
+    // Already read — just close if this is the current doc
+    if (docId === currentDocId) {
+      closePdf();
+    }
     return;
   }
 
   // Mark as read
-  state.documentsRead[currentDocId] = true;
+  state.documentsRead[docId] = true;
   if (pdfReadTimer) clearInterval(pdfReadTimer);
   if (window._currentVideo && window._currentVideo._progressChecker) {
     clearInterval(window._currentVideo._progressChecker);
@@ -1491,32 +1916,20 @@ function completeReading() {
   document.getElementById('pdfProgressText').textContent = '100%';
 
   // Add points
-  addPoints(currentDocPoints, '完成阅读: ' + currentDocId);
+  addPoints(currentDocPoints, '完成阅读: ' + docId);
 
   // Update button
-  const btn = document.getElementById('pdfCompleteBtn');
+  var btn = document.getElementById('pdfCompleteBtn');
   btn.disabled = true;
   btn.textContent = '✓ 已完成阅读';
 
-  // Check mandatory docs
-  if (state.mandatoryDocs[currentDocId] !== undefined) {
-    state.mandatoryDocs[currentDocId] = true;
-  }
-
-  // Check hurricane completion
-  if (state.hurricaneTriggered && !state.hurricaneCompleted && state.mandatoryDocs['企业文化理念体系'] && state.mandatoryDocs['员工行为规范']) {
-    state.hurricaneCompleted = true;
-    addPoints(15, '完成飓风必修学习');
-    setTimeout(() => showRewardModal('🌀 飓风已平息！', '恭喜完成必修学习，额外获得 +15 国小豆！'), 800);
-  }
-
   // Check island completion
   if (currentDocIsland && ISLANDS[currentDocIsland]) {
-    const island = ISLANDS[currentDocIsland];
-    const allDone = island.docs.every(d => state.documentsRead[d.id] === true);
+    var island = ISLANDS[currentDocIsland];
+    var allDone = island.docs.every(function(d) { return state.documentsRead[d.id] === true; });
     if (allDone) {
       addPoints(50, '完成板块: ' + island.name);
-      setTimeout(() => showRewardModal('🏆 板块通关！', '恭喜完成「' + island.name + '」全部文档，获得 +50 国小豆！'), 1200);
+      setTimeout(function() { showRewardModal('🏆 板块通关！', '恭喜完成「' + island.name + '」全部文档，获得 +50 国小豆！'); }, 1200);
       showConfetti();
     }
   }
@@ -1525,7 +1938,7 @@ function completeReading() {
   checkInstitutionCompletion();
 
   // Check overall completion
-  const readCount = Object.values(state.documentsRead).filter(v => v === true).length;
+  var readCount = Object.values(state.documentsRead).filter(function(v) { return v === true; }).length;
   if (readCount === TOTAL_DOCS && !state.quizCompleted) {
     // All documents completed
     state.quizCompleted = true;
@@ -1559,7 +1972,6 @@ function closePdf() {
   document.getElementById('mediaViewerOverlay').classList.remove('active');
   document.getElementById('mediaContent').innerHTML = '';
   updateVoyageUI();
-  updateMapUI();
 }
 
 // ==================== VIDEO PLAYER ====================
@@ -1663,32 +2075,105 @@ function renderVideoPlayer(doc, alreadyRead) {
     loader.style.display = 'none';
   };
 
-  // Video ended -> show completion overlay
+  // Store quiz context for exam button (capture from globals set by openDocument)
+  var _examIslandKey = currentDocIsland;
+  var _examDocId = currentDocId;
+
+  // Determine quiz key: doc-specific quiz first, fall back to island quiz
+  var _quizKey = _examIslandKey || 'onboarding';
+  if (_examDocId && QUIZ_DATA[_examDocId] && QUIZ_DATA[_examDocId].length > 0) {
+    _quizKey = _examDocId;
+  }
+  var _hasQuiz = (QUIZ_DATA[_quizKey] && QUIZ_DATA[_quizKey].length > 0);
+  // Hide exam button if no quiz available
+  if (!_hasQuiz) { examBtn.style.display = 'none'; }
+
+  // Auto-exam timer (null = no pending auto-trigger)
+  var _autoExamTimer = null;
+  // Countdown seconds
+  var _autoExamCountdown = 3;
+
+  // Shared function: navigate to exam
+  function goToExam() {
+    if (_autoExamTimer) { clearTimeout(_autoExamTimer); _autoExamTimer = null; }
+    // Cleanup video resources
+    if (window._currentVideo) {
+      if (window._currentVideo._progressChecker) clearInterval(window._currentVideo._progressChecker);
+      window._currentVideo.pause();
+      window._currentVideo.removeAttribute('src');
+      window._currentVideo.load();
+      window._currentVideo = null;
+    }
+    if (pdfReadTimer) clearInterval(pdfReadTimer);
+    // Hide overlay and go to exam
+    document.getElementById('mediaViewerOverlay').classList.remove('active');
+    document.getElementById('mediaContent').innerHTML = '';
+    // Navigate to quiz
+    showScreen('quizScreen');
+    startIslandExam(_quizKey);
+  }
+
+  // Update countdown text on the exam button
+  function updateCountdownText(sec) {
+    if (_hasQuiz && examBtn) {
+      examBtn.textContent = '📝 马上进入考试 (' + sec + 's)';
+    }
+  }
+
+  // Video ended -> show completion overlay & auto-trigger exam
   video.onended = function() {
     playBtn.textContent = '↺';
-    // Auto-complete if not already read
-    if (!state.documentsRead[doc.id]) {
-      completeReading();
+    if (!state.documentsRead[_examDocId]) {
+      completeReading(_examDocId);
     }
-    // Show completion overlay
     completeOverlay.style.display = 'flex';
     wrap.classList.add('show-controls');
+
+    // Auto-trigger exam after countdown (only if quiz exists)
+    if (_hasQuiz) {
+      _autoExamCountdown = 3;
+      updateCountdownText(_autoExamCountdown);
+
+      // Tick every second
+      var ticker = setInterval(function() {
+        _autoExamCountdown--;
+        if (_autoExamCountdown <= 0) {
+          clearInterval(ticker);
+          if (_autoExamTimer) {
+            // User hasn't cancelled — go to exam
+            goToExam();
+          }
+        } else {
+          updateCountdownText(_autoExamCountdown);
+        }
+      }, 1000);
+
+      // Auto-go after 3 seconds
+      _autoExamTimer = setTimeout(function() {
+        _autoExamTimer = null;
+        goToExam();
+      }, 3000);
+    }
   };
 
-  // Replay button
+  // Replay button — cancel auto-exam and restart video
   replayBtn.onclick = function() {
+    // Cancel auto-exam
+    if (_autoExamTimer) { clearTimeout(_autoExamTimer); _autoExamTimer = null; }
     completeOverlay.style.display = 'none';
     video.currentTime = 0;
     video.play().catch(function(){});
     playBtn.textContent = '⏸';
+    // Reset exam button text
+    if (_hasQuiz) examBtn.textContent = '📝 马上进入考试';
   };
 
-  // Go to exam button - jump directly to island exam
-  examBtn.onclick = function() {
-    var islandKey = currentDocIsland || 'onboarding';
-    closePdf();
-    setTimeout(function() { startIslandExam(islandKey); }, 300);
-  };
+  // Go to exam button — immediate navigation
+  examBtn.addEventListener('click', function() {
+    // Cancel auto timer
+    if (_autoExamTimer) { clearTimeout(_autoExamTimer); _autoExamTimer = null; }
+    goToExam();
+  });
 
   // Lock complete button until >= 99.5% watched
   if (!alreadyRead) {
@@ -1767,6 +2252,12 @@ let currentQuizQuestions = [];
 function startIslandExam(islandKey) {
   currentQuizIsland = islandKey;
   currentQuizQuestions = QUIZ_DATA[islandKey] || [];
+  // Fallback: if no quiz for this island, try the island itself
+  if (currentQuizQuestions.length === 0 && QUIZ_DATA[islandKey] === undefined) {
+    for (var k in QUIZ_DATA) {
+      if (QUIZ_DATA[k] && QUIZ_DATA[k].length > 0) { currentQuizQuestions = QUIZ_DATA[k]; break; }
+    }
+  }
   quizIndex = 0;
   quizAnswers = [];
   quizSelected = [];
@@ -1776,7 +2267,8 @@ function startIslandExam(islandKey) {
     return;
   }
   showScreen('quizScreen');
-  renderQuizQuestion();
+  // Small delay to ensure DOM transition completes
+  setTimeout(function() { renderQuizQuestion(); }, 50);
 }
 
 function renderQuiz() {
@@ -1932,6 +2424,13 @@ function renderQuizResult() {
   var islandName = '';
   if (currentQuizIsland && ISLANDS[currentQuizIsland]) {
     islandName = ISLANDS[currentQuizIsland].name;
+  } else if (currentQuizIsland && QUIZ_DATA[currentQuizIsland]) {
+    // Document-specific quiz — find which island contains this doc
+    islandName = currentQuizIsland;
+    for (var ik in ISLANDS) {
+      var found = ISLANDS[ik].docs.some(function(d) { return d.id === currentQuizIsland; });
+      if (found) { islandName = ISLANDS[ik].name + ' · ' + currentQuizIsland; break; }
+    }
   }
 
   var islandKeys = Object.keys(ISLANDS);
@@ -1970,26 +2469,24 @@ function renderQuizResult() {
 
 function relearnFromExam() {
   showScreen('voyageScreen');
-  if (currentQuizIsland && ISLANDS[currentQuizIsland]) {
-    var docs = ISLANDS[currentQuizIsland].docs;
+  var islandKey = currentQuizIsland;
+  // If quiz is document-specific, find parent island
+  if (islandKey && !ISLANDS[islandKey]) {
+    for (var ik in ISLANDS) {
+      var found = ISLANDS[ik].docs.some(function(d) { return d.id === islandKey; });
+      if (found) { islandKey = ik; break; }
+    }
+  }
+  if (islandKey && ISLANDS[islandKey]) {
+    var docs = ISLANDS[islandKey].docs;
     if (docs.length > 0) {
-      currentDocIsland = currentQuizIsland;
-      setTimeout(function() { showDocPanel(currentQuizIsland); }, 300);
+      currentDocIsland = islandKey;
+      setTimeout(function() { showDocPanel(islandKey); }, 300);
     }
   }
 }
 
 
-
-// ==================== HURRICANE ====================
-function triggerHurricane() {
-  document.getElementById('hurricaneOverlay').classList.add('active');
-}
-
-function startMandatoryLearning() {
-  document.getElementById('hurricaneOverlay').classList.remove('active');
-  openIsland('about');
-}
 
 // ==================== POINTS SYSTEM ====================
 function addPoints(amount, reason) {
@@ -2000,7 +2497,7 @@ function addPoints(amount, reason) {
 }
 
 function updateAllBeanCounts() {
-  ['navBeanCount','navBeanCount2','navBeanCount3','navBeanCount4'].forEach(id => {
+  ['navBeanCount2','navBeanCount3','navBeanCount4','navBeanCountCQ'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.textContent = state.points;
   });
@@ -2085,7 +2582,9 @@ function confirmExchange() {
 }
 
 function backFromShop() {
-  showScreen(state.previousScreen === 'shopScreen' ? 'mapScreen' : state.previousScreen);
+  // Always go back to map when returning from shop
+  saveState();
+  window.location.href = 'map.html';
 }
 
 // ==================== AVATAR DROPDOWN ====================
@@ -2145,7 +2644,8 @@ function executeResetIdentity() {
   saveState();
   closeModal('resetIdentityModal');
   // Navigate back to start screen
-  showScreen('startScreen');
+  // Navigate back to map page
+  window.location.href = 'map.html';
   // Show success feedback
   setTimeout(() => {
     showRewardModal('✅ 身份切换成功', '已切换为新员工，学习进度已全部清空，祝你在新的航行中收获满满！');
@@ -2165,9 +2665,9 @@ function showRewardModal(title, text) {
 
 // ==================== NEW USER GUIDE ====================
 const guideSteps = [
-  { title: '欢迎加入国民养老！', text: '这是你的知识航行地图，点击地图上的省份名称开启学习之旅', target: '.map-board', pos: {top: '10px', left: '50%', transform: 'translateX(-50%)'} },
-  { title: '你的积分', text: '国小豆是学习积分，阅读文档、完成答题都可以获得，快来兑换好礼吧！', target: '.nav-center', pos: {top: '70px', left: '50%', transform: 'translateX(-50%)'} },
-  { title: '开始探索吧！', text: '点击任意水系节点开始你的知识航行冒险', target: '.water-spot', pos: {top: '55%', left: '50%', transform: 'translateX(-50%)'} },
+  { title: '欢迎进入知识海洋！', text: '这里有四个学习岛屿，按顺序解锁：企业文化 → 入职须知 → 赵钱孙李 → 公司产品', target: '.islands-area', pos: {top: '10px', left: '50%', transform: 'translateX(-50%)'} },
+  { title: '你的积分', text: '国小豆是学习积分，完成视频学习、答题都可以获得，快来兑换好礼吧！', target: '.nav-center', pos: {top: '70px', left: '50%', transform: 'translateX(-50%)'} },
+  { title: '开始探索吧！', text: '点击第一个岛屿「企业文化」，开始你的知识航行吧！', target: '.island[data-island="about"]', pos: {top: '55%', left: '50%', transform: 'translateX(-50%)'} },
 ];
 
 let guideStep = 0;
@@ -2246,19 +2746,471 @@ function showConfetti() {
   setTimeout(() => container.remove(), 4000);
 }
 
+// ==================== MOUSE RIPPLES ====================
+(function(){
+  var lastRipple = 0;
+  var THROTTLE = 160;
+  var layer = null;
+
+  function ensureLayer() {
+    if (!layer || !layer.parentNode) {
+      layer = document.createElement('div');
+      layer.className = 'mouse-ripples-layer';
+      var vs = document.getElementById('voyageScreen');
+      if (vs) vs.appendChild(layer);
+    }
+    return layer;
+  }
+
+  function spawnRipple(e) {
+    var now = Date.now();
+    if (now - lastRipple < THROTTLE) return;
+    lastRipple = now;
+
+    var lyr = ensureLayer();
+    var rect = lyr.parentNode.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    var size = 28 + Math.random() * 24;
+
+    var el = document.createElement('div');
+    el.className = 'mouse-ripple';
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    lyr.appendChild(el);
+
+    setTimeout(function(){ el.remove(); }, 1300);
+  }
+
+  var voyageScreen = document.getElementById('voyageScreen');
+  if (voyageScreen) {
+    voyageScreen.addEventListener('mousemove', spawnRipple);
+  }
+})();
+
+
+// ==================== CULTURE QUIZ (企业文化答题) ====================
+var CultureQuiz = (function() {
+  var score = 0;
+  var combo = 0;
+  var q1Done = false;
+  var q2Done = false;
+  var dragDropController = null;
+
+  var correctOrder = ['践行','国家','发展','战略','共筑','国民','美好','生活'];
+  var distractors = ['履行','开拓','民生','愿景'];
+  var allFragments = correctOrder.concat(distractors);
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function spawnSparkles(x, y, count) {
+    var container = document.getElementById('cqSparkleContainer');
+    var colors = ['#fbbf24','#f59e0b','#facc15','#22c55e','#3b82f6','#a855f7','#ec4899'];
+    for (var i = 0; i < count; i++) {
+      var s = document.createElement('div');
+      s.className = 'cq-sparkle';
+      s.style.left = x + 'px';
+      s.style.top = y + 'px';
+      s.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+      s.style.setProperty('--ty', (Math.random() - 0.5) * 200 - 50 + 'px');
+      s.style.background = colors[Math.floor(Math.random() * colors.length)];
+      s.style.width = (4 + Math.random() * 8) + 'px';
+      s.style.height = s.style.width;
+      s.style.animationDuration = (0.6 + Math.random() * 0.8) + 's';
+      s.style.animationDelay = Math.random() * 0.15 + 's';
+      container.appendChild(s);
+      setTimeout(function(){ s.remove(); }, 1500);
+    }
+  }
+
+  function showComboPopup(comboCount) {
+    if (comboCount < 2) return;
+    var popup = document.createElement('div');
+    popup.className = 'cq-combo-popup';
+    popup.textContent = '🔥 ' + comboCount + '连击！';
+    document.body.appendChild(popup);
+    setTimeout(function(){ popup.remove(); }, 1300);
+  }
+
+  function showCqFeedback(id, text, type) {
+    var fb = document.getElementById(id);
+    fb.textContent = text;
+    fb.className = 'cq-feedback cq-' + type + ' cq-show';
+  }
+
+  function hideCqFeedback(id) {
+    document.getElementById(id).className = 'cq-feedback';
+  }
+
+  function updateCqScore(points) {
+    score += points;
+    document.getElementById('cqScoreValue').textContent = score;
+    var badge = document.getElementById('cqScoreBadge');
+    badge.style.transform = 'scale(1.15)';
+    setTimeout(function(){ badge.style.transform = 'scale(1)'; }, 200);
+  }
+
+  function updateCqCombo(correct) {
+    if (correct) {
+      combo++;
+      document.getElementById('cqComboText').textContent = combo >= 2 ? combo + '连击!' : '';
+      if (combo >= 2) showComboPopup(combo);
+    } else {
+      combo = 0;
+      document.getElementById('cqComboText').textContent = '';
+    }
+  }
+
+  function updateCqProgress(step) {
+    var d1 = document.getElementById('cqDot1');
+    var d2 = document.getElementById('cqDot2');
+    d1.className = 'cq-progress-dot' + (step >= 1 ? (step > 1 ? ' cq-done' : ' cq-active') : '');
+    d2.className = 'cq-progress-dot' + (step >= 2 ? (step > 2 ? ' cq-done' : ' cq-active') : '');
+  }
+
+  function switchCqScreen(from, to) {
+    var fromEl = document.getElementById(from);
+    var toEl = document.getElementById(to);
+    fromEl.classList.remove('cq-active');
+    fromEl.classList.add('cq-slide-out');
+    setTimeout(function() {
+      fromEl.classList.remove('cq-slide-out');
+      fromEl.style.display = 'none';
+      toEl.style.display = 'block';
+      toEl.classList.add('cq-active', 'cq-slide-in');
+      setTimeout(function(){ toEl.classList.remove('cq-slide-in'); }, 400);
+    }, 300);
+  }
+
+  // Q1
+  function checkQ1(btn, answer) {
+    if (q1Done) return;
+    q1Done = true;
+
+    var btns = document.querySelectorAll('#cqOptionsList .cq-option-btn');
+    for (var i = 0; i < btns.length; i++) { btns[i].classList.add('cq-disabled'); }
+
+    var correctAnswer = 'C';
+    var rect = btn.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+
+    if (answer === correctAnswer) {
+      btn.classList.add('cq-correct');
+      updateCqCombo(true);
+      updateCqScore(10 + combo * 2);
+      showCqFeedback('cqFeedback1', '✅ 回答正确！做得很棒！', 'success');
+      spawnSparkles(cx, cy, 25);
+      setTimeout(function() {
+        hideCqFeedback('cqFeedback1');
+        goToQ2();
+      }, 1500);
+    } else {
+      btn.classList.add('cq-wrong');
+      updateCqCombo(false);
+      showCqFeedback('cqFeedback1', '❌ 回答错误', 'error');
+      var hint = document.getElementById('cqCorrectHint1');
+      hint.textContent = '✅ 正确答案是：C、使命';
+      hint.style.display = 'block';
+      for (var j = 0; j < btns.length; j++) {
+        if (btns[j].dataset.answer === correctAnswer) btns[j].classList.add('cq-show-correct');
+      }
+      spawnSparkles(cx, cy, 10);
+      setTimeout(function() {
+        hideCqFeedback('cqFeedback1');
+        hint.style.display = 'none';
+        goToQ2();
+      }, 2000);
+    }
+  }
+
+  function goToQ2() {
+    updateCqProgress(2);
+    switchCqScreen('cqScreen1', 'cqScreen2');
+    initQ2();
+  }
+
+  // Q2 drag-and-drop
+  function initQ2() {
+    var pool = document.getElementById('cqFragmentPool');
+    var dropZone = document.getElementById('cqDropZone');
+    var submitBtn = document.getElementById('cqSubmitBtn2');
+
+    pool.innerHTML = '';
+    dropZone.innerHTML = '<span class="cq-drop-zone-label">⬇ 将词语碎片拖拽到此处拼成完整句子</span>';
+    dropZone.classList.remove('cq-has-words');
+    submitBtn.disabled = true;
+    hideCqFeedback('cqFeedback2');
+    document.getElementById('cqCorrectHint2').style.display = 'none';
+
+    var shuffled = shuffle(allFragments);
+    for (var i = 0; i < shuffled.length; i++) {
+      pool.appendChild(createChip(shuffled[i], i, 'pool'));
+    }
+    setupDragDrop();
+  }
+
+  function createChip(word, id, zone) {
+    var chip = document.createElement('div');
+    chip.className = 'cq-word-chip';
+    chip.textContent = word;
+    chip.draggable = true;
+    chip.dataset.word = word;
+    chip.dataset.id = 'chip-' + id;
+    chip.dataset.zone = zone;
+    chip.dataset.isDistractor = distractors.indexOf(word) >= 0 ? 'true' : 'false';
+
+    chip.addEventListener('dragstart', handleDragStart);
+    chip.addEventListener('dragend', handleDragEnd);
+
+    if (zone === 'drop') {
+      chip.addEventListener('click', function(){ removeFromDrop(chip); });
+      chip.classList.add('cq-in-drop');
+    }
+    return chip;
+  }
+
+  var draggedEl = null;
+
+  function handleDragStart(e) {
+    draggedEl = this;
+    this.classList.add('cq-dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', this.dataset.id);
+  }
+
+  function handleDragEnd(e) {
+    this.classList.remove('cq-dragging');
+    draggedEl = null;
+  }
+
+  function setupDragDrop() {
+    if (dragDropController) dragDropController.abort();
+    dragDropController = new AbortController();
+    var signal = dragDropController.signal;
+
+    var dropZone = document.getElementById('cqDropZone');
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      dropZone.classList.add('cq-drag-over');
+    }, { signal: signal });
+
+    dropZone.addEventListener('dragleave', function() {
+      dropZone.classList.remove('cq-drag-over');
+    }, { signal: signal });
+
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('cq-drag-over');
+      if (!draggedEl) return;
+      var word = draggedEl.dataset.word;
+      var newChip = createChip(word, Date.now(), 'drop');
+      dropZone.appendChild(newChip);
+      dropZone.classList.add('cq-has-words');
+      draggedEl.remove();
+      updateSubmitBtn();
+    }, { signal: signal });
+
+    var pool = document.getElementById('cqFragmentPool');
+    pool.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    }, { signal: signal });
+
+    pool.addEventListener('drop', function(e) {
+      e.preventDefault();
+      if (!draggedEl || draggedEl.dataset.zone !== 'drop') return;
+      removeFromDrop(draggedEl);
+    }, { signal: signal });
+  }
+
+  function removeFromDrop(chip) {
+    var word = chip.dataset.word;
+    chip.remove();
+    var pool = document.getElementById('cqFragmentPool');
+    var restoredChip = createChip(word, Date.now(), 'pool');
+    pool.appendChild(restoredChip);
+    var dropZone = document.getElementById('cqDropZone');
+    var remaining = dropZone.querySelectorAll('.cq-word-chip');
+    if (remaining.length === 0) {
+      dropZone.classList.remove('cq-has-words');
+      dropZone.innerHTML = '<span class="cq-drop-zone-label">⬇ 将词语碎片拖拽到此处拼成完整句子</span>';
+    }
+    updateSubmitBtn();
+  }
+
+  function updateSubmitBtn() {
+    var dropZone = document.getElementById('cqDropZone');
+    var chips = dropZone.querySelectorAll('.cq-word-chip');
+    document.getElementById('cqSubmitBtn2').disabled = chips.length === 0;
+  }
+
+  function checkQ2() {
+    if (q2Done) return;
+    var dropZone = document.getElementById('cqDropZone');
+    var chips = dropZone.querySelectorAll('.cq-word-chip');
+    var userAnswer = [];
+    for (var i = 0; i < chips.length; i++) { userAnswer.push(chips[i].dataset.word); }
+
+    var hasDistractor = userAnswer.some(function(w) { return distractors.indexOf(w) >= 0; });
+    var isCorrectOrder = userAnswer.length === correctOrder.length &&
+      userAnswer.every(function(w, i) { return w === correctOrder[i]; });
+
+    if (hasDistractor) {
+      updateCqCombo(false);
+      showCqFeedback('cqFeedback2', '⚠️ 选到了干扰词语！请把无关词语退回下方碎片池，只保留使命原文的8个词语', 'warning');
+      for (var i = 0; i < chips.length; i++) {
+        if (distractors.indexOf(chips[i].dataset.word) >= 0) chips[i].classList.add('cq-distractor-picked');
+      }
+      setTimeout(function() {
+        for (var i = 0; i < chips.length; i++) chips[i].classList.remove('cq-distractor-picked');
+      }, 2000);
+    } else if (!isCorrectOrder && userAnswer.length === correctOrder.length) {
+      updateCqCombo(false);
+      showCqFeedback('cqFeedback2', '⚠️ 词语顺序不正确，请检查并调整拼图顺序', 'error');
+      for (var i = 0; i < chips.length; i++) {
+        if (chips[i].dataset.word !== correctOrder[i]) chips[i].classList.add('cq-wrong-order');
+      }
+      setTimeout(function() {
+        for (var i = 0; i < chips.length; i++) chips[i].classList.remove('cq-wrong-order');
+      }, 2000);
+    } else if (userAnswer.length !== correctOrder.length) {
+      updateCqCombo(false);
+      showCqFeedback('cqFeedback2', '⚠️ 拼图数量不对，使命原文需要正好8个词语碎片', 'warning');
+    } else {
+      q2Done = true;
+      updateCqCombo(true);
+      updateCqScore(15 + combo * 3);
+      for (var i = 0; i < chips.length; i++) chips[i].classList.add('cq-correct-pos');
+      var poolChips = document.getElementById('cqFragmentPool').querySelectorAll('.cq-word-chip');
+      for (var i = 0; i < poolChips.length; i++) { poolChips[i].draggable = false; poolChips[i].style.pointerEvents = 'none'; }
+      for (var i = 0; i < chips.length; i++) chips[i].style.pointerEvents = 'none';
+      document.getElementById('cqSubmitBtn2').disabled = true;
+      showCqFeedback('cqFeedback2', '🎉 完美！顺序完全正确！', 'success');
+      var hint = document.getElementById('cqCorrectHint2');
+      hint.textContent = '✨ 践行国家发展战略，共筑国民美好生活';
+      hint.style.display = 'block';
+      var rect = dropZone.getBoundingClientRect();
+      spawnSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2, 30);
+      setTimeout(function() {
+        hideCqFeedback('cqFeedback2');
+        hint.style.display = 'none';
+        goToComplete();
+      }, 2000);
+    }
+  }
+
+  function goToComplete() {
+    updateCqProgress(3);
+    // Award points to main app
+    addPoints(score, '完成企业文化答题');
+    // Mark all about docs as read (quiz covers content)
+    state.documentsRead['企业文化理念体系'] = true;
+    state.documentsRead['品牌手册'] = true;
+    state.documentsRead['公司经营动态'] = true;
+    // Check island completion bonus
+    var island = ISLANDS['about'];
+    var allDone = island.docs.every(function(d) { return state.documentsRead[d.id] === true; });
+    if (allDone) {
+      addPoints(50, '完成板块: ' + island.name);
+      setTimeout(function(){ showRewardModal('🏆 板块通关！', '恭喜完成「' + island.name + '」全部内容，获得 +50 国小豆！'); showConfetti(); }, 1200);
+    }
+    saveState();
+    updateAllBeanCounts();
+    // Render completion
+    document.getElementById('cqCompletionScore').textContent = score + ' 分';
+    var emoji = score >= 30 ? '🏆' : score >= 15 ? '🎉' : '💪';
+    document.getElementById('cqCompletionEmoji').textContent = emoji;
+    var lines = [];
+    lines.push('第1题：' + (q1Done ? '✅ 已完成' : '⏭ 已跳过'));
+    lines.push('第2题：' + (q2Done ? '✅ 完美拼图' : '⏭ 已跳过'));
+    if (combo >= 2) lines.push('🔥 最高连击：' + combo + '连击');
+    document.getElementById('cqCompletionDetail').innerHTML = lines.join('<br>');
+    switchCqScreen('cqScreen2', 'cqScreenComplete');
+  }
+
+  function start() {
+    score = 0; combo = 0; q1Done = false; q2Done = false;
+    document.getElementById('cqScoreValue').textContent = '0';
+    document.getElementById('cqComboText').textContent = '';
+    updateCqProgress(1);
+    var screens = document.querySelectorAll('#cultureQuizWrapper .cq-screen');
+    for (var i = 0; i < screens.length; i++) {
+      screens[i].classList.remove('cq-active', 'cq-slide-in', 'cq-slide-out');
+      screens[i].style.display = 'none';
+    }
+    var s1 = document.getElementById('cqScreen1');
+    s1.style.display = 'block';
+    s1.classList.add('cq-active');
+    hideCqFeedback('cqFeedback1');
+    document.getElementById('cqCorrectHint1').style.display = 'none';
+    var btns = document.querySelectorAll('#cqOptionsList .cq-option-btn');
+    for (var j = 0; j < btns.length; j++) { btns[j].className = 'cq-option-btn'; }
+    hideCqFeedback('cqFeedback2');
+    document.getElementById('cqCorrectHint2').style.display = 'none';
+    var dz = document.getElementById('cqDropZone');
+    dz.innerHTML = '<span class="cq-drop-zone-label">⬇ 将词语碎片拖拽到此处拼成完整句子</span>';
+    dz.classList.remove('cq-has-words');
+    document.getElementById('cqFragmentPool').innerHTML = '';
+    document.getElementById('cqSubmitBtn2').disabled = true;
+    showScreen('cultureQuizScreen');
+  }
+
+  return {
+    start: start,
+    restart: start,
+    backToVoyage: function() {
+      updateVoyageUI();
+      showScreen('voyageScreen');
+    },
+    checkQ1: checkQ1,
+    checkQ2: checkQ2
+  };
+})();
+
 // ==================== INIT ====================
 function init() {
   loadState();
   updateAllBeanCounts();
-  // If returning, go to last screen directly
-  if (state.guideCompleted && state.currentScreen !== 'startScreen') {
-    document.getElementById('startScreen').classList.remove('active');
-    document.getElementById(state.currentScreen).classList.add('active');
-    if (state.currentScreen === 'mapScreen') {
-      updateMapUI();
+
+  // Parse URL parameters (set by map.html)
+  var params = new URLSearchParams(window.location.search);
+  var instParam = params.get('inst');
+  var screenParam = params.get('screen');
+
+  if (screenParam === 'shop') {
+    // Direct to shop screen
+    showScreen('shopScreen');
+    // Clean URL
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState({}, '', 'index.html');
     }
+  } else if (instParam && INSTITUTIONS[instParam]) {
+    // Direct to voyage screen with specific institution
+    setInstitutionFromURL(instParam);
+    // Clean URL
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState({}, '', 'index.html');
+    }
+  } else if (state.guideCompleted) {
+    // Restore previous screen
+    document.getElementById('voyageScreen').classList.remove('active');
+    document.getElementById(state.currentScreen).classList.add('active');
     if (state.currentScreen === 'shopScreen') renderShop();
     if (state.currentScreen === 'voyageScreen') updateVoyageUI();
+  } else {
+    // Default: show voyage screen
+    document.getElementById('voyageScreen').classList.add('active');
   }
 }
 

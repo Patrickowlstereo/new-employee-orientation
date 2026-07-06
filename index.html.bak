@@ -32,9 +32,12 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 @keyframes bounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-20px)}50%{transform:translateY(-10px)}70%{transform:translateY(-15px)}}
 @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-@keyframes wave1{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(-25px) translateY(-8px)}100%{transform:translateX(0) translateY(0)}}
-@keyframes wave2{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(20px) translateY(-6px)}100%{transform:translateX(0) translateY(0)}}
-@keyframes wave3{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(-15px) translateY(-10px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes wave1{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(-40px) translateY(-10px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes wave2{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(32px) translateY(-8px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes wave3{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(-24px) translateY(-14px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes wave4{0%{transform:translateX(0) translateY(0)}50%{transform:translateX(18px) translateY(-6px)}100%{transform:translateX(0) translateY(0)}}
+@keyframes causticDrift{0%,100%{transform:translateX(0) translateY(0) skewX(0deg);opacity:0.07}33%{transform:translateX(4%) translateY(-2%) skewX(3deg);opacity:0.13}66%{transform:translateX(-3%) translateY(1%) skewX(-2deg);opacity:0.09}}
+@keyframes foamPulse{0%,100%{opacity:0;transform:scaleX(0.6)}50%{opacity:0.75;transform:scaleX(1)}}
 @keyframes boatBob{0%,100%{transform:translateY(0) rotate(-2deg)}25%{transform:translateY(-8px) rotate(1deg)}75%{transform:translateY(-4px) rotate(-3deg)}}
 @keyframes cloudFloat{0%{transform:translateX(-100px)}100%{transform:translateX(calc(100vw + 100px))}}
 @keyframes sparkle{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}
@@ -42,14 +45,15 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 @keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-4px)}20%,40%,60%,80%{transform:translateX(4px)}}
 @keyframes coinFly{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(0.5)}}
 @keyframes starSpin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.2)}100%{transform:rotate(360deg) scale(1)}}
-@keyframes glowPulse{0%,100%{box-shadow:0 0 15px rgba(74,123,224,0.3)}50%{box-shadow:0 0 30px rgba(74,123,224,0.6)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 18px rgba(255,200,60,0.3)}50%{box-shadow:0 0 38px rgba(255,200,60,0.65)}}
 @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes progressFill{from{width:0}to{width:var(--fill)}}
 @keyframes confetti{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(400px) rotate(720deg);opacity:0}}
 
 /* ===== TOP NAV ===== */
-.top-nav{position:fixed;top:0;left:0;right:0;height:64px;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--slate-200);display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:100;}
+.top-nav{position:fixed;top:0;left:0;right:0;height:64px;background:rgba(250,248,245,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--slate-200);display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:100;}
 .nav-left{display:flex;align-items:center;gap:12px;}
+.nav-logo{height:60px;width:auto;object-fit:contain;flex-shrink:0;margin:-4px 0;}
 .nav-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue-400),var(--purple-400));display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700;cursor:pointer;transition:var(--transition);position:relative;}
 .nav-avatar:hover{transform:scale(1.08);box-shadow:0 4px 12px rgba(74,123,224,0.25);}
 .nav-name{font-weight:600;font-size:15px;color:var(--slate-700);}
@@ -72,9 +76,9 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 .nav-btn:hover{border-color:var(--blue-300);color:var(--blue-500);background:var(--blue-50);}
 
 /* ===== START SCREEN ===== */
-#startScreen{justify-content:center;align-items:center;background:linear-gradient(160deg,#EEF4FF 0%,#F3EEFF 40%,#FFF0F1 70%,#FFF9EB 100%);min-height:100vh;overflow:hidden;}
+#startScreen{justify-content:center;align-items:center;background:linear-gradient(180deg,#FAF8F5 0%,#F5F2EC 40%,#F0EDE6 100%);min-height:100vh;overflow:hidden;}
 .start-clouds{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
-.cloud{position:absolute;background:rgba(255,255,255,0.8);border-radius:50%;filter:blur(1px);}
+.cloud{position:absolute;background:rgba(255,255,255,0.5);border-radius:50%;filter:blur(2px);}
 .cloud::before,.cloud::after{content:'';position:absolute;background:inherit;border-radius:50%;}
 .cloud-1{width:120px;height:40px;top:15%;animation:cloudFloat 35s linear infinite;}
 .cloud-1::before{width:50px;height:50px;top:-25px;left:20px;}
@@ -86,7 +90,7 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 .cloud-3::before{width:55px;height:55px;top:-30px;left:25px;}
 .cloud-3::after{width:45px;height:45px;top:-20px;left:65px;}
 .start-content{text-align:center;z-index:2;animation:slideUp 0.8s ease;}
-.start-logo{width:120px;height:120px;margin:0 auto 24px;background:linear-gradient(135deg,var(--blue-400),var(--purple-300));border-radius:32px;display:flex;align-items:center;justify-content:center;font-size:56px;box-shadow:0 12px 40px rgba(74,123,224,0.25);animation:floatSlow 4s ease-in-out infinite;}
+.start-logo{width:120px;height:120px;margin:0 auto 24px;background:var(--white);border-radius:32px;display:flex;align-items:center;justify-content:center;font-size:56px;box-shadow:0 4px 24px rgba(0,0,0,0.06);animation:floatSlow 4s ease-in-out infinite;}
 
 /* ===== BRAND LOGO ===== */
 .brand-logo{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 24px;margin-bottom:16px;}
@@ -95,39 +99,90 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 .brand-logo--small .brand-logo-img{height:64px;}
 .brand-logo--light{background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border-radius:12px;border:1px solid rgba(255,255,255,0.5);}
 .brand-logo--dark{background:rgba(15,23,42,0.06);backdrop-filter:blur(8px);border-radius:12px;border:1px solid rgba(15,23,42,0.08);}
-.start-title{font-size:42px;font-weight:900;background:linear-gradient(135deg,var(--blue-500),var(--purple-400),var(--rose-400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;letter-spacing:2px;}
-.start-subtitle{font-size:18px;color:var(--slate-500);margin-bottom:40px;font-weight:400;letter-spacing:1px;}
-.start-btn{padding:16px 48px;background:linear-gradient(135deg,var(--blue-400),var(--blue-500));color:#fff;border:none;border-radius:16px;font-size:18px;font-weight:600;cursor:pointer;transition:var(--transition);box-shadow:0 8px 24px rgba(74,123,224,0.3);font-family:var(--font);}
-.start-btn:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(74,123,224,0.4);}
+.start-title{font-size:42px;font-weight:900;color:var(--slate-800);margin-bottom:12px;letter-spacing:2px;}
+.start-subtitle{font-size:18px;color:var(--slate-400);margin-bottom:40px;font-weight:400;letter-spacing:1px;}
+.start-btn{padding:16px 48px;background:var(--slate-800);color:#fff;border:none;border-radius:14px;font-size:18px;font-weight:600;cursor:pointer;transition:var(--transition);box-shadow:0 4px 16px rgba(0,0,0,0.08);font-family:var(--font);}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.12);background:var(--slate-700);}
 .start-btn:active{transform:translateY(0);}
 .start-features{display:flex;gap:32px;justify-content:center;margin-top:48px;}
 .start-feature{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--slate-500);font-size:13px;}
-.start-feature-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(255,255,255,0.8);box-shadow:var(--shadow-sm);}
+.start-feature-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--white);box-shadow:var(--shadow-sm);}
 
 /* ===== MAP SCREEN ===== */
-#mapScreen{padding-top:64px;min-height:100vh;background:linear-gradient(180deg,#EDF2FF 0%,#F8FAFF 40%,#FFF9F0 100%);}
-.map-container{flex:1;display:flex;flex-direction:column;align-items:center;padding:24px 32px;position:relative;overflow:hidden;}
+#mapScreen{padding-top:64px;min-height:100vh;background:#E8F4FA;}
+.map-container{flex:1;display:flex;flex-direction:column;align-items:center;padding:20px 0 0 0;position:relative;overflow:hidden;}
 .map-header{text-align:center;margin-bottom:20px;}
 .map-header h2{font-size:22px;font-weight:700;color:var(--slate-800);margin-bottom:4px;}
 .map-header p{font-size:14px;color:var(--slate-500);}
 
-/* Branch Map - using the actual image (1334x720) */
-.map-board{position:relative;width:1000px;max-width:95vw;height:540px;margin:0 auto;border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-lg);}
-.map-board-img{width:100%;height:100%;object-fit:fill;display:block;}
+/* Water-system map */
+.map-board{
+  position:relative;flex:1;width:100%;margin:0;
+  border-radius:0;overflow:hidden;
+  box-shadow:none;
+  background:linear-gradient(180deg,#E8F4FA 0%,#D6ECF6 30%,#C8E4F2 60%,#BDDEF0 100%);
+}
+.water-streams{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;}
 
-/* Province clickable hotspots - positioned over the map image text labels */
-.province-hotspot{position:absolute;cursor:pointer;z-index:10;transition:var(--transition);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:transparent;user-select:none;}
-.province-hotspot:hover{transform:translateY(-6px) scale(1.06);background:rgba(74,123,224,0.12);box-shadow:0 0 24px rgba(74,123,224,0.25),inset 0 0 20px rgba(74,123,224,0.08);}
-.province-hotspot:active{transform:translateY(-2px) scale(1.02);}
+/* Water spot wrapper */
+.water-spot{position:absolute;z-index:5;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform 0.3s ease;}
+.water-spot:hover{transform:translateY(-4px) scale(1.05);}
+.water-spot:hover .water-shape{box-shadow:0 0 20px rgba(60,160,210,0.5);}
+.water-label{font-size:13px;font-weight:600;color:#2C5F7C;text-shadow:0 1px 2px rgba(255,255,255,0.5);letter-spacing:0.5px;}
 
-/* Hotspot positions - calibrated for 1334x720 image in 1000x540 container */
-.hotspot-shandong{left:22%;top:0%;width:26%;height:14%;}
-.hotspot-beijing{left:26%;top:12%;width:32%;height:32%;}
-.hotspot-shanghai{left:76%;top:18%;width:20%;height:24%;}
-.hotspot-zhejiang{left:45%;top:30%;width:27%;height:24%;}
-.hotspot-sichuan{left:0%;top:18%;width:20%;height:24%;}
-.hotspot-chongqing{left:18%;top:68%;width:26%;height:28%;}
-.hotspot-guangdong{left:64%;top:68%;width:32%;height:28%;}
+/* Water shape — organic blob for each system */
+.water-shape{
+  width:90px;height:70px;
+  border-radius:45% 55% 50% 50% / 48% 52% 45% 55%;
+  background:radial-gradient(ellipse at 40% 35%,rgba(140,210,240,0.9),rgba(70,160,210,0.7));
+  box-shadow:0 0 12px rgba(60,140,200,0.3),inset 0 -4px 8px rgba(0,0,80,0.1);
+  transition:box-shadow 0.3s ease;
+  position:relative;
+}
+.water-shape::after{
+  content:'';position:absolute;top:20%;left:25%;width:30%;height:25%;
+  background:rgba(255,255,255,0.35);border-radius:50%;
+}
+/* Distinct shapes per water system */
+.yongding-shape{border-radius:50% 50% 48% 52% / 45% 55% 52% 48%;width:95px;height:72px;background:radial-gradient(ellipse at 40% 30%,rgba(150,220,248,0.9),rgba(60,145,200,0.7));}
+.baotu-shape{border-radius:55% 45% 52% 48% / 48% 48% 52% 52%;width:78px;height:68px;background:radial-gradient(ellipse at 45% 35%,rgba(130,210,245,0.9),rgba(50,155,210,0.7));}
+.huangpu-shape{border-radius:42% 58% 48% 52% / 50% 45% 55% 50%;width:100px;height:62px;background:radial-gradient(ellipse at 35% 35%,rgba(135,215,242,0.9),rgba(55,150,205,0.7));}
+.xihu-shape{border-radius:50% 50% 50% 50% / 55% 55% 45% 45%;width:72px;height:55px;background:radial-gradient(ellipse at 45% 30%,rgba(145,220,245,0.9),rgba(65,160,215,0.7));}
+.zhujiang-shape{border-radius:40% 60% 50% 50% / 52% 48% 52% 48%;width:105px;height:66px;background:radial-gradient(ellipse at 38% 35%,rgba(140,215,240,0.9),rgba(55,150,205,0.7));}
+.jialing-shape{border-radius:48% 52% 50% 50% / 45% 55% 48% 52%;width:88px;height:70px;background:radial-gradient(ellipse at 42% 32%,rgba(140,215,242,0.9),rgba(58,148,208,0.7));}
+.dujiangyan-shape{border-radius:52% 48% 48% 52% / 50% 48% 52% 50%;width:82px;height:68px;background:radial-gradient(ellipse at 40% 35%,rgba(145,218,245,0.9),rgba(62,152,210,0.7));}
+
+/* Water spot positions */
+.water-yongding{left:44%;top:8%;}
+.water-baotu{left:61%;top:32%;}
+.water-huangpu{left:74%;top:18%;}
+.water-xihu{left:68%;top:48%;}
+.water-zhujiang{left:60%;top:68%;}
+.water-jialing{left:32%;top:48%;}
+.water-dujiangyan{left:18%;top:38%;}
+
+/* Hover tooltip */
+.water-tooltip{
+  position:absolute;z-index:50;
+  display:none;
+  background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);
+  border-radius:16px;padding:20px 24px;
+  box-shadow:0 12px 40px rgba(0,0,0,0.15);
+  border:1px solid rgba(100,180,220,0.3);
+  min-width:320px;max-width:400px;
+  gap:20px;
+  pointer-events:none;
+}
+.water-tooltip.show{display:flex;flex-direction:row;}
+.water-tooltip-left{flex:1;min-width:0;}
+.water-tooltip-watername{font-size:18px;font-weight:700;color:#1A4A6B;margin-bottom:8px;}
+.water-tooltip-desc{font-size:13px;color:#4A7A95;line-height:1.6;}
+.water-tooltip-right{
+  flex-shrink:0;
+  display:flex;align-items:center;
+  padding-left:20px;border-left:1px solid rgba(100,180,220,0.2);
+}
+.water-tooltip-instname{font-size:15px;font-weight:600;color:#B82222;white-space:nowrap;}
 
 /* Map progress bar */
 .map-progress{margin-top:16px;width:1000px;max-width:95vw;}
@@ -143,45 +198,187 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 /* ===== VOYAGE SCREEN ===== */
 #voyageScreen{padding-top:64px;min-height:100vh;position:relative;overflow:hidden;}
 .ocean-bg{position:absolute;inset:0;top:64px;z-index:0;}
-.ocean-gradient{position:absolute;inset:0;background:linear-gradient(180deg,#B8E4FF 0%,#87CEEB 30%,#6CB4EE 60%,#5A9FD4 100%);}
-.wave{position:absolute;bottom:0;width:200%;height:100px;opacity:0.3;}
-.wave-1{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%23fff' d='M0,50 C360,0 720,100 1080,50 C1260,25 1350,75 1440,50 L1440,100 L0,100 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 100px;animation:wave1 6s ease-in-out infinite;bottom:0;}
-.wave-2{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%23fff' d='M0,60 C240,10 480,90 720,40 C960,0 1200,80 1440,60 L1440,100 L0,100 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 100px;animation:wave2 8s ease-in-out infinite;bottom:-10px;opacity:0.2;}
-.wave-3{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%23fff' d='M0,40 C180,80 360,0 540,60 C720,100 900,20 1080,60 C1260,100 1350,40 1440,60 L1440,100 L0,100 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 100px;animation:wave3 10s ease-in-out infinite;bottom:-20px;opacity:0.15;}
-.sun{position:absolute;top:40px;right:80px;width:80px;height:80px;background:radial-gradient(circle,#FFE066,#FFD93D,#F0A623);border-radius:50%;box-shadow:0 0 60px rgba(255,217,61,0.4);z-index:1;}
+/* ===== OCEAN SEA SURFACE ===== */
+.ocean-gradient{
+  position:absolute;inset:0;
+  /* 晴天热带海面：整体浅蓝色调，中心更亮模拟日光反射 */
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.18) 0%, transparent 55%),
+    linear-gradient(175deg, #8DD8F8 0%, #5DC0EE 25%, #3AAADE 50%, #4AB8E8 75%, #6ACAF2 100%);
+}
+/* Caustic light shimmer — 日光在浅海面折射的光纹 */
+.ocean-shimmer{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
+.ocean-shimmer::before{
+  content:'';position:absolute;inset:-25%;
+  background:repeating-linear-gradient(
+    -52deg,
+    transparent 0px, transparent 38px,
+    rgba(255,252,210,0.09) 38px, rgba(255,252,210,0.09) 42px,
+    transparent 42px, transparent 84px,
+    rgba(200,245,255,0.07) 84px, rgba(200,245,255,0.07) 88px
+  );
+  animation:causticDrift 9s ease-in-out infinite;
+}
+.ocean-shimmer::after{
+  content:'';position:absolute;inset:-25%;
+  background:repeating-linear-gradient(
+    -32deg,
+    transparent 0px, transparent 56px,
+    rgba(255,252,210,0.06) 56px, rgba(255,252,210,0.06) 60px,
+    transparent 60px
+  );
+  animation:causticDrift 13s ease-in-out infinite reverse;
+}
+/* 边缘轻晕，收拢视线 */
+.ocean-depth{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(30,100,160,0.15) 100%);
+}
+.wave{position:absolute;bottom:0;width:200%;height:120px;pointer-events:none;}
+.wave-1{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%23fff' d='M0,28 C240,-8 480,72 720,28 C960,-8 1200,72 1440,28 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 120px;animation:wave1 6.5s ease-in-out infinite;bottom:0;opacity:0.32;z-index:3;}
+.wave-2{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%23C8E8F8' d='M0,42 C180,12 360,74 540,42 C720,12 900,74 1080,42 C1260,12 1380,55 1440,42 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 120px;animation:wave2 9s ease-in-out infinite;bottom:-12px;opacity:0.28;z-index:3;}
+.wave-3{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%23A0D0EE' d='M0,62 C360,36 720,88 1080,62 C1260,49 1350,76 1440,62 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 120px;animation:wave3 11.5s ease-in-out infinite;bottom:-22px;opacity:0.22;z-index:3;}
+.wave-4{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%2378B8E0' d='M0,78 C240,58 480,96 720,78 C960,60 1200,96 1440,78 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;background-size:720px 120px;animation:wave4 15s ease-in-out infinite;bottom:-32px;opacity:0.18;z-index:3;}
 
 .voyage-content{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
 .voyage-header{text-align:center;margin-bottom:10px;}
 .voyage-back{position:absolute;top:80px;left:32px;z-index:20;padding:10px 20px;background:rgba(255,255,255,0.9);border:1.5px solid var(--slate-200);border-radius:12px;cursor:pointer;font-size:14px;font-weight:500;color:var(--slate-600);transition:var(--transition);backdrop-filter:blur(10px);font-family:var(--font);display:flex;align-items:center;gap:6px;}
 .voyage-back:hover{background:var(--white);border-color:var(--blue-300);color:var(--blue-500);}
-.voyage-title{font-size:24px;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,60,120,0.2);}
-.voyage-subtitle{font-size:14px;color:rgba(255,255,255,0.8);}
+.voyage-title{font-size:20px;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,60,120,0.2);line-height:1.4;}
+.voyage-subtitle{font-size:14px;color:rgba(255,255,255,0.65);}
 
-/* Islands */
+/* Islands — irregular coastline shapes */
 .islands-area{position:relative;width:900px;height:420px;margin-top:10px;}
-.island{position:absolute;width:130px;height:130px;border-radius:50%;cursor:pointer;transition:var(--transition);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;border:3px solid rgba(255,255,255,0.8);box-shadow:0 6px 24px rgba(0,0,0,0.12);}
-.island:hover{transform:translateY(-10px) scale(1.08);box-shadow:0 12px 36px rgba(0,0,0,0.18);}
-.island:active{transform:translateY(-5px) scale(1.03);}
-.island-icon{font-size:32px;margin-bottom:4px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));}
-.island-name{font-size:12px;font-weight:600;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.15);}
-.island-locked{position:absolute;width:130px;height:130px;border-radius:50%;background:rgba(148,163,184,0.7);cursor:not-allowed;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:11;border:3px dashed var(--slate-400);opacity:0.7;}
-.island-locked .island-icon{filter:grayscale(1) brightness(0.6);}
-.island-locked .island-name{color:var(--slate-500);}
-.island-completed{border-color:var(--amber-300) !important;box-shadow:0 6px 24px rgba(245,166,35,0.3) !important;}
-.island-completed::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--amber-300);animation:glowPulse 2s infinite;}
+.island{
+  position:absolute;width:152px;height:128px;
+  border-radius:0;
+  clip-path:polygon(18% 8%, 42% 2%, 65% 10%, 82% 6%, 96% 22%, 100% 45%, 92% 68%, 98% 85%, 80% 98%, 55% 100%, 32% 95%, 14% 100%, 4% 82%, 0% 55%, 8% 30%, 2% 14%);
+  cursor:pointer;
+  transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:10;
+  box-shadow:
+    0 14px 28px rgba(0,60,140,0.3),
+    0 4px 8px rgba(0,40,100,0.18);
+}
+/* Sandy beach shadow in water below each island */
+.island::before{
+  content:'';
+  position:absolute;bottom:-20px;left:5%;width:90%;height:20px;
+  background:radial-gradient(ellipse,rgba(20,100,180,0.28) 0%,rgba(40,140,210,0.1) 55%,transparent 78%);
+  border-radius:50%;
+  z-index:-1;
+  clip-path:none;
+  transition:all 0.35s ease;
+}
+.island:hover{
+  transform:translateY(-10px) scale(1.07);
+  box-shadow:
+    0 22px 38px rgba(0,60,140,0.35),
+    0 6px 14px rgba(0,40,100,0.22);
+}
+.island:hover::before{bottom:-24px;width:96%;left:2%;opacity:0.7;}
+.island:active{transform:translateY(-4px) scale(1.03);}
+.island-icon{
+  font-size:32px;margin-bottom:4px;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.22));
+  transition:transform 0.2s ease;
+}
+.island:hover .island-icon{transform:scale(1.1) translateY(-2px);}
+.island-name{
+  font-size:12.5px;font-weight:700;color:#fff;
+  text-shadow:0 1px 4px rgba(0,0,0,0.45),0 0 8px rgba(0,0,0,0.2);
+}
 
-.island-1{left:5%;top:30%;background:linear-gradient(135deg,#4A90E2,#357ABD);}
-.island-2{left:28%;top:5%;background:linear-gradient(135deg,#FDCB6E,#F0A623);}
-.island-3{left:52%;top:30%;background:linear-gradient(135deg,#55EFC4,#00B894);}
-.island-4{left:76%;top:5%;background:linear-gradient(135deg,#A29BFE,#7C6FE0);}
-.island-5{left:76%;top:55%;background:linear-gradient(135deg,#B2BEC3,#95A5A6);}
+/* Locked island — fog of war */
+.island-locked{
+  width:152px;height:128px;
+  clip-path:inherit;
+  background:
+    radial-gradient(ellipse at 45% 45%, rgba(100,120,160,0.55) 0%, rgba(50,65,100,0.75) 100%) !important;
+  cursor:not-allowed;
+  opacity:0.5;
+  box-shadow:0 6px 20px rgba(0,40,100,0.2) !important;
+  filter:saturate(0.2) brightness(0.8);
+}
+.island-locked::before{display:none;}
+.island-locked .island-icon{filter:grayscale(1) brightness(0.55) blur(0.5px);}
+.island-locked .island-name{color:rgba(180,200,240,0.6);}
+.island-locked:hover{transform:none;box-shadow:0 6px 20px rgba(0,40,100,0.2) !important;}
 
-/* Mandatory tag */
-.mandatory-tag{position:absolute;top:-6px;right:-6px;background:var(--rose-400);color:#fff;font-size:10px;padding:2px 8px;border-radius:8px;font-weight:600;border:2px solid #fff;box-shadow:var(--shadow-sm);}
+/* Completed glow — warm gold */
+.island-completed{
+  box-shadow:0 0 0 4px rgba(255,200,50,0.3),0 0 32px rgba(255,185,30,0.4),0 14px 28px rgba(0,60,140,0.3) !important;
+}
+.island-completed::after{
+  content:'';position:absolute;inset:-10px;
+  clip-path:polygon(18% 5%, 42% 0%, 65% 8%, 82% 4%, 99% 21%, 103% 46%, 95% 70%, 101% 87%, 82% 101%, 55% 103%, 30% 98%, 12% 103%, 1% 84%, -3% 54%, 5% 28%, 0% 11%);
+  border:2.5px solid rgba(255,200,60,0.5);
+  animation:glowPulse 2.5s ease-in-out infinite;pointer-events:none;
+}
 
-/* Boat */
-.boat{position:absolute;z-index:12;font-size:36px;transition:all 1.2s cubic-bezier(0.25,0.46,0.45,0.94);filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));animation:boatBob 3s ease-in-out infinite;pointer-events:none;}
-.boat-wake{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:40px;height:8px;background:rgba(255,255,255,0.5);border-radius:50%;filter:blur(2px);}
+/* 4 distinct island silhouettes — each with its own irregular coastline */
+.island-1{
+  left:3%;top:32%;
+  clip-path:polygon(22% 5%, 50% 0%, 72% 8%, 90% 4%, 100% 28%, 96% 55%, 100% 78%, 84% 98%, 58% 100%, 30% 96%, 8% 100%, 0% 72%, 6% 42%, 0% 18%);
+  background:
+    radial-gradient(ellipse at 50% 90%, rgba(248,230,155,0.78) 0%, transparent 38%),
+    radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.3) 0%, transparent 42%),
+    radial-gradient(ellipse at 48% 52%, #96CCF5 0%, #4492DC 46%, #2168B0 78%, #103A72 100%);
+}
+.island-2{
+  left:27%;top:6%;
+  clip-path:polygon(15% 10%, 38% 0%, 60% 6%, 78% 0%, 96% 16%, 100% 42%, 92% 65%, 100% 82%, 88% 98%, 62% 100%, 38% 96%, 18% 100%, 4% 80%, 0% 52%, 10% 26%, 4% 8%);
+  background:
+    radial-gradient(ellipse at 50% 90%, rgba(248,230,155,0.85) 0%, transparent 38%),
+    radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.3) 0%, transparent 42%),
+    radial-gradient(ellipse at 48% 52%, #FFE8A0 0%, #F2BC2A 46%, #CC8C10 78%, #7A5005 100%);
+}
+.island-3{
+  left:51%;top:32%;
+  clip-path:polygon(28% 2%, 55% 0%, 76% 8%, 94% 5%, 100% 32%, 98% 58%, 100% 80%, 85% 100%, 60% 96%, 35% 100%, 12% 92%, 0% 68%, 4% 40%, 0% 20%, 12% 6%);
+  background:
+    radial-gradient(ellipse at 50% 90%, rgba(248,230,155,0.78) 0%, transparent 38%),
+    radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.3) 0%, transparent 42%),
+    radial-gradient(ellipse at 48% 52%, #90F2D8 0%, #2ABE98 46%, #158068 78%, #073E2E 100%);
+}
+.island-4{
+  left:75%;top:6%;
+  clip-path:polygon(20% 8%, 44% 0%, 68% 6%, 86% 2%, 100% 24%, 98% 50%, 100% 74%, 90% 96%, 64% 100%, 40% 98%, 18% 100%, 2% 78%, 0% 50%, 6% 24%, 0% 10%);
+  background:
+    radial-gradient(ellipse at 50% 90%, rgba(248,230,155,0.78) 0%, transparent 38%),
+    radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.3) 0%, transparent 42%),
+    radial-gradient(ellipse at 48% 52%, #D2BEFF 0%, #7E62E4 46%, #5040A8 78%, #2A1870 100%);
+}
+
+/* Mandatory tag — hidden */
+.mandatory-tag{display:none;}
+
+/* Boat — SVG sailing vessel */
+.boat{
+  position:absolute;z-index:12;
+  width:72px;height:62px;
+  transition:all 1.2s cubic-bezier(0.25,0.46,0.45,0.94);
+  filter:drop-shadow(0 4px 10px rgba(0,30,90,0.3));
+  animation:boatBob 3.2s ease-in-out infinite;
+  pointer-events:none;
+}
+.boat-svg{width:100%;height:100%;overflow:visible;}
+.boat-wake{
+  position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);
+  width:56px;height:14px;
+  background:radial-gradient(ellipse,rgba(255,255,255,0.72) 0%,rgba(180,230,255,0.35) 55%,transparent 100%);
+  border-radius:50%;
+  filter:blur(3px);
+  animation:foamPulse 2.8s ease-in-out infinite;
+}
+.boat-wake::before{
+  content:'';position:absolute;top:-8px;left:-8px;right:-8px;
+  height:10px;
+  background:radial-gradient(ellipse,rgba(255,255,255,0.4) 0%,transparent 70%);
+  border-radius:50%;
+  animation:foamPulse 2.8s ease-in-out infinite 0.4s;
+}
 
 /* ===== DOCUMENT PANEL ===== */
 .doc-panel-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.3);backdrop-filter:blur(8px);z-index:200;display:none;align-items:center;justify-content:center;animation:fadeIn 0.3s ease;}
@@ -324,20 +521,135 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:1200px){
-  .map-board{width:900px;height:486px;}
   .shop-grid{grid-template-columns:repeat(3,1fr);}
   .islands-area{width:780px;height:400px;}
 }
 @media(max-width:768px){
-  .map-board{width:100%;height:auto;aspect-ratio:1334/720;}
-  .province-hotspot{font-size:12px;}
+  .water-label{font-size:11px;}
   .islands-area{width:100%;height:350px;}
-  .island,.island-locked{width:100px;height:100px;}
-  .island-icon{font-size:24px;}
-  .island-name{font-size:10px;}
+  .island,.island-locked{width:112px;height:96px;}
+  .island-icon{font-size:26px;}
+  .island-name{font-size:10.5px;}
   .shop-grid{grid-template-columns:repeat(2,1fr);}
   .start-title{font-size:28px;}
   .start-features{flex-direction:column;gap:16px;align-items:center;}
+}
+
+/* ===== VIDEO PLAYER ===== */
+.video-player-wrap {
+  flex: 1; display: flex;
+  align-items: center; justify-content: center;
+  background: #000;
+  position: relative; overflow: hidden;
+}
+.video-player-wrap video {
+  max-width: 100%; max-height: 100%;
+  outline: none; cursor: pointer;
+}
+.video-player-wrap video::-webkit-media-controls { display: none !important; }
+.video-player-wrap video::-webkit-media-controls-enclosure { display: none !important; }
+
+.video-controls {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 56px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+  display: flex; align-items: center;
+  padding: 0 20px; gap: 14px;
+  opacity: 0; transition: opacity 0.35s ease;
+}
+.video-player-wrap:hover .video-controls,
+.video-player-wrap.show-controls .video-controls { opacity: 1; }
+
+.video-play-btn {
+  width: 36px; height: 36px;
+  border: none; border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  cursor: pointer; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s; flex-shrink: 0;
+  color: var(--slate-800);
+}
+.video-play-btn:hover { transform: scale(1.1); }
+
+.video-time {
+  color: #fff; font-size: 12px;
+  font-family: 'SF Mono', 'Consolas', monospace;
+  flex-shrink: 0; min-width: 100px; text-align: center;
+}
+
+.video-progress-bar {
+  flex: 1; height: 5px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 3px; cursor: pointer;
+  position: relative; overflow: visible;
+}
+.video-progress-bar:hover { height: 7px; }
+.video-progress-fill {
+  height: 100%; border-radius: 3px;
+  background: var(--emerald-400);
+  width: 0%;
+  transition: width 0.05s linear;
+}
+
+/* Video completion buttons */
+.video-complete-bar {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: linear-gradient(180deg, rgba(26,26,46,0.95), rgba(26,26,46,1));
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.video-complete-bar.show { display: flex; }
+
+.video-complete-btn {
+  padding: 12px 28px;
+  border-radius: 14px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font);
+}
+.video-complete-btn.replay {
+  background: var(--slate-100);
+  color: var(--slate-600);
+}
+.video-complete-btn.replay:hover {
+  background: var(--slate-200);
+  transform: translateY(-2px);
+}
+.video-complete-btn.exam {
+  background: linear-gradient(135deg, var(--rose-400), #E05565);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(232,99,110,0.3);
+}
+.video-complete-btn.exam:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(232,99,110,0.45);
+}
+
+.video-complete-check {
+  text-align: center;
+  padding: 16px 8px 4px;
+  font-size: 14px;
+  color: var(--emerald-400);
+  font-weight: 600;
+  display: none;
+}
+.video-complete-check.show { display: block; }
+
+.video-loader {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 48px; height: 48px;
+  border: 4px solid rgba(255,255,255,0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: tornado 0.8s linear infinite;
+  z-index: 5; pointer-events: none;
 }
 </style>
 </head>
@@ -379,6 +691,7 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 <div id="mapScreen" class="screen">
   <nav class="top-nav" id="topNav">
     <div class="nav-left">
+      <img src="../国民logo.png" alt="国民养老保险" class="nav-logo">
       <div class="nav-avatar" onclick="toggleAvatarMenu(event)">👥</div>
       <span class="nav-name">新航员</span>
       <div class="avatar-dropdown" id="avatarDropdown1">
@@ -402,34 +715,91 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
   </nav>
 
   <div class="map-container">
-    <div class="brand-logo brand-logo--small brand-logo--light">
-      <img src="../国民logo.png" alt="国民养老保险" class="brand-logo-img">
-    </div>
-    <div class="map-header">
-      <h2>🗺️ 国民养老 · 知识地图</h2>
-      <p>点击机构节点，开启知识航行之旅</p>
-    </div>
-
     <div class="map-board" id="mapBoard">
-      <img src="../分支机构地图.png" alt="分支机构地图" class="map-board-img" id="mapBoardImg">
-      <div class="province-hotspot hotspot-shandong" data-inst="shandong" onclick="enterInstitution('shandong')">山东</div>
-      <div class="province-hotspot hotspot-beijing" data-inst="beijing" onclick="enterInstitution('beijing')">北京</div>
-      <div class="province-hotspot hotspot-shanghai" data-inst="shanghai" onclick="enterInstitution('shanghai')">上海</div>
-      <div class="province-hotspot hotspot-zhejiang" data-inst="zhejiang" onclick="enterInstitution('zhejiang')">浙江</div>
-      <div class="province-hotspot hotspot-sichuan" data-inst="sichuan" onclick="enterInstitution('sichuan')">四川</div>
-      <div class="province-hotspot hotspot-chongqing" data-inst="chongqing" onclick="enterInstitution('chongqing')">重庆</div>
-      <div class="province-hotspot hotspot-guangdong" data-inst="guangdong" onclick="enterInstitution('guangdong')">广东</div>
+      <!-- SVG connecting streams -->
+      <svg class="water-streams" viewBox="0 0 1000 540" preserveAspectRatio="none">
+        <defs>
+          <filter id="streamGlow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Yongding -> Baotu -->
+        <path d="M500 110 C530 130,560 150,590 170 C620 190,640 210,660 230" stroke="rgba(100,180,230,0.5)" stroke-width="2.5" fill="none" filter="url(#streamGlow)"/>
+        <!-- Yongding -> Jialing -->
+        <path d="M480 120 C440 180,400 250,380 300" stroke="rgba(100,180,230,0.45)" stroke-width="2" fill="none"/>
+        <!-- Baotu -> Huangpu -->
+        <path d="M680 250 C720 260,760 240,790 210" stroke="rgba(100,180,230,0.5)" stroke-width="2.5" fill="none" filter="url(#streamGlow)"/>
+        <!-- Huangpu -> Xihu -->
+        <path d="M790 230 C800 260,790 290,760 310" stroke="rgba(100,180,230,0.45)" stroke-width="2" fill="none"/>
+        <!-- Xihu -> Zhujiang -->
+        <path d="M750 330 C740 370,720 400,700 430" stroke="rgba(100,180,230,0.45)" stroke-width="2" fill="none"/>
+        <!-- Jialing -> Zhujiang -->
+        <path d="M400 320 C480 380,560 400,680 440" stroke="rgba(100,180,230,0.4)" stroke-width="2" fill="none"/>
+        <!-- Yongding -> Dujiangyan -->
+        <path d="M460 120 C380 160,300 220,260 280" stroke="rgba(100,180,230,0.45)" stroke-width="2" fill="none"/>
+        <!-- Dujiangyan -> Jialing -->
+        <path d="M280 300 C320 310,350 315,380 320" stroke="rgba(100,180,230,0.4)" stroke-width="2" fill="none"/>
+        <!-- Jialing -> Zhujiang direct -->
+        <path d="M400 340 C480 400,560 430,680 440" stroke="rgba(100,180,230,0.35)" stroke-width="1.5" fill="none" stroke-dasharray="6,3"/>
+        <!-- Baotu -> Jialing -->
+        <path d="M650 260 C580 280,480 300,420 320" stroke="rgba(100,180,230,0.35)" stroke-width="1.5" fill="none" stroke-dasharray="6,3"/>
+      </svg>
+
+      <!-- Water bodies -->
+      <div class="water-spot water-yongding" id="waterBeijing" data-inst="beijing"
+           onmouseenter="showWaterTooltip(event,'beijing')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('beijing')">
+        <div class="water-shape yongding-shape"></div>
+        <span class="water-label">永定河</span>
+      </div>
+
+      <div class="water-spot water-baotu" id="waterShandong" data-inst="shandong"
+           onmouseenter="showWaterTooltip(event,'shandong')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('shandong')">
+        <div class="water-shape baotu-shape"></div>
+        <span class="water-label">趵突泉</span>
+      </div>
+
+      <div class="water-spot water-huangpu" id="waterShanghai" data-inst="shanghai"
+           onmouseenter="showWaterTooltip(event,'shanghai')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('shanghai')">
+        <div class="water-shape huangpu-shape"></div>
+        <span class="water-label">黄浦江</span>
+      </div>
+
+      <div class="water-spot water-xihu" id="waterZhejiang" data-inst="zhejiang"
+           onmouseenter="showWaterTooltip(event,'zhejiang')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('zhejiang')">
+        <div class="water-shape xihu-shape"></div>
+        <span class="water-label">西湖</span>
+      </div>
+
+      <div class="water-spot water-zhujiang" id="waterGuangdong" data-inst="guangdong"
+           onmouseenter="showWaterTooltip(event,'guangdong')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('guangdong')">
+        <div class="water-shape zhujiang-shape"></div>
+        <span class="water-label">珠江</span>
+      </div>
+
+      <div class="water-spot water-jialing" id="waterChongqing" data-inst="chongqing"
+           onmouseenter="showWaterTooltip(event,'chongqing')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('chongqing')">
+        <div class="water-shape jialing-shape"></div>
+        <span class="water-label">嘉陵江</span>
+      </div>
+
+      <div class="water-spot water-dujiangyan" id="waterSichuan" data-inst="sichuan"
+           onmouseenter="showWaterTooltip(event,'sichuan')" onmouseleave="hideWaterTooltip()" onclick="enterInstitution('sichuan')">
+        <div class="water-shape dujiangyan-shape"></div>
+        <span class="water-label">都江堰</span>
+      </div>
+
+      <!-- Hover tooltip -->
+      <div class="water-tooltip" id="waterTooltip">
+        <div class="water-tooltip-left">
+          <div class="water-tooltip-watername" id="tooltipWaterName"></div>
+          <div class="water-tooltip-desc" id="tooltipWaterDesc"></div>
+        </div>
+        <div class="water-tooltip-right">
+          <div class="water-tooltip-instname" id="tooltipInstName"></div>
+        </div>
+      </div>
     </div>
 
-    <div class="map-progress">
-      <div class="progress-bar-container">
-        <div class="progress-bar-fill" id="totalProgress" style="width:0%"></div>
-      </div>
-      <div class="progress-info">
-        <span>总体学习进度</span>
-        <span id="totalProgressText">0%</span>
-      </div>
-      <div class="inst-progress-dots" id="instProgressDots"></div>
+    <div class="map-header" style="position:absolute;bottom:28px;left:0;right:0;text-align:center;margin-bottom:0;">
+      <p style="color:rgba(44,95,124,0.7);font-size:13px;">溯流而下，开启知识航行之旅</p>
     </div>
   </div>
 </div>
@@ -438,6 +808,7 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 <div id="voyageScreen" class="screen">
   <nav class="top-nav">
     <div class="nav-left">
+      <img src="../国民logo.png" alt="国民养老保险" class="nav-logo">
       <div class="nav-avatar" onclick="toggleAvatarMenu(event)">👥</div>
       <span class="nav-name">新航员</span>
       <div class="avatar-dropdown" id="avatarDropdown2">
@@ -464,57 +835,67 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
 
   <div class="ocean-bg">
     <div class="ocean-gradient"></div>
+    <div class="ocean-shimmer"></div>
+    <div class="ocean-depth"></div>
     <div class="wave wave-1"></div>
     <div class="wave wave-2"></div>
     <div class="wave wave-3"></div>
-    <div class="sun"></div>
+    <div class="wave wave-4"></div>
   </div>
 
   <div class="voyage-content">
-    <div class="brand-logo brand-logo--small" style="margin-bottom:8px;">
-      <img src="../国民logo.png" alt="国民养老保险" class="brand-logo-img" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15)) brightness(1.1);">
-    </div>
-    <div class="voyage-header">
-      <h2 class="voyage-title" id="voyageTitle">知识海洋航行</h2>
-      <p class="voyage-subtitle" id="voyageSubtitle">点击岛屿探索知识板块</p>
-    </div>
-
     <div class="islands-area" id="islandsArea">
-      <!-- Boat -->
-      <div class="boat" id="boat">⛵<div class="boat-wake"></div></div>
+      <!-- Boat — SVG sailing vessel -->
+      <div class="boat" id="boat">
+        <svg class="boat-svg" viewBox="0 0 60 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Mast -->
+          <rect x="28.5" y="7" width="3" height="37" rx="1.5" fill="#6B4C12"/>
+          <!-- Main sail — right, billowing wind curve -->
+          <path d="M30 9 C44 17 50 27 46 41 L30 41 Z" fill="#FDFAF0" stroke="#CDB87A" stroke-width="0.8" stroke-linejoin="round"/>
+          <!-- Jib — left, smaller -->
+          <path d="M30 13 C18 22 16 34 20 41 L30 41 Z" fill="#EEF6FF" stroke="#A8C4DC" stroke-width="0.8" stroke-linejoin="round"/>
+          <!-- Sail seam lines for texture -->
+          <line x1="38" y1="18" x2="44" y2="38" stroke="rgba(180,155,90,0.35)" stroke-width="0.7"/>
+          <!-- Hull body -->
+          <path d="M11 43 Q15 54 30 56 Q45 54 49 43 Z" fill="#B87318"/>
+          <!-- Hull deck rail -->
+          <rect x="11" y="41" width="38" height="4" rx="2" fill="#D48A22"/>
+          <!-- Sunlit highlight on deck -->
+          <path d="M14 42.5 Q30 41 46 42.5" stroke="rgba(255,255,255,0.45)" stroke-width="1.2" fill="none"/>
+          <!-- Flag -->
+          <path d="M30 7 L43 12 L30 17 Z" fill="#D92B2B" opacity="0.92"/>
+        </svg>
+        <div class="boat-wake"></div>
+      </div>
 
-      <!-- Island 1: 关于公司 -->
+      <!-- Island 1: 文化岛 -->
       <div class="island island-1" data-island="about" onclick="openIsland('about')">
-        <div class="mandatory-tag">必修</div>
+
         <div class="island-icon">🏢</div>
-        <div class="island-name">关于公司</div>
+        <div class="island-name">文化岛</div>
       </div>
 
       <!-- Island 2: 入职须知 -->
       <div class="island island-2" data-island="onboarding" onclick="openIsland('onboarding')">
-        <div class="mandatory-tag">必修</div>
+
         <div class="island-icon">📋</div>
         <div class="island-name">入职须知</div>
       </div>
 
       <!-- Island 3: 办公指南 -->
-      <div class="island island-3" data-island="office" onclick="openIsland('office')">
+      <div class="island island-3 island-locked" id="islandOffice" data-island="office">
         <div class="island-icon">💻</div>
         <div class="island-name">办公指南</div>
       </div>
 
       <!-- Island 4: 公司产品 -->
-      <div class="island island-4" data-island="products" onclick="openIsland('products')">
+      <div class="island island-4 island-locked" id="islandProducts" data-island="products">
         <div class="island-icon">📦</div>
         <div class="island-name">公司产品</div>
       </div>
 
-      <!-- Island 5: 题库 (locked initially) -->
-      <div class="island island-5 island-locked" id="quizIsland" data-island="quiz">
-        <div class="island-icon">📝</div>
-        <div class="island-name">题库</div>
-      </div>
     </div>
+    <p class="voyage-subtitle" id="voyageSubtitle" style="position:absolute;bottom:28px;left:0;right:0;text-align:center;">点击岛屿，开始启航</p>
   </div>
 </div>
 
@@ -616,8 +997,8 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
   </div>
 </div>
 
-<!-- ===== PDF VIEWER ===== -->
-<div class="pdf-viewer-overlay" id="pdfViewerOverlay">
+<!-- ===== MEDIA VIEWER (PDF / Video) ===== -->
+<div class="pdf-viewer-overlay" id="mediaViewerOverlay">
   <div class="pdf-toolbar">
     <div class="pdf-toolbar-left">
       <button class="pdf-back" onclick="closePdf()">← 返回</button>
@@ -629,9 +1010,7 @@ body{font-family:var(--font);background:var(--slate-50);color:var(--slate-800);o
     </div>
     <button class="pdf-complete-btn" id="pdfCompleteBtn" onclick="completeReading()">✓ 标记已读 (+国小豆)</button>
   </div>
-  <div class="pdf-frame">
-    <iframe id="pdfFrame" src="" title="PDF预览"></iframe>
-  </div>
+  <div id="mediaContent" style="flex:1;display:flex;background:#1a1a2e;"></div>
 </div>
 
 <!-- ===== HURRICANE OVERLAY ===== -->
@@ -740,48 +1119,83 @@ function saveState() {
 
 // ==================== INSTITUTION DATA ====================
 const INSTITUTIONS = {
-  beijing:   { name: '北京(总部)', icon: '🏛️', color: '#FF7675' },
-  shanghai:  { name: '上海', icon: '🏙️', color: '#74B9FF' },
-  shandong:  { name: '山东', icon: '⛰️', color: '#FDCB6E' },
-  sichuan:   { name: '四川', icon: '🐼', color: '#81ECEC' },
-  guangdong: { name: '广东', icon: '🌴', color: '#A29BFE' },
-  chongqing: { name: '重庆', icon: '🌆', color: '#FD79A8' },
-  zhejiang:  { name: '浙江', icon: '🌊', color: '#55EFC4' },
+  beijing:   { name: '北京总部 — 永定河', icon: '💧', color: '#4AADE0' },
+  shanghai:  { name: '上海 — 黄浦江', icon: '💧', color: '#4AADE0' },
+  shandong:  { name: '山东 — 趵突泉', icon: '💧', color: '#4AADE0' },
+  sichuan:   { name: '四川 — 都江堰', icon: '💧', color: '#4AADE0' },
+  guangdong: { name: '广东 — 珠江', icon: '💧', color: '#4AADE0' },
+  chongqing: { name: '重庆 — 嘉陵江', icon: '💧', color: '#4AADE0' },
+  zhejiang:  { name: '浙江 — 西湖', icon: '💧', color: '#4AADE0' },
 };
+
+
+// ==================== WATER SYSTEM DATA ====================
+const WATER_SYSTEMS = {
+  beijing:   { waterName:'永定河', waterDesc:'北京的母亲河，发源于山西宁武，流经门头沟、石景山，贯穿京津冀汇入海河，孕育了千年古都文明。', instName:'国民养老保险总部' },
+  shandong:  { waterName:'趵突泉', waterDesc:'天下第一泉，济南七十二名泉之首，三股泉水昼夜喷涌，乾隆御笔亲题"趵突腾空"，千年不息。', instName:'国民养老保险山东省分公司' },
+  shanghai:  { waterName:'黄浦江', waterDesc:'上海的母亲河，外滩万国建筑与陆家嘴摩天大楼隔江相望，见证东方明珠的百年繁华。', instName:'国民养老保险上海市分公司' },
+  zhejiang:  { waterName:'西湖', waterDesc:'人间天堂，三面云山一面城，苏堤春晓、断桥残雪，中国十大风景名胜之一。', instName:'国民养老保险浙江省分公司' },
+  sichuan:   { waterName:'都江堰', waterDesc:'世界水利工程遗产，李冰父子率众修建，千年无坝引水，至今灌溉成都平原万亩良田。', instName:'国民养老保险四川省分公司' },
+  chongqing: { waterName:'嘉陵江', waterDesc:'长江最大支流之一，流经重庆汇入长江，在朝天门与长江交汇形成两江奇观。', instName:'国民养老保险重庆市分公司' },
+  guangdong: { waterName:'珠江', waterDesc:'中国第三长河，由西江、北江、东江汇聚而成，滋养粤港澳大湾区，奔流入南海。', instName:'国民养老保险广东省分公司' },
+};
+
+function showWaterTooltip(event, instKey) {
+  var ws = WATER_SYSTEMS[instKey];
+  if (!ws) return;
+  document.getElementById('tooltipWaterName').textContent = ws.waterName;
+  document.getElementById('tooltipWaterDesc').textContent = ws.waterDesc;
+  document.getElementById('tooltipInstName').textContent = ws.instName;
+  var tooltip = document.getElementById('waterTooltip');
+  tooltip.classList.add('show');
+  // Position tooltip near cursor but within board
+  var board = document.getElementById('mapBoard');
+  var boardRect = board.getBoundingClientRect();
+  var x = event.clientX - boardRect.left + 20;
+  var y = event.clientY - boardRect.top - 10;
+  if (x + 340 > boardRect.width) x = event.clientX - boardRect.left - 360;
+  if (y + 120 > boardRect.height) y = boardRect.height - 130;
+  tooltip.style.left = x + 'px';
+  tooltip.style.top = y + 'px';
+}
+
+function hideWaterTooltip() {
+  document.getElementById('waterTooltip').classList.remove('show');
+}
 
 // ==================== DOCUMENT DATA ====================
 const ISLANDS = {
   about: {
-    name: '关于公司', icon: '🏢', color: '#4A90E2',
+    name: '文化岛', icon: '🏢', color: '#4A90E2',
     docs: [
-      { id: '企业文化理念体系', title: '企业文化理念体系', file: '企业文化理念体系.pdf', mandatory: true, points: 10 },
-      { id: '品牌手册', title: '品牌手册', file: '品牌手册.pdf', points: 5 },
-      { id: '公司经营动态', title: '公司经营动态', file: '公司经营动态.pdf', points: 5 },
+      { id: '企业文化理念体系', title: '企业文化理念体系', file: '企业文化理念体系.mp4', type: 'video', mandatory: true, points: 10, poster: '' },
+      { id: '品牌手册', title: '品牌手册', file: '品牌手册.mp4', type: 'video', points: 5, poster: '' },
+      { id: '公司经营动态', title: '公司经营动态', file: '公司经营动态.mp4', type: 'video', points: 5, poster: '' },
     ]
   },
   onboarding: {
     name: '入职须知', icon: '📋', color: '#F0A623',
     docs: [
-      { id: '员工行为规范', title: '员工行为规范', file: '员工行为规范.pdf', mandatory: true, points: 10 },
+      { id: '员工行为规范', title: '员工行为规范', file: '入职指引.mp4', type: 'video', mandatory: true, points: 10, poster: '' },
     ]
   },
   office: {
     name: '办公指南', icon: '💻', color: '#00B894',
     docs: [
-      { id: 'IT设备操作指南', title: '办公职场IT设备操作指南', file: '办公职场IT设备操作指南.pdf', points: 5 },
-      { id: '网络操作指南', title: '网络操作指南', file: '网络操作指南.pdf', points: 5 },
-      { id: '差旅指南', title: '差旅指南', file: '差旅指南.pdf', points: 5 },
-      { id: '财务指南', title: '财务指南', file: '财务指南.pdf', points: 5 },
-      { id: 'OA指南', title: 'OA指南', file: 'OA指南.pdf', points: 5 },
-      { id: 'HR指南', title: 'HR指南', file: 'HR指南.pdf', points: 5 },
+      { id: 'IT设备操作指南', title: '办公职场IT设备操作指南', file: '办公职场IT设备操作指南.mp4', type: 'video', points: 5, poster: '' },
+      { id: '网络操作指南', title: '网络操作指南', file: '网络操作指南.mp4', type: 'video', points: 5, poster: '' },
+      { id: '差旅指南', title: '差旅指南', file: '差旅指南.mp4', type: 'video', points: 5, poster: '' },
+      { id: '财务指南', title: '财务指南', file: '财务指南.mp4', type: 'video', points: 5, poster: '' },
+      { id: 'OA指南', title: 'OA指南', file: 'OA指南.mp4', type: 'video', points: 5, poster: '' },
+      { id: 'HR指南', title: 'HR指南', file: 'HR指南.mp4', type: 'video', points: 5, poster: '' },
     ]
   },
   products: {
     name: '公司产品', icon: '📦', color: '#7C6FE0',
     docs: [
-      { id: '国民养老产品体系', title: '国民养老产品体系', file: '国民养老产品体系.pdf', points: 5 },
-      { id: '商业养老金产品介绍', title: '商业养老金产品介绍', file: '商业养老金产品介绍.pdf', points: 5 },
-      { id: '个人养老金法规政策汇编', title: '个人养老金法规政策汇编', file: '个人养老金法规政策汇编.pdf', points: 5 },
+      { id: '国民养老产品体系', title: '国民养老产品体系', file: '国民养老产品体系.mp4', type: 'video', points: 5, poster: '' },
+      { id: '商业养老金产品介绍', title: '商业养老金产品介绍', file: '商业养老金产品介绍.mp4', type: 'video', points: 5, poster: '' },
+      { id: '个人养老金法规政策汇编', title: '个人养老金法规政策汇编', file: '个人养老金法规政策汇编.mp4', type: 'video', points: 5, poster: '' },
     ]
   },
 };
@@ -789,18 +1203,25 @@ const ISLANDS = {
 const TOTAL_DOCS = Object.values(ISLANDS).reduce((sum, island) => sum + island.docs.length, 0);
 
 // ==================== QUIZ DATA ====================
-const QUIZ_DATA = [
-  { q: '国民养老保险股份有限公司的英文名称是什么？', options: ['Guominpension','Guomininsurance','GM','GI'], answer: 0 },
-  { q: '以下哪个不属于公司的核心价值观？', options: ['创新','创业','创造','创作'], answer: 3 },
-  { q: '公司品牌的主色调是什么？', options: ['红色','蓝色','绿色','黄色'], answer: 0 },
-  { q: '以下哪个是公司的商业养老金产品系列名称？', options: ['国泰民安系列','平安福系列','太平洋无忧系列','人寿康宁系列'], answer: 0 },
-  { q: '公司的社会责任理念是什么？', options: ['有情怀 有温度 有价值','让养老更安心','让生活更美好','让投资更稳健'], answer: 0 },
-  { q: '个人养老金制度从什么时候起开始全国推行？', options: ['2023年12月',' 2024年12月','2025年12月','2022年12月'], answer: 1 },
-  { q: '以下哪个不是公司的线上服务平台？', options: ['国民e站','国民之家','国民养老APP','赵钱孙李养老规划服务'], answer: 1 },
-  { q: '国泰民安三年期限产品的购买年龄范围是？', options: ['28天-70周岁','18周岁，无上限','18周岁，70周岁','28天，无上限'], answer: 1 },
-  { q: '公司目前没有哪种产品类别？', options: ['专属商业养老保险','宠物意外险','商业养老金','养老年金险'], answer: 1 },
-  { q: '合同审批需要在哪里提交流程？', options: ['预算系统','HR系统','OA系统','合同管理系统'], answer: 2 },
-];
+const QUIZ_DATA = {
+  onboarding: [
+    {
+      q: '入职后，应该先登录哪个系统修改密码？',
+      type: 'single',
+      options: ['OA系统', '统一用户管理平台', '企业微信'],
+      answer: [1],
+    },
+    {
+      q: '统一用户管理平台里面，集成了公司哪些业务系统？',
+      type: 'multi',
+      options: ['OA系统', 'HR系统', '预算系统', '费控系统', '企业微信'],
+      answer: [0, 1, 2, 3],
+    },
+  ],
+  about: [],
+  office: [],
+  products: [],
+};;
 
 // ==================== SHOP DATA ====================
 const SHOP_ITEMS = [
@@ -835,6 +1256,8 @@ function showScreen(screenId) {
 
 function startGame() {
   showScreen('mapScreen');
+  // Preload all videos for smooth playback
+  preloadAllVideos();
   // First visit bonus
   if (!state.firstVisitInstitutions) state.firstVisitInstitutions = {};
   // Show guide if first time
@@ -845,51 +1268,37 @@ function startGame() {
 
 // ==================== MAP UI ====================
 function updateMapUI() {
-  updateProgress();
-  updateInstProgressDots();
+  // Map UI is now full-screen water system — no progress bar
 }
 
 function updateProgress() {
-  const readCount = Object.values(state.documentsRead).filter(v => v === true).length;
-  const pct = Math.round((readCount / TOTAL_DOCS) * 100);
-  document.getElementById('totalProgress').style.width = pct + '%';
-  document.getElementById('totalProgressText').textContent = pct + '%';
+  // Progress bar removed from map screen
 }
 
 function updateInstProgressDots() {
-  const container = document.getElementById('instProgressDots');
-  container.innerHTML = '';
-  Object.entries(INSTITUTIONS).forEach(([key, inst]) => {
-    const done = state.completedInstitutions.includes(key);
-    const dot = document.createElement('div');
-    dot.className = 'inst-dot';
-    dot.innerHTML = `<div class="inst-dot-dot ${done?'done':''}"></div><span>${inst.name}</span>`;
-    container.appendChild(dot);
-  });
+  // Institution dots removed from map screen
 }
 
 function enterInstitution(instKey) {
   state.currentInstitution = instKey;
 
   // First visit bonus
+  var instName = WATER_SYSTEMS[instKey] ? WATER_SYSTEMS[instKey].instName : INSTITUTIONS[instKey].name;
   if (!state.firstVisitInstitutions[instKey]) {
     state.firstVisitInstitutions[instKey] = true;
-    addPoints(5, '首次进入' + INSTITUTIONS[instKey].name);
-    showRewardModal('🎉 探索新大陆！', '首次进入' + INSTITUTIONS[instKey].name + '，获得 +5 国小豆');
+    addPoints(5, '首次进入' + instName);
+    showRewardModal('🎉 欢迎加入！', '欢迎加入' + instName + '，获得 +5 国小豆');
   }
 
   if (!state.visitedInstitutions.includes(instKey)) {
     state.visitedInstitutions.push(instKey);
   }
 
-  document.getElementById('voyageTitle').textContent = INSTITUTIONS[instKey].name + ' · 知识海洋';
-  document.getElementById('voyageSubtitle').textContent = '点击岛屿探索知识板块';
+  document.getElementById('voyageSubtitle').textContent = '点击岛屿，开始启航';
 
   showScreen('voyageScreen');
   moveBoatToStart();
 
-  // Check quiz unlock
-  checkQuizUnlock();
   saveState();
 }
 
@@ -899,11 +1308,29 @@ function backToMap() {
 
 // ==================== VOYAGE / ISLANDS ====================
 function updateVoyageUI() {
+  // Check if 文化岛 is completed -> unlock other islands
+  var cultureDone = ISLANDS.about.docs.every(function(d) { return state.documentsRead[d.id] === true; });
+  var lockedIslands = ['office', 'products'];
+  lockedIslands.forEach(function(key) {
+    var el = document.querySelector('[data-island="' + key + '"]');
+    if (!el) return;
+    if (cultureDone) {
+      el.classList.remove('island-locked');
+      el.classList.add('island');
+      el.onclick = function() { openIsland(key); };
+    } else {
+      el.classList.add('island-locked');
+      el.onclick = null;
+    }
+  });
+
   // Update island completion states
-  Object.entries(ISLANDS).forEach(([key, island]) => {
-    const islandEl = document.querySelector(`.island[data-island="${key}"]`);
+  Object.entries(ISLANDS).forEach(function(entry) {
+    var key = entry[0];
+    var island = entry[1];
+    var islandEl = document.querySelector('[data-island="' + key + '"]');
     if (!islandEl) return;
-    const allDone = island.docs.every(d => state.documentsRead[d.id] === true);
+    var allDone = island.docs.every(function(d) { return state.documentsRead[d.id] === true; });
     if (allDone) {
       islandEl.classList.add('island-completed');
     } else {
@@ -925,8 +1352,9 @@ function updateVoyageUI() {
 
 function moveBoatToStart() {
   const boat = document.getElementById('boat');
-  boat.style.left = '-20px';
-  boat.style.top = '50%';
+  // Park next to 文化岛 (island-1)
+  boat.style.left = '11%';
+  boat.style.top = '68%';
 }
 
 function moveBoatToIsland(islandKey) {
@@ -940,36 +1368,26 @@ function moveBoatToIsland(islandKey) {
 }
 
 function openIsland(islandKey) {
-  if (islandKey === 'quiz') {
-    if (isQuizUnlocked()) {
-      showScreen('quizScreen');
-      renderQuiz();
-    } else {
-      const readCount = Object.values(state.documentsRead).filter(v => v === true).length;
-      showRewardModal('🔒 暂未解锁', `还需完成 ${TOTAL_DOCS - readCount} 篇文档才能开启题库`);
-    }
+  // Check if island is locked
+  var islandEl = document.querySelector('[data-island="' + islandKey + '"]');
+  if (islandEl && islandEl.classList.contains('island-locked')) {
+    showRewardModal('🔒 暂未解锁', '请先完成「文化岛」的学习，解锁其他岛屿！');
     return;
   }
   currentDocIsland = islandKey;
+  // Preload this island's videos before showing the doc panel
+  preloadIslandVideos(islandKey);
   moveBoatToIsland(islandKey);
-  setTimeout(() => {
+  setTimeout(function() {
     showDocPanel(islandKey);
   }, 600);
 }
 
-function checkQuizUnlock() {
-  const quizIsland = document.getElementById('quizIsland');
-  if (isQuizUnlocked()) {
-    quizIsland.classList.remove('island-locked');
-    quizIsland.classList.add('island');
-    quizIsland.onclick = () => openIsland('quiz');
-  }
-}
-
-function isQuizUnlocked() {
-  return Object.values(ISLANDS).every(island =>
-    island.docs.every(d => state.documentsRead[d.id] === true)
-  );
+function checkAllIslandsUnlocked() {
+  // Check if all islands are completed (for future use)
+  return Object.values(ISLANDS).every(function(island) {
+    return island.docs.every(function(d) { return state.documentsRead[d.id] === true; });
+  });
 }
 
 function backToVoyage() {
@@ -1009,7 +1427,7 @@ function closeDocPanel() {
   document.getElementById('docPanelOverlay').classList.remove('active');
 }
 
-// ==================== PDF VIEWER ====================
+// ==================== MEDIA VIEWER (PDF / Video) ====================
 function openDocument(doc, islandKey) {
   currentDocId = doc.id;
   currentDocPoints = doc.points;
@@ -1019,8 +1437,6 @@ function openDocument(doc, islandKey) {
 
   const alreadyRead = state.documentsRead[doc.id] === true;
   document.getElementById('pdfTitle').textContent = doc.title;
-  document.getElementById('pdfCompleteBtn').disabled = false;
-  document.getElementById('pdfCompleteBtn').textContent = alreadyRead ? '✓ 已完成阅读' : '✓ 标记已读 (+' + doc.points + ' 国小豆)';
 
   if (alreadyRead) {
     document.getElementById('pdfProgressFill').style.width = '100%';
@@ -1028,14 +1444,20 @@ function openDocument(doc, islandKey) {
   } else {
     document.getElementById('pdfProgressFill').style.width = '0%';
     document.getElementById('pdfProgressText').textContent = '0%';
-    startPdfTimer();
   }
 
-  // Load PDF
-  const pdfFrame = document.getElementById('pdfFrame');
-  pdfFrame.src = '../' + doc.file;
+  // Branch: video or PDF
+  if (doc.type === 'video') {
+    renderVideoPlayer(doc, alreadyRead);
+  } else {
+    // Legacy PDF mode
+    if (!alreadyRead) startPdfTimer();
+    document.getElementById('mediaContent').innerHTML = '<iframe id="pdfFrame" src="../' + doc.file + '" style="width:100%;height:100%;border:none;" title="PDF预览"></iframe>';
+    document.getElementById('pdfCompleteBtn').disabled = false;
+    document.getElementById('pdfCompleteBtn').textContent = alreadyRead ? '✓ 已完成阅读' : '✓ 标记已读 (+' + doc.points + ' 国小豆)';
+  }
 
-  document.getElementById('pdfViewerOverlay').classList.add('active');
+  document.getElementById('mediaViewerOverlay').classList.add('active');
 }
 
 function startPdfTimer() {
@@ -1061,6 +1483,10 @@ function completeReading() {
   // Mark as read
   state.documentsRead[currentDocId] = true;
   if (pdfReadTimer) clearInterval(pdfReadTimer);
+  if (window._currentVideo && window._currentVideo._progressChecker) {
+    clearInterval(window._currentVideo._progressChecker);
+    window._currentVideo._progressChecker = null;
+  }
   document.getElementById('pdfProgressFill').style.width = '100%';
   document.getElementById('pdfProgressText').textContent = '100%';
 
@@ -1098,14 +1524,13 @@ function completeReading() {
   // Check institution completion
   checkInstitutionCompletion();
 
-  // Check quiz unlock
-  checkQuizUnlock();
-
   // Check overall completion
   const readCount = Object.values(state.documentsRead).filter(v => v === true).length;
   if (readCount === TOTAL_DOCS && !state.quizCompleted) {
-    // Quiz just became available
-    setTimeout(() => showRewardModal('📝 题库已解锁！', '恭喜完成所有文档学习，题库已开放！'), 2000);
+    // All documents completed
+    state.quizCompleted = true;
+    saveState();
+    setTimeout(function() { showRewardModal('🎉 全部完成！', '恭喜完成所有知识板块的学习！'); }, 2000);
   }
 
   saveState();
@@ -1123,125 +1548,438 @@ function checkInstitutionCompletion() {
 
 function closePdf() {
   if (pdfReadTimer) clearInterval(pdfReadTimer);
-  document.getElementById('pdfViewerOverlay').classList.remove('active');
-  document.getElementById('pdfFrame').src = '';
+  // Clean up video resources
+  if (window._currentVideo) {
+    if (window._currentVideo._progressChecker) clearInterval(window._currentVideo._progressChecker);
+    window._currentVideo.pause();
+    window._currentVideo.removeAttribute('src');
+    window._currentVideo.load();
+    window._currentVideo = null;
+  }
+  document.getElementById('mediaViewerOverlay').classList.remove('active');
+  document.getElementById('mediaContent').innerHTML = '';
   updateVoyageUI();
   updateMapUI();
+}
+
+// ==================== VIDEO PLAYER ====================
+function formatTime(s) {
+  if (isNaN(s) || !isFinite(s)) return '00:00';
+  var m = Math.floor(s / 60);
+  var sec = Math.floor(s % 60);
+  return String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+}
+
+function renderVideoPlayer(doc, alreadyRead) {
+  var container = document.getElementById('mediaContent');
+  container.style.flexDirection = 'column';
+  container.innerHTML = ''
+    + '<div class="video-player-wrap" id="videoPlayerWrap">'
+    + '<video id="videoElement" src="../' + doc.file + '" preload="auto" playsinline autoplay'
+    + (doc.poster ? ' poster="../' + doc.poster + '"' : '')
+    + '></video>'
+    + '<div class="video-loader" id="videoLoader"></div>'
+    + '<div class="video-controls" id="videoControls">'
+    + '<button class="video-play-btn" id="videoPlayBtn">⏸</button>'
+    + '<span class="video-time" id="videoTime">00:00 / 00:00</span>'
+    + '<div class="video-progress-bar" id="videoProgressBar">'
+    + '<div class="video-progress-fill" id="videoProgressFill"></div>'
+    + '</div></div>'
+    // Completion overlay inside video player
+    + '<div class="video-complete-overlay" id="videoCompleteOverlay" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.85);z-index:10;flex-direction:column;align-items:center;justify-content:center;gap:20px;">'
+    + '<div style="font-size:48px;">🎉</div>'
+    + '<div style="font-size:18px;font-weight:700;color:#fff;">视频播放完成</div>'
+    + '<div style="display:flex;gap:16px;margin-top:8px;">'
+    + '<button class="video-complete-btn replay" id="videoReplayBtn">🔄 再学一次</button>'
+    + '<button class="video-complete-btn exam" id="videoExamBtn">📝 马上进入考试</button>'
+    + '</div></div>'
+    + '</div>';
+
+  var video = document.getElementById('videoElement');
+  var playBtn = document.getElementById('videoPlayBtn');
+  var progressFill = document.getElementById('videoProgressFill');
+  var timeDisplay = document.getElementById('videoTime');
+  var progressBar = document.getElementById('videoProgressBar');
+  var loader = document.getElementById('videoLoader');
+  var wrap = document.getElementById('videoPlayerWrap');
+  var completeBtn = document.getElementById('pdfCompleteBtn');
+  var completeOverlay = document.getElementById('videoCompleteOverlay');
+  var replayBtn = document.getElementById('videoReplayBtn');
+  var examBtn = document.getElementById('videoExamBtn');
+
+  // Play/Pause toggle
+  function togglePlay() {
+    if (video.paused) {
+      video.play().catch(function(){});
+      playBtn.textContent = '⏸';
+    } else {
+      video.pause();
+      playBtn.textContent = '▶';
+    }
+  }
+  playBtn.onclick = togglePlay;
+  video.onclick = togglePlay;
+
+  // Loading spinner
+  video.onwaiting = function() { loader.style.display = 'block'; };
+  video.oncanplay = function() { loader.style.display = 'none'; };
+
+  // Auto-hide controls after 3s idle
+  var idleTimer;
+  function resetIdle() {
+    wrap.classList.add('show-controls');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(function() { wrap.classList.remove('show-controls'); }, 3000);
+  }
+  wrap.onmousemove = resetIdle;
+  wrap.onmouseleave = function() { wrap.classList.remove('show-controls'); };
+  resetIdle();
+
+  // Throttled time update via requestAnimationFrame
+  var rafPending = false;
+  video.ontimeupdate = function() {
+    if (!video.duration || rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(function() {
+      rafPending = false;
+      if (!video.duration) return;
+      var pct = (video.currentTime / video.duration) * 100;
+      progressFill.style.width = pct + '%';
+      document.getElementById('pdfProgressFill').style.width = pct + '%';
+      document.getElementById('pdfProgressText').textContent = Math.round(pct) + '%';
+      timeDisplay.textContent = formatTime(video.currentTime) + ' / ' + formatTime(video.duration);
+    });
+  };
+
+  // Seek on progress bar click/drag
+  progressBar.onclick = function(e) {
+    var rect = progressBar.getBoundingClientRect();
+    var pct = (e.clientX - rect.left) / rect.width;
+    video.currentTime = pct * video.duration;
+  };
+
+  video.onloadedmetadata = function() {
+    timeDisplay.textContent = '00:00 / ' + formatTime(video.duration);
+    loader.style.display = 'none';
+  };
+
+  // Video ended -> show completion overlay
+  video.onended = function() {
+    playBtn.textContent = '↺';
+    // Auto-complete if not already read
+    if (!state.documentsRead[doc.id]) {
+      completeReading();
+    }
+    // Show completion overlay
+    completeOverlay.style.display = 'flex';
+    wrap.classList.add('show-controls');
+  };
+
+  // Replay button
+  replayBtn.onclick = function() {
+    completeOverlay.style.display = 'none';
+    video.currentTime = 0;
+    video.play().catch(function(){});
+    playBtn.textContent = '⏸';
+  };
+
+  // Go to exam button - jump directly to island exam
+  examBtn.onclick = function() {
+    var islandKey = currentDocIsland || 'onboarding';
+    closePdf();
+    setTimeout(function() { startIslandExam(islandKey); }, 300);
+  };
+
+  // Lock complete button until >= 99.5% watched
+  if (!alreadyRead) {
+    completeBtn.disabled = true;
+    completeBtn.textContent = '🔒 请看完视频 (0%)';
+
+    video._progressChecker = setInterval(function() {
+      if (video.duration && video.currentTime / video.duration >= 0.995) {
+        completeBtn.disabled = false;
+        completeBtn.textContent = '✓ 标记已读 (+' + doc.points + ' 国小豆)';
+        clearInterval(video._progressChecker);
+      } else if (video.duration) {
+        var pct = Math.round(video.currentTime / video.duration * 100);
+        completeBtn.textContent = '🔒 请看完视频 (' + pct + '%)';
+      }
+    }, 500);
+  } else {
+    completeBtn.disabled = true;
+    completeBtn.textContent = '✓ 已完成阅读';
+  }
+
+  // Save reference for cleanup
+  window._currentVideo = video;
+}
+
+// ==================== VIDEO PRELOADING ====================
+var _videoPreloadSet = {};
+
+function preloadVideo(url) {
+  if (_videoPreloadSet[url]) return;
+  _videoPreloadSet[url] = true;
+
+  // Approach 1: Browser preload hint (standard)
+  var link = document.createElement('link');
+  link.rel = 'preload';
+  link.as = 'fetch';
+  link.href = url;
+  document.head.appendChild(link);
+
+  // Approach 2: Fetch to warm HTTP cache (guarantees download)
+  fetch(url, { cache: 'force-cache' }).catch(function() {});
+}
+
+function preloadIslandVideos(islandKey) {
+  var island = ISLANDS[islandKey];
+  if (!island) return;
+  island.docs.forEach(function(doc) {
+    if (doc.type === 'video') {
+      preloadVideo('../' + doc.file);
+    }
+  });
+}
+
+function preloadAllVideos() {
+  var count = 0;
+  Object.values(ISLANDS).forEach(function(island) {
+    island.docs.forEach(function(doc) {
+      if (doc.type === 'video') {
+        preloadVideo('../' + doc.file);
+        count++;
+      }
+    });
+  });
+  console.log('[预加载] 正在预加载 ' + count + ' 个视频，播放将更加流畅');
 }
 
 // ==================== QUIZ ====================
 let quizIndex = 0;
 let quizAnswers = [];
-let quizSelected = -1;
-let quizAnswered = false;
+let quizSelected = [];
+let quizSubmitted = false;
+let currentQuizIsland = null;
+let currentQuizQuestions = [];
 
-function renderQuiz() {
+// ==================== QUIZ ====================
+function startIslandExam(islandKey) {
+  currentQuizIsland = islandKey;
+  currentQuizQuestions = QUIZ_DATA[islandKey] || [];
   quizIndex = 0;
   quizAnswers = [];
-  quizSelected = -1;
-  quizAnswered = false;
+  quizSelected = [];
+  quizSubmitted = false;
+  if (currentQuizQuestions.length === 0) {
+    showRewardModal('暂无考题', '该板块暂未配置考试题目');
+    return;
+  }
+  showScreen('quizScreen');
   renderQuizQuestion();
 }
 
+function renderQuiz() {
+  var key = 'onboarding';
+  if (!QUIZ_DATA[key] || QUIZ_DATA[key].length === 0) {
+    for (var k in QUIZ_DATA) {
+      if (QUIZ_DATA[k] && QUIZ_DATA[k].length > 0) { key = k; break; }
+    }
+  }
+  startIslandExam(key);
+}
+
 function renderQuizQuestion() {
-  const container = document.getElementById('quizContainer');
-  if (quizIndex >= QUIZ_DATA.length) {
+  var container = document.getElementById('quizContainer');
+  var total = currentQuizQuestions.length;
+  if (quizIndex >= total) {
     renderQuizResult();
     return;
   }
 
-  const q = QUIZ_DATA[quizIndex];
-  quizSelected = -1;
-  quizAnswered = false;
+  var q = currentQuizQuestions[quizIndex];
+  quizSelected = [];
+  quizSubmitted = false;
 
-  let dotsHtml = '';
-  QUIZ_DATA.forEach((_, i) => {
-    let cls = 'quiz-dot';
-    if (i < quizIndex) cls += quizAnswers[i] ? ' correct' : ' wrong';
+  var progressHtml = '';
+  for (var i = 0; i < total; i++) {
+    var cls = 'quiz-dot';
+    if (i < quizIndex) cls += ' done';
     if (i === quizIndex) cls += ' active';
-    dotsHtml += `<div class="${cls}"></div>`;
+    progressHtml += '<div class="' + cls + '"></div>';
+  }
+
+  var typeLabel = q.type === 'multi' ? '【多选题】' : '【单选题】';
+  var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+  var optionsHtml = '';
+  q.options.forEach(function(opt, i) {
+    optionsHtml += '<div class="quiz-option" id="quizOpt' + i + '" onclick="toggleQuizOption(' + i + ')">'
+      + '<div class="quiz-option-letter">' + letters[i] + '</div>'
+      + '<span>' + opt + '</span>'
+      + '</div>';
   });
 
-  let optionsHtml = '';
-  const letters = ['A', 'B', 'C', 'D'];
-  q.options.forEach((opt, i) => {
-    optionsHtml += `<div class="quiz-option" id="quizOpt${i}" onclick="selectQuizOption(${i})">
-      <div class="quiz-option-letter">${letters[i]}</div>
-      <span>${opt}</span>
-    </div>`;
-  });
-
-  container.innerHTML = `
-    <div class="quiz-header">
-      <div class="quiz-progress">${dotsHtml}</div>
-      <span style="font-size:14px;color:var(--slate-400);">${quizIndex+1}/${QUIZ_DATA.length}</span>
-    </div>
-    <div class="quiz-card" style="animation:slideUp 0.4s ease;">
-      <div class="quiz-question-num">第 ${quizIndex+1} 题</div>
-      <div class="quiz-question">${q.q}</div>
-      <div class="quiz-options">${optionsHtml}</div>
-      <div class="quiz-nav">
-        <button class="quiz-btn quiz-btn-next" id="quizNextBtn" onclick="nextQuizQuestion()" disabled>下一题 →</button>
-      </div>
-    </div>
-  `;
+  container.innerHTML = ''
+    + '<div class="quiz-header">'
+    + '<div class="quiz-progress">' + progressHtml + '</div>'
+    + '<span style="font-size:14px;color:var(--slate-400);">' + (quizIndex+1) + '/' + total + '</span>'
+    + '</div>'
+    + '<div class="quiz-card" style="animation:slideUp 0.4s ease;">'
+    + '<div class="quiz-question-num">第 ' + (quizIndex+1) + ' 题 ' + typeLabel + '</div>'
+    + '<div class="quiz-question">' + q.q + '</div>'
+    + '<div class="quiz-options">' + optionsHtml + '</div>'
+    + '<div class="quiz-nav" style="justify-content:flex-end;">'
+    + '<button class="quiz-btn quiz-btn-next" id="quizSubmitBtn" onclick="submitQuizAnswer()" disabled>提交</button>'
+    + '</div>'
+    + '</div>'
+    + '<div id="quizFeedback" style="display:none;margin-top:16px;text-align:center;"></div>';
 }
 
-function selectQuizOption(idx) {
-  if (quizAnswered) return;
-  quizSelected = idx;
-  quizAnswered = true;
-  const q = QUIZ_DATA[quizIndex];
-  const correct = idx === q.answer;
-  quizAnswers.push(correct);
+function toggleQuizOption(idx) {
+  if (quizSubmitted) return;
+  var q = currentQuizQuestions[quizIndex];
+  if (q.type === 'single') {
+    quizSelected = [idx];
+    q.options.forEach(function(_, i) {
+      var el = document.getElementById('quizOpt' + i);
+      el.classList.remove('selected');
+      if (i === idx) el.classList.add('selected');
+    });
+  } else {
+    var pos = quizSelected.indexOf(idx);
+    if (pos >= 0) {
+      quizSelected.splice(pos, 1);
+      document.getElementById('quizOpt' + idx).classList.remove('selected');
+    } else {
+      quizSelected.push(idx);
+      document.getElementById('quizOpt' + idx).classList.add('selected');
+    }
+  }
+  document.getElementById('quizSubmitBtn').disabled = quizSelected.length === 0;
+}
 
-  // Update UI
-  QUIZ_DATA[quizIndex].options.forEach((_, i) => {
-    const el = document.getElementById('quizOpt' + i);
-    el.classList.remove('selected');
-    if (i === q.answer) el.classList.add('correct');
-    else if (i === idx && !correct) el.classList.add('wrong');
+function submitQuizAnswer() {
+  if (quizSubmitted || quizSelected.length === 0) return;
+  quizSubmitted = true;
+
+  var q = currentQuizQuestions[quizIndex];
+  var correctAnswers = q.answer;
+  var isCorrect = false;
+  if (q.type === 'single') {
+    isCorrect = quizSelected.length === 1 && quizSelected[0] === correctAnswers[0];
+  } else {
+    var sortedSel = quizSelected.slice().sort().join(',');
+    var sortedAns = correctAnswers.slice().sort().join(',');
+    isCorrect = sortedSel === sortedAns;
+  }
+  quizAnswers.push(isCorrect);
+
+  q.options.forEach(function(_, i) {
+    var el = document.getElementById('quizOpt' + i);
+    el.style.pointerEvents = 'none';
+    if (correctAnswers.indexOf(i) >= 0) {
+      el.classList.add('correct');
+    }
+    if (quizSelected.indexOf(i) >= 0 && correctAnswers.indexOf(i) < 0) {
+      el.classList.add('wrong');
+    }
   });
 
-  document.getElementById('quizNextBtn').disabled = false;
-  if (quizIndex === QUIZ_DATA.length - 1) {
-    document.getElementById('quizNextBtn').textContent = '查看结果 →';
+  document.getElementById('quizSubmitBtn').disabled = true;
+
+  var feedback = document.getElementById('quizFeedback');
+  feedback.style.display = 'block';
+  var isLast = quizIndex >= currentQuizQuestions.length - 1;
+
+  if (isCorrect) {
+    feedback.innerHTML = '<div style="font-size:32px;margin-bottom:8px;">✅</div>'
+      + '<div style="font-size:16px;font-weight:600;color:var(--emerald-400);margin-bottom:4px;">回答正确！</div>'
+      + '<div style="font-size:12px;color:var(--slate-400);">' + (isLast ? '正在查看结果...' : '即将进入下一题...') + '</div>';
+  } else {
+    var correctLabels = correctAnswers.map(function(i) { return q.options[i]; }).join('、');
+    feedback.innerHTML = '<div style="font-size:32px;margin-bottom:8px;">❌</div>'
+      + '<div style="font-size:16px;font-weight:600;color:var(--rose-400);margin-bottom:4px;">回答错误</div>'
+      + '<div style="font-size:13px;color:var(--slate-500);margin-bottom:8px;">正确答案：' + correctLabels + '</div>'
+      + '<div style="font-size:12px;color:var(--slate-400);">' + (isLast ? '正在查看结果...' : '即将进入下一题...') + '</div>';
+  }
+
+  // Auto-advance immediately after showing feedback
+  if (isLast) {
+    renderQuizResult();
+  } else {
+    quizIndex++;
+    renderQuizQuestion();
   }
 }
 
-function nextQuizQuestion() {
+function goNextQuestion() {
   quizIndex++;
   renderQuizQuestion();
 }
 
 function renderQuizResult() {
-  const correctCount = quizAnswers.filter(v => v).length;
-  const score = correctCount * 10;
+  var correctCount = quizAnswers.filter(function(v) { return v; }).length;
+  var total = currentQuizQuestions.length;
+  var pct = total > 0 ? Math.round(correctCount / total * 100) : 0;
+  var passed = pct >= 80;
+  var score = correctCount * 10;
   state.quizScore = score;
   state.quizCompleted = true;
-  addPoints(score, '完成题库答题 (答对' + correctCount + '题)');
+  addPoints(score, '完成答题 (正确率' + pct + '%)');
   saveState();
 
-  const container = document.getElementById('quizContainer');
-  let emoji = correctCount >= 8 ? '🏆' : correctCount >= 6 ? '🎉' : correctCount >= 4 ? '💪' : '📚';
-  let msg = correctCount >= 8 ? '太厉害了！知识达人！' : correctCount >= 6 ? '做得不错！继续加油！' : correctCount >= 4 ? '还需要多学习哦~' : '建议重新阅读文档再来挑战！';
+  var container = document.getElementById('quizContainer');
+  var islandName = '';
+  if (currentQuizIsland && ISLANDS[currentQuizIsland]) {
+    islandName = ISLANDS[currentQuizIsland].name;
+  }
 
-  container.innerHTML = `
-    <div class="quiz-card quiz-result">
-      <div style="font-size:64px;margin-bottom:16px;">${emoji}</div>
-      <div class="quiz-result-score">${score}</div>
-      <div class="quiz-result-label">答对 ${correctCount}/${QUIZ_DATA.length} 题</div>
-      <p style="margin-top:12px;font-size:15px;color:var(--slate-600);">${msg}</p>
-      <p style="margin-top:8px;font-size:14px;color:var(--amber-400);font-weight:600;">获得 +${score} 国小豆</p>
-      <div class="quiz-nav" style="justify-content:center;margin-top:24px;">
-        <button class="quiz-btn quiz-btn-next" onclick="backToVoyage()">返回航行 →</button>
-        <button class="quiz-btn quiz-btn-next" style="background:linear-gradient(135deg,var(--purple-400),var(--purple-500));" onclick="renderQuiz()">重新答题</button>
-      </div>
-    </div>
-  `;
+  var islandKeys = Object.keys(ISLANDS);
+  var currentIdx = islandKeys.indexOf(currentQuizIsland);
+  var nextIslandName = '';
+  if (currentIdx >= 0 && currentIdx < islandKeys.length - 1) {
+    nextIslandName = ISLANDS[islandKeys[currentIdx + 1]].name;
+  }
 
-  showConfetti();
+  if (!passed) {
+    container.innerHTML = ''
+      + '<div class="quiz-card" style="text-align:center;">'
+      + '<div style="font-size:64px;margin-bottom:12px;">💪</div>'
+      + '<div style="font-size:20px;font-weight:700;color:var(--rose-400);margin-bottom:8px;">正确率 ' + pct + '%</div>'
+      + '<div class="quiz-result-label">答对 ' + correctCount + '/' + total + ' 题</div>'
+      + '<p style="margin-top:16px;font-size:16px;font-weight:600;color:var(--slate-700);">再试一次，你一定行！</p>'
+      + '<div class="quiz-nav" style="justify-content:center;margin-top:24px;gap:12px;">'
+      + '<button class="quiz-btn" style="background:var(--slate-100);color:var(--slate-600);padding:12px 28px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font);" onclick="relearnFromExam()">再学一遍</button>'
+      + '<button class="quiz-btn quiz-btn-next" onclick="startIslandExam(currentQuizIsland)">重新考试</button>'
+      + '</div></div>';
+  } else {
+    container.innerHTML = ''
+      + '<div class="quiz-card" style="text-align:center;">'
+      + '<div style="font-size:64px;margin-bottom:12px;">🏆</div>'
+      + '<div style="font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--emerald-400),var(--blue-400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;">正确率 ' + pct + '%</div>'
+      + '<div class="quiz-result-label">答对 ' + correctCount + '/' + total + ' 题</div>'
+      + '<p style="margin-top:8px;font-size:14px;color:var(--amber-400);font-weight:600;">获得 +' + score + ' 国小豆</p>'
+      + (nextIslandName ? '<p style="margin-top:16px;font-size:16px;font-weight:600;color:var(--slate-700);">真棒！下一站「' + nextIslandName + '」等你～</p>' : '<p style="margin-top:16px;font-size:16px;font-weight:600;color:var(--slate-700);">真棒！全部岛屿已完成！</p>')
+      + '<div class="quiz-nav" style="justify-content:center;margin-top:24px;gap:12px;">'
+      + '<button class="quiz-btn" style="background:linear-gradient(135deg,var(--purple-400),var(--purple-500));color:#fff;padding:12px 28px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font);" onclick="startIslandExam(currentQuizIsland)">我要刷分</button>'
+      + '<button class="quiz-btn" style="background:var(--slate-100);color:var(--slate-600);padding:12px 28px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font);" onclick="backToVoyage()">返回航行 →</button>'
+      + '</div></div>';
+    showConfetti();
+  }
 }
+
+function relearnFromExam() {
+  showScreen('voyageScreen');
+  if (currentQuizIsland && ISLANDS[currentQuizIsland]) {
+    var docs = ISLANDS[currentQuizIsland].docs;
+    if (docs.length > 0) {
+      currentDocIsland = currentQuizIsland;
+      setTimeout(function() { showDocPanel(currentQuizIsland); }, 300);
+    }
+  }
+}
+
+
 
 // ==================== HURRICANE ====================
 function triggerHurricane() {
@@ -1429,7 +2167,7 @@ function showRewardModal(title, text) {
 const guideSteps = [
   { title: '欢迎加入国民养老！', text: '这是你的知识航行地图，点击地图上的省份名称开启学习之旅', target: '.map-board', pos: {top: '10px', left: '50%', transform: 'translateX(-50%)'} },
   { title: '你的积分', text: '国小豆是学习积分，阅读文档、完成答题都可以获得，快来兑换好礼吧！', target: '.nav-center', pos: {top: '70px', left: '50%', transform: 'translateX(-50%)'} },
-  { title: '开始探索吧！', text: '点击任意省份名称开始你的知识航行冒险（只能选择一个哦）', target: '.province-hotspot', pos: {top: '55%', left: '50%', transform: 'translateX(-50%)'} },
+  { title: '开始探索吧！', text: '点击任意水系节点开始你的知识航行冒险', target: '.water-spot', pos: {top: '55%', left: '50%', transform: 'translateX(-50%)'} },
 ];
 
 let guideStep = 0;
