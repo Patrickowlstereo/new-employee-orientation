@@ -26,6 +26,9 @@ app:
     expiration-hours: 8
   uploads:
     dir: ${UPLOADS_DIR:./uploads}
+  static:
+    web-dir: ${WEB_DIR:./dist/web}
+    admin-dir: ${ADMIN_DIR:./dist/admin}
 
 server:
   port: 8080
