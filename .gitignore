@@ -23,6 +23,3 @@ uploads/*
 # OS
 .DS_Store
 Thumbs.db
-
-# 旧 Demo 备份
-index.html.bak

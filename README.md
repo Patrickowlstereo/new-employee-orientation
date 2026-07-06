@@ -1,93 +1,48 @@
-# 国民养老新人航行计划 - 网页游戏设计Demo
+# 国民养老 · 新人航行计划
 
-## 项目概述
+新人入职知识学习系统：员工登录后按"机构 → 小岛 → 文档"路径学习，进度自动保存；管理员在独立后台自助维护内容并查看全员学习统计；学习端为航海视觉（中国地图首页 + 海洋小岛），文档支持在线预览与大视频流式播放。
 
-基于《新人入职知识学习网页游戏需求文档（PRD V1.0）》开发的交互式网页游戏Demo。
+> 业务汇报见 [`docs/项目优化工作总结.md`](docs/项目优化工作总结.md)；技术设计与实现计划见 `docs/superpowers/`。
 
-## 文件说明
+## 技术栈
 
-| 文件 | 说明 |
-|------|------|
-| `index.html` | 完整的单页游戏Demo，包含所有场景和交互逻辑 |
-| `README.md` | 本文档 |
+- 后端：Java 17 + Spring Boot 3.2 + JPA + Flyway + PostgreSQL 15
+- 前端：React 18 + TypeScript + Vite 5（学习端 `apps/web`、管理后台 `apps/admin`）
+- 共享类型：`packages/shared`
+- 部署：单体打包，后端托管三端（学习页 / 管理后台 / 数据接口），内网裸机运行
 
-## 如何运行
+## 目录结构
 
-直接用浏览器打开 `index.html` 即可运行，无需服务器或额外依赖。支持 Chrome 80+、Safari 14+、Firefox 80+、Edge 80+。
+```
+api/            后端服务（Spring Boot）
+apps/web/       学习端前端（员工使用）
+apps/admin/     管理后台前端（管理员使用）
+packages/shared/ 前后端共享类型与常量
+docs/           业务汇报、技术设计、实现计划
+uploads/        上传文件存储目录（运行时生成，不入库）
+```
 
-## Demo包含的场景
-
-### 1. 知识地图（首页）
-- 全国7大机构（北京、上海、山东、四川、广东、重庆、浙江）的交互式地图
-- 各机构点击可进入对应知识航线
-- 顶部实时显示"国小豆"积分
-- 学习进度概览（总进度、已探索机构、已学文档）
-- 每日航海任务面板
-
-### 2. 海洋航行场景
-- 动态波浪效果的海洋场景
-- 自动航行的船只动画
-- 5个知识小岛（关于公司、入职须知、办公指南、公司产品、知识测验）
-- 岛屿状态可视化（已完成/可停靠/未解锁）
-- 飓风机制演示（随机触发强制学习任务）
-
-### 3. 知识小岛
-- 各小岛下的文档列表
-- 每个文档直接链接到真实文件（docx/pdf/pptx），点击后用系统默认程序打开
-- 阅读进度条
-- 必修文档标记
-
-### 5. 国小豆兑换商城
-- 6种公司周边商品
-- 积分不足时禁用兑换
-- 兑换确认流程
-
-## 真实文档链接映射
-
-点击知识小岛中的任意文档，将直接使用系统默认程序打开对应的真实文件：
-
-| 文档标题 | 对应文件 |
-|----------|----------|
-| 品牌手册 | 品牌手册.pdf |
-| 公司经营动态 | 公司经营动态.pdf |
-| 员工行为规范 | 员工行为规范.docx |
-| 办公职场IT设备操作指南 | 办公职场IT设备操作指南.docx |
-| 网络操作指南 | 网络操作指南.pdf |
-| 差旅指南 | 差旅指南.pdf |
-| 财务指南 | 财务指南.docx |
-| OA指南 | OA指南.pptx |
-| HR指南 | HR指南.docx |
-| 国民养老产品体系 | 国民养老产品体系.pptx |
-| 商业养老金产品介绍 | 商业养老金产品介绍.pdf |
-| 个人养老金法规政策汇编 | 个人养老金法规政策汇编.pdf |
-| 关于全面实施个人养老金制度的通知 | 关于全面实施个人养老金制度的通知.docx |
-| 关于加强监管防范风险推动保险业高质量发展的若干意见 | 关于加强监管防范风险推动保险业高质量发展的若干意见.docx |
-| 国家金融监督管理总局关于个人税收递延型商业养老保险试点与个人养老金衔接有关事项的通知 | 国家金融监督管理总局关于个人税收递延型商业养老保险试点与个人养老金衔接有关事项的通知.docx |
-| 公司知识题库 | 国民养老保险 "学思砺行 智聚国民"知识题库.docx |
-
-## 技术说明
-
-- 纯前端实现：HTML5 + CSS3 + JavaScript（ES6）
-- 单文件架构，无外部依赖
-- 响应式设计，优先适配PC大屏幕（1920x1080），同时兼容移动端
-- CSS动画实现波浪、船只、金币飞入等效果
-
-## 后续开发建议
-
-1. **后端对接**：接入公司统一认证系统，实现真实用户登录
-2. **数据持久化**：接入数据库，保存用户学习进度和积分
-3. **后台管理**：开发管理员后台，支持内容配置和数据统计
-4. **性能优化**：懒加载、CDN部署
-
----
-
-*本Demo为设计原型，用于展示游戏玩法和交互流程。实际产品开发需根据技术评估进行调整。*
-
-## 后端服务运行（基础三阶段）
+## 开发运行
 
 1. 安装 JDK 17、Maven、PostgreSQL 15+、Node 20+、pnpm 9。
-2. 建库：`CREATE DATABASE orientation; CREATE USER orientation_app WITH PASSWORD 'orientation_dev_pass'; GRANT ALL PRIVILEGES ON DATABASE orientation TO orientation_app;`
+2. 建库：
+   ```sql
+   CREATE DATABASE orientation;
+   CREATE USER orientation_app WITH PASSWORD 'orientation_dev_pass';
+   GRANT ALL PRIVILEGES ON DATABASE orientation TO orientation_app;
+   ```
 3. 复制 `api/src/main/resources/application-local.yml.example` 为 `application-local.yml`，按需改密码。
-4. 启动后端：`cd api && mvn spring-boot:run`（Flyway 自动建表 + 种子数据，含 admin/admin12345）。
-5. 前端开发：`pnpm install && pnpm dev:web`（5173）/ `pnpm dev:admin`（5174）。
-6. 生产打包：`pnpm -r build` → 复制 `apps/web/dist`、`apps/admin/dist` 到 `api/dist/{web,admin}` → `cd api && mvn package` → `java -jar api/target/orientation-api-0.1.0.jar`。
+4. 启动后端：`cd api && mvn spring-boot:run`（Flyway 自动建表 + 注入种子数据，含试点账号 `admin` / `admin12345`）。
+5. 前端开发：`pnpm install`，然后 `pnpm dev:web`（学习端，5173）或 `pnpm dev:admin`（管理后台，5174）。
+
+## 生产打包
+
+```bash
+pnpm -r build                                       # 构建前后端
+cp -r apps/web/dist  api/dist/web                   # 拷贝学习端产物
+cp -r apps/admin/dist api/dist/admin                # 拷贝管理后台产物
+cd api && mvn package                                # 打包单体 jar
+java -jar api/target/orientation-api-0.1.0.jar      # 单进程对外服务
+```
+
+启动后：学习端在根路径 `/`，管理后台在 `/admin/`，用同一试点账号 `admin` / `admin12345` 登录。
