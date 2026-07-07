@@ -30,6 +30,9 @@ public class SecurityConfig {
     http
         .csrf(csrf -> csrf.disable())
         .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        // 允许同源 iframe 嵌入(企业文化转盘等 html 模块由 DocPage 用沙箱 iframe 加载);
+        // 仍挡跨源 clickjacking。默认 DENY 会导致浏览器在 iframe 里显示"拒绝连接"。
+        .headers(h -> h.frameOptions(fo -> fo.sameOrigin()))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/auth/login").permitAll()
             .requestMatchers("/api/admin/**").hasRole("ADMIN")

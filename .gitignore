@@ -19,6 +19,8 @@ dist/
 api/src/main/resources/application-local.yml
 uploads/*
 !uploads/.gitkeep
+# spring-boot:run 的 JVM 工作目录是 api/,./uploads 解析到 api/uploads
+api/uploads/
 
 # OS
 .DS_Store

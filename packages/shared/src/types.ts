@@ -39,6 +39,8 @@ export interface Doc {
   fileType: DocFileType | null;
   order: number;
   active: boolean;
+  // html 类互动模块的预览直链(指向 public 静态资源);普通上传文件为 null。
+  linkUrl: string | null;
 }
 
 export type DocStatus = 'NOT_STARTED' | 'READING' | 'COMPLETED';

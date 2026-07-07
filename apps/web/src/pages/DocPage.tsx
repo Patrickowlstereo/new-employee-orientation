@@ -85,6 +85,25 @@ export default function DocPage() {
     return <div style={{ color: 'var(--slate-400)' }}>该类型不支持在线预览，请下载查看。</div>;
   };
 
+  // html 类互动模块（如企业文化转盘）：点击即整屏直接打开，沙箱 iframe 全屏加载，
+  // 不带 allow-same-origin → 隔离其 JS 访问不到应用的 JWT/localStorage，杜绝 XSS。
+  if (doc?.fileType === 'html' && doc.linkUrl) {
+    return (
+      <div style={{ position: 'fixed', inset: 0, background: '#fff', zIndex: 1000 }}>
+        <iframe
+          src={doc.linkUrl}
+          title={doc.title}
+          sandbox="allow-scripts"
+          style={{ width: '100%', height: '100%', border: 'none', background: '#fff' }}
+        />
+        <div style={{ position: 'fixed', top: 16, right: 16, display: 'flex', gap: 8, zIndex: 1100 }}>
+          <button className="btn-primary" onClick={() => completeDoc(Number(docId))}>标记完成</button>
+          <Link to={`/island/${doc.islandId}`} className="btn-secondary">← 返回</Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="page-shell">
       {error && <div style={{ color: 'red', padding: 16 }}>{error}</div>}
@@ -96,7 +115,7 @@ export default function DocPage() {
             <div style={{ width: `${currentPct}%` }} />
           </div>
           <div style={{ color: 'var(--slate-500)', fontSize: 13, margin: '8px 0 16px' }}>当前进度 {currentPct}%</div>
-          {doc.fileType && (
+          {doc.fileType && doc.fileType !== 'html' && (
             <div style={{ marginBottom: 16 }}>
               <button className="btn-secondary" onClick={download}>下载文件（{doc.fileType.toUpperCase()}）</button>
             </div>
