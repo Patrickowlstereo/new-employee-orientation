@@ -37,6 +37,13 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
+    <!-- OpenAPI 规范:自动暴露 /v3/api-docs + /swagger-ui,作为前后端契约的机器可读来源。
+         前端 packages/shared 用 openapi-typescript 据此生成类型(见 gen:api)。2.3.0 对应 Boot 3.2.x。 -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.3.0</version>
+    </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>

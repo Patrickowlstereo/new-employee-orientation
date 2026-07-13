@@ -34,6 +34,10 @@ public class SecurityConfig {
         // 仍挡跨源 clickjacking。默认 DENY 会导致浏览器在 iframe 里显示"拒绝连接"。
         .headers(h -> h.frameOptions(fo -> fo.sameOrigin()))
         .authorizeHttpRequests(auth -> auth
+            // OpenAPI 规范与 Swagger UI:内部开发用,无鉴权开放(anyRequest().permitAll() 本就放行,
+            // 显式声明以便后续若收紧规则时不被遗漏)。JwtAuthFilter 无 token 时 no-op,无需特殊处理。
+            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                "/swagger-resources/**", "/webjars/**").permitAll()
             .requestMatchers("/api/auth/login").permitAll()
             .requestMatchers("/api/admin/**").hasRole("ADMIN")
             .requestMatchers("/api/**").authenticated()

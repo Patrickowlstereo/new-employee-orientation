@@ -1,8 +1,10 @@
 package com.gmnl.orientation.content;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public record DocDto(Long id, String title, String category, Long institutionId, Long islandId,
-                     Boolean required, String fileType, Integer order, Boolean active,
-                     String linkUrl) {
+                     Boolean required, @Schema(nullable = true) String fileType, Integer order, Boolean active,
+                     @Schema(nullable = true) String linkUrl) {
   public static DocDto from(Doc d) {
     // html 类互动模块：filePath 指向学习端 public 静态资源，暴露为 linkUrl 供沙箱 iframe 预览；
     // 普通上传文件不暴露内部存储路径（仍经鉴权下载接口访问）。

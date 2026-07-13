@@ -7,5 +7,12 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts"
+  },
+  "scripts": {
+    "gen:api": "openapi-typescript ./openapi.json -o ./src/generated/api-types.ts",
+    "check:api": "openapi-typescript ./openapi.json -o ./src/generated/api-types.ts && git diff --exit-code -- src/generated/api-types.ts"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^7.0.0"
   }
 }

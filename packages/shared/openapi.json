@@ -1,0 +1,1143 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "OpenAPI definition",
+    "version" : "v0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/api/progress/{docId}" : {
+      "put" : {
+        "tags" : [ "progress-controller" ],
+        "operationId" : "upsert",
+        "parameters" : [ {
+          "name" : "docId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UpsertProgressRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProgressItemDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/password" : {
+      "put" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "changePassword",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/islands/{id}" : {
+      "put" : {
+        "tags" : [ "admin-island-controller" ],
+        "operationId" : "update",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/IslandUpsertRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IslandDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "admin-island-controller" ],
+        "operationId" : "delete",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/institutions/{id}" : {
+      "put" : {
+        "tags" : [ "admin-institution-controller" ],
+        "operationId" : "update_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InstitutionUpsertRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/InstitutionDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "admin-institution-controller" ],
+        "operationId" : "delete_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/docs/{id}" : {
+      "put" : {
+        "tags" : [ "admin-content-controller" ],
+        "operationId" : "update_2",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DocUpsertRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AdminDocDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "admin-content-controller" ],
+        "operationId" : "deleteRow",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/progress/{docId}/complete" : {
+      "post" : {
+        "tags" : [ "progress-controller" ],
+        "operationId" : "complete",
+        "parameters" : [ {
+          "name" : "docId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProgressItemDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login" : {
+      "post" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "login",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LoginResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/islands" : {
+      "post" : {
+        "tags" : [ "admin-island-controller" ],
+        "operationId" : "create",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/IslandUpsertRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IslandDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/institutions" : {
+      "post" : {
+        "tags" : [ "admin-institution-controller" ],
+        "operationId" : "create_1",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InstitutionUpsertRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/InstitutionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/docs" : {
+      "get" : {
+        "tags" : [ "admin-content-controller" ],
+        "operationId" : "list",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/AdminDocDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "admin-content-controller" ],
+        "operationId" : "create_2",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DocUpsertRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AdminDocDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/docs/{id}/upload" : {
+      "post" : {
+        "tags" : [ "admin-content-controller" ],
+        "operationId" : "upload",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "file" ],
+                "type" : "object",
+                "properties" : {
+                  "file" : {
+                    "type" : "string",
+                    "format" : "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AdminDocDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/progress" : {
+      "get" : {
+        "tags" : [ "progress-controller" ],
+        "operationId" : "getAggregate",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProgressAggregateDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/islands" : {
+      "get" : {
+        "tags" : [ "content-controller" ],
+        "operationId" : "islands",
+        "parameters" : [ {
+          "name" : "institutionId",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/IslandDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/institutions" : {
+      "get" : {
+        "tags" : [ "content-controller" ],
+        "operationId" : "institutions",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/InstitutionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/docs" : {
+      "get" : {
+        "tags" : [ "content-controller" ],
+        "operationId" : "docs",
+        "parameters" : [ {
+          "name" : "islandId",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "required",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/DocDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/docs/{id}" : {
+      "get" : {
+        "tags" : [ "content-controller" ],
+        "operationId" : "doc",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DocDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/docs/{id}/file" : {
+      "get" : {
+        "tags" : [ "content-controller" ],
+        "operationId" : "downloadFile",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "Range",
+          "in" : "header",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me" : {
+      "get" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "me",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/stats/users" : {
+      "get" : {
+        "tags" : [ "admin-stats-controller" ],
+        "operationId" : "users",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/UserStatsDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/stats/overview" : {
+      "get" : {
+        "tags" : [ "admin-stats-controller" ],
+        "operationId" : "overview",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StatsOverviewDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/docs/{id}/file" : {
+      "delete" : {
+        "tags" : [ "admin-content-controller" ],
+        "operationId" : "deleteFile",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AdminDocDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "UpsertProgressRequest" : {
+        "required" : [ "status" ],
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "NOT_STARTED", "READING", "COMPLETED" ]
+          },
+          "progressPct" : {
+            "maximum" : 100,
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "ProgressItemDto" : {
+        "type" : "object",
+        "properties" : {
+          "docId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "NOT_STARTED", "READING", "COMPLETED" ]
+          },
+          "progressPct" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lastReadAt" : {
+            "type" : "string",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "completedAt" : {
+            "type" : "string",
+            "format" : "date-time",
+            "nullable" : true
+          }
+        }
+      },
+      "ChangePasswordRequest" : {
+        "required" : [ "newPassword", "oldPassword" ],
+        "type" : "object",
+        "properties" : {
+          "oldPassword" : {
+            "type" : "string"
+          },
+          "newPassword" : {
+            "maxLength" : 2147483647,
+            "minLength" : 8,
+            "type" : "string"
+          }
+        }
+      },
+      "IslandUpsertRequest" : {
+        "required" : [ "institutionId", "key", "name" ],
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32",
+            "nullable" : true
+          },
+          "institutionId" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "IslandDto" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "key" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "institutionId" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "InstitutionUpsertRequest" : {
+        "required" : [ "key", "name" ],
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32",
+            "nullable" : true
+          }
+        }
+      },
+      "InstitutionDto" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "key" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "islands" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/IslandDto"
+            }
+          }
+        }
+      },
+      "DocUpsertRequest" : {
+        "required" : [ "institutionId", "islandId", "title" ],
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string"
+          },
+          "category" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "institutionId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "islandId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "required" : {
+            "type" : "boolean"
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32",
+            "nullable" : true
+          },
+          "active" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "AdminDocDto" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "category" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "institutionId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "islandId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "required" : {
+            "type" : "boolean"
+          },
+          "fileType" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "fileCategory" : {
+            "type" : "string",
+            "enum" : [ "DOCUMENT", "IMAGE", "VIDEO", "AUDIO", "ARCHIVE", "OTHER" ]
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "active" : {
+            "type" : "boolean"
+          },
+          "uploadedAt" : {
+            "type" : "string",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "uploadedByName" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        }
+      },
+      "LoginRequest" : {
+        "required" : [ "password", "username" ],
+        "type" : "object",
+        "properties" : {
+          "username" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          }
+        }
+      },
+      "LoginResult" : {
+        "type" : "object",
+        "properties" : {
+          "token" : {
+            "type" : "string"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/UserDto"
+          }
+        }
+      },
+      "UserDto" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "username" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "role" : {
+            "type" : "string",
+            "enum" : [ "USER", "ADMIN" ]
+          }
+        }
+      },
+      "IslandStateViewDto" : {
+        "type" : "object",
+        "properties" : {
+          "islandId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "LOCKED", "UNLOCKED", "COMPLETED" ]
+          },
+          "completedCount" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalCount" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "ProgressAggregateDto" : {
+        "type" : "object",
+        "properties" : {
+          "documents" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ProgressItemDto"
+            }
+          },
+          "islands" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/IslandStateViewDto"
+            }
+          }
+        }
+      },
+      "DocDto" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "category" : {
+            "type" : "string"
+          },
+          "institutionId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "islandId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "required" : {
+            "type" : "boolean"
+          },
+          "fileType" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "active" : {
+            "type" : "boolean"
+          },
+          "linkUrl" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        }
+      },
+      "UserStatsDto" : {
+        "type" : "object",
+        "properties" : {
+          "userId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "username" : {
+            "type" : "string"
+          },
+          "requiredTotal" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "requiredCompleted" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "completionPct" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lastReadAt" : {
+            "type" : "string",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "islandsCompleted" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "islandsTotal" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "IslandCompletionDto" : {
+        "type" : "object",
+        "properties" : {
+          "islandId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "islandName" : {
+            "type" : "string"
+          },
+          "institutionName" : {
+            "type" : "string"
+          },
+          "completedUsers" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "totalLearners" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "completionPct" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "StatsOverviewDto" : {
+        "type" : "object",
+        "properties" : {
+          "totalUsers" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "totalLearners" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "completedAllRequired" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "avgCompletionPct" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "islands" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/IslandCompletionDto"
+            }
+          }
+        }
+      }
+    }
+  }
+}

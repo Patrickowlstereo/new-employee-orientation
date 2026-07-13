@@ -50,7 +50,7 @@ class AdminContentServiceTest {
     AdminDocDto dto = service.uploadFile(1L, file, 7L);
 
     assertEquals("pdf", dto.fileType());
-    assertEquals("DOCUMENT", dto.fileCategory());
+    assertEquals(FileTypeSupport.Category.DOCUMENT, dto.fileCategory());
     assertNotNull(dto.uploadedAt());
     assertEquals("张三", dto.uploadedByName());
     verify(docRepo).save(doc);
@@ -107,7 +107,7 @@ class AdminContentServiceTest {
     assertNull(doc.getFilePath());
     assertNull(doc.getFileType());
     assertNull(doc.getFileUploadedBy());
-    assertEquals("OTHER", dto.fileCategory());
+    assertEquals(FileTypeSupport.Category.OTHER, dto.fileCategory());
     verify(storage).delete("docs/1/old.mp4");
     verify(docRepo).save(doc);
   }

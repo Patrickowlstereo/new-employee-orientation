@@ -1,0 +1,4 @@
+# OpenAPI 契约制品强制 LF 行尾,保证 pnpm check:api 的 git diff --exit-code 在 Windows autocrlf 下稳定。
+# openapi.json 由后端 OpenApiSpecWriterTest 写出(LF),api-types.ts 由 openapi-typescript 生成(LF)。
+packages/shared/openapi.json text eol=lf
+packages/shared/src/generated/api-types.ts text eol=lf

@@ -1,151 +1,62 @@
-export type UserRole = 'USER' | 'ADMIN';
+// 本文件的 DTO/请求/响应类型由后端 OpenAPI 规范(packages/shared/openapi.json)派生,
+// 勿手改生成产物 src/generated/api-types.ts。改后端 DTO 后:
+//   1) mvn -f api/pom.xml test -Dtest=OpenApiSpecWriterTest -Ddump.openapi=true   (重导出 openapi.json)
+//   2) pnpm --filter @gmnl/shared gen:api                                          (重生成 api-types.ts)
+//   3) 提交 openapi.json 与 api-types.ts。pnpm check:api 可校验 api-types.ts 是否最新。
+import type { components } from './generated/api-types';
 
-export interface User {
-  id: number;
-  username: string;
-  name: string;
-  role: UserRole;
-}
+type Schemas = components['schemas'];
 
-export interface Institution {
-  id: number;
-  key: string;
-  name: string;
-  order: number;
-  islands: Island[];
-}
+/**
+ * 深度去可选:递归把所有属性变为必填(去掉 ? 与隐式 undefined),保留显式 | null,
+ * 并递归进数组元素与嵌套对象。
+ *
+ * <p>springdoc 默认把无 @NotNull 的响应字段标为可选(因 record 字段无校验注解),
+ * 但 Jackson 总是序列化 record 的全部字段(值可为 null),故用 DeepReq 还原"全必填"契约,
+ * 与历史 hand-written types.ts 形态一致,前端消费零改动。
+ */
+type DeepReq<T> =
+  T extends (infer U)[]
+    ? DeepReq<U>[]
+    : T extends object
+      ? { [K in keyof T]-?: DeepReq<Exclude<T[K], undefined>> }
+      : T;
 
-export interface Island {
-  id: number;
-  key: string;
-  name: string;
-  order: number;
-  institutionId: number;
-}
+// ===== 枚举/状态(由规范内联枚举派生) =====
+export type UserRole = DeepReq<Schemas['UserDto']>['role'];
+export type DocStatus = DeepReq<Schemas['ProgressItemDto']>['status'];
+export type IslandStatus = DeepReq<Schemas['IslandStateViewDto']>['status'];
+// 文件大类,与后端 FileTypeSupport.Category 对应(AdminDocDto.fileCategory 用枚举类型,故可派生)
+export type FileCategory = DeepReq<Schemas['AdminDocDto']>['fileCategory'];
 
-// 文件扩展名（小写、无点）。阶段 4 起支持文档/图片/视频/音频/压缩等全面类型，故放宽为 string。
+// 文件扩展名(小写、无点)。阶段 4 起支持文档/图片/视频/音频/压缩等全面类型,故放宽为 string
+// (规范里 fileType 即 string,非枚举)。
 export type DocFileType = string;
 
-// 文件大类，与后端 FileTypeSupport.Category 对应
-export type FileCategory = 'DOCUMENT' | 'IMAGE' | 'VIDEO' | 'AUDIO' | 'ARCHIVE' | 'OTHER';
+// ===== 领域视图 =====
+export type User = DeepReq<Schemas['UserDto']>;
+export type Institution = DeepReq<Schemas['InstitutionDto']>;
+export type Island = DeepReq<Schemas['IslandDto']>;
+export type Doc = DeepReq<Schemas['DocDto']>;
+export type AdminDoc = DeepReq<Schemas['AdminDocDto']>;
 
-export interface Doc {
-  id: number;
-  title: string;
-  category: string;
-  institutionId: number;
-  islandId: number;
-  required: boolean;
-  fileType: DocFileType | null;
-  order: number;
-  active: boolean;
-  // html 类互动模块的预览直链(指向 public 静态资源);普通上传文件为 null。
-  linkUrl: string | null;
-}
+// ===== 学习进度 =====
+export type ProgressItem = DeepReq<Schemas['ProgressItemDto']>;
+export type IslandStateView = DeepReq<Schemas['IslandStateViewDto']>;
+export type ProgressAggregate = DeepReq<Schemas['ProgressAggregateDto']>;
 
-export type DocStatus = 'NOT_STARTED' | 'READING' | 'COMPLETED';
-export type IslandStatus = 'LOCKED' | 'UNLOCKED' | 'COMPLETED';
+// ===== 请求/响应 DTO =====
+export type LoginRequest = DeepReq<Schemas['LoginRequest']>;
+export type LoginResponse = DeepReq<Schemas['LoginResult']>;
+export type ChangePasswordRequest = DeepReq<Schemas['ChangePasswordRequest']>;
+export type UpsertProgressRequest = DeepReq<Schemas['UpsertProgressRequest']>;
 
-export interface ProgressItem {
-  docId: number;
-  status: DocStatus;
-  progressPct: number;
-  lastReadAt: string | null;
-  completedAt: string | null;
-}
+// ===== 后台内容 CRUD 请求 =====
+export type InstitutionUpsertRequest = DeepReq<Schemas['InstitutionUpsertRequest']>;
+export type IslandUpsertRequest = DeepReq<Schemas['IslandUpsertRequest']>;
+export type DocUpsertRequest = DeepReq<Schemas['DocUpsertRequest']>;
 
-export interface IslandStateView {
-  islandId: number;
-  status: IslandStatus;
-  completedCount: number;
-  totalCount: number;
-}
-
-export interface ProgressAggregate {
-  documents: ProgressItem[];
-  islands: IslandStateView[];
-}
-
-// 请求/响应 DTO
-export interface LoginRequest {
-  username: string;
-  password: string;
-}
-export interface LoginResponse {
-  token: string;
-  user: User;
-}
-export interface ChangePasswordRequest {
-  oldPassword: string;
-  newPassword: string;
-}
-export interface UpsertProgressRequest {
-  status: DocStatus;
-  progressPct: number;
-}
-
-// 后台管理用：含文件大类与上传审计的文档视图
-export interface AdminDoc {
-  id: number;
-  title: string;
-  category: string | null;
-  institutionId: number;
-  islandId: number;
-  required: boolean;
-  fileType: DocFileType | null;
-  fileCategory: FileCategory;
-  order: number;
-  active: boolean;
-  uploadedAt: string | null;
-  uploadedByName: string | null;
-}
-
-// 后台内容 CRUD 请求
-export interface InstitutionUpsertRequest {
-  key: string;
-  name: string;
-  order: number | null;
-}
-export interface IslandUpsertRequest {
-  key: string;
-  name: string;
-  order: number | null;
-  institutionId: number;
-}
-export interface DocUpsertRequest {
-  title: string;
-  category: string | null;
-  institutionId: number;
-  islandId: number;
-  required: boolean;
-  order: number | null;
-  active: boolean;
-}
-
-// 全员学习统计
-export interface UserStats {
-  userId: number;
-  name: string;
-  username: string;
-  requiredTotal: number;
-  requiredCompleted: number;
-  completionPct: number;
-  lastReadAt: string | null;
-  islandsCompleted: number;
-  islandsTotal: number;
-}
-export interface IslandCompletion {
-  islandId: number;
-  islandName: string;
-  institutionName: string;
-  completedUsers: number;
-  totalLearners: number;
-  completionPct: number;
-}
-export interface StatsOverview {
-  totalUsers: number;
-  totalLearners: number;
-  completedAllRequired: number;
-  avgCompletionPct: number;
-  islands: IslandCompletion[];
-}
+// ===== 全员学习统计 =====
+export type UserStats = DeepReq<Schemas['UserStatsDto']>;
+export type IslandCompletion = DeepReq<Schemas['IslandCompletionDto']>;
+export type StatsOverview = DeepReq<Schemas['StatsOverviewDto']>;

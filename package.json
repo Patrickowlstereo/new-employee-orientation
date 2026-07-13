@@ -7,7 +7,10 @@
     "dev:admin": "pnpm --filter @gmnl/admin dev",
     "build": "pnpm -r build",
     "build:web": "pnpm --filter @gmnl/web build",
-    "build:admin": "pnpm --filter @gmnl/admin build"
+    "build:admin": "pnpm --filter @gmnl/admin build",
+    "dump:api": "mvn -f api/pom.xml test -Dtest=OpenApiSpecWriterTest -Ddump.openapi=true && pnpm --filter @gmnl/shared gen:api",
+    "gen:api": "pnpm --filter @gmnl/shared gen:api",
+    "check:api": "pnpm --filter @gmnl/shared check:api"
   },
   "packageManager": "pnpm@9.0.0"
 }
