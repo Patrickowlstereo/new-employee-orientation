@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchInstitutions } from '../api/content';
+import { describeLoadError } from '../api/errors';
+import LoadError from '../components/LoadError';
 import { useProgressStore } from '../stores/progressStore';
 import { useAuthStore } from '../stores/authStore';
 import { INSTITUTION_GEO, INSTITUTION_GEO_FALLBACK } from '@gmnl/shared';
@@ -16,10 +18,15 @@ export default function VoyagePage() {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
 
-  useEffect(() => {
-    fetchInstitutions().then(setInstitutions).catch(() => setError('加载失败，请重试'));
-    loadProgress();
+  const load = useCallback(() => {
+    setError(null);
+    fetchInstitutions().then(setInstitutions).catch((e) => setError(describeLoadError(e)));
+    loadProgress().catch(() => { /* 聚合加载失败不阻塞页面 */ });
   }, [loadProgress]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   // 小岛状态聚合:islandId → {completed,total}
   const islandMap = new Map<number, IslandStateView>();
@@ -54,7 +61,7 @@ export default function VoyagePage() {
         <p className="map-home-subtitle">点击机构入口，开启你的知识海洋之旅</p>
       </div>
 
-      {error && <div style={{ color: 'red', padding: 16, textAlign: 'center' }}>{error}</div>}
+      {error && <LoadError message={error} onRetry={load} />}
 
       {/* 地图 + 机构卡片 */}
       <div className="map-home-container">
@@ -70,7 +77,7 @@ export default function VoyagePage() {
               title={inst.name}
               onClick={() => navigate(`/institution/${inst.id}`)}
             >
-              {geo.img && <img src={geo.img} alt={inst.name} draggable={false} />}
+              {geo.img && <img src={geo.img} alt={inst.name} draggable={false} loading="lazy" />}
               <div className="inst-label">{geo.emoji} {inst.name}</div>
               <div className="inst-prog">{total > 0 ? `${done}/${total} 小岛` : ''}</div>
             </div>

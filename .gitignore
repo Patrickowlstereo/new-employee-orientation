@@ -22,6 +22,10 @@ uploads/*
 # spring-boot:run 的 JVM 工作目录是 api/,./uploads 解析到 api/uploads
 api/uploads/
 
+# 应用日志(logback-spring.xml 默认 ./logs,同理覆盖 api/logs)
+logs/
+api/logs/
+
 # OS
 .DS_Store
 Thumbs.db

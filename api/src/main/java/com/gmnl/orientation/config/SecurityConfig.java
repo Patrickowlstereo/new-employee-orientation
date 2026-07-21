@@ -39,6 +39,10 @@ public class SecurityConfig {
             .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
                 "/swagger-resources/**", "/webjars/**").permitAll()
             .requestMatchers("/api/auth/login").permitAll()
+            // 存活探针放行健康检查,其余 actuator 路径一律拒绝
+            //(management.endpoints.web.exposure.include=health 已使其不可达,这里再上一道保险)
+            .requestMatchers("/actuator/health").permitAll()
+            .requestMatchers("/actuator/**").denyAll()
             .requestMatchers("/api/admin/**").hasRole("ADMIN")
             .requestMatchers("/api/**").authenticated()
             .anyRequest().permitAll())

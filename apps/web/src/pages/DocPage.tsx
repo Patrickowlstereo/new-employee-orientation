@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { docStreamUrl } from '../api/content';
+import { describeLoadError } from '../api/errors';
+import LoadError from '../components/LoadError';
 import { useProgressStore } from '../stores/progressStore';
 import client from '../api/client';
 import { categorizeFileType, API_BASE } from '@gmnl/shared';
@@ -17,11 +19,17 @@ export default function DocPage() {
   const lastReportRef = useRef(0);
 
   // 进入即 READING
+  const loadDoc = useCallback(() => {
+    if (!docId) return;
+    setError(null);
+    fetchDoc(Number(docId)).then(setDoc).catch((e) => setError(describeLoadError(e)));
+  }, [docId]);
+
   useEffect(() => {
     if (!docId) return;
-    fetchDoc(Number(docId)).then(setDoc).catch(() => setError('加载失败，请重试'));
+    loadDoc();
     upsertProgress(Number(docId), 'READING', 1);
-  }, [docId, upsertProgress]);
+  }, [docId, loadDoc, upsertProgress]);
 
   // 滚动驱动进度
   useEffect(() => {
@@ -111,7 +119,7 @@ export default function DocPage() {
 
   const renderPreview = () => {
     if (!doc?.fileType) {
-      return <div style={{ color: 'var(--slate-400)' }}>该文档尚未上传文件（占位）</div>;
+      return <div style={{ color: 'var(--slate-400)' }}>文件准备中，请稍后查看</div>;
     }
     const cat = categorizeFileType(doc.fileType);
     const url = docStreamUrl(doc.id);
@@ -152,7 +160,7 @@ export default function DocPage() {
 
   return (
     <div className="page-shell">
-      {error && <div style={{ color: 'red', padding: 16 }}>{error}</div>}
+      {error && <LoadError message={error} onRetry={loadDoc} />}
       <Link to={doc ? `/island/${doc.islandId}` : '/'} className="page-link-back">← 返回</Link>
       {doc && (
         <>

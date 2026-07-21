@@ -8,7 +8,7 @@ export default function DashboardPage() {
     <Card>
       <Title level={4}>管理后台 · 概览</Title>
       <Paragraph>
-        阶段 4–5 已开放以下后台能力，管理员可自助维护内容、查看全员学习情况，无需找开发改代码：
+        管理员可在此自助维护学习内容、查看全员学习情况，无需联系技术人员：
       </Paragraph>
       <Space direction="vertical">
         <div><Link to="/admin/docs">文档管理</Link> — 上传/替换/删除学习文件，新增/编辑/停用文档</div>
@@ -17,7 +17,7 @@ export default function DashboardPage() {
         <div><Link to="/admin/stats">统计报表</Link> — 全员学习完成率、各小岛完成率、学员明细</div>
       </Space>
       <Paragraph type="secondary" style={{ marginTop: 16 }}>
-        后续阶段：员工账号管理（创建/停用/重置）、航海视觉迁移。
+        如需开通管理员账号或调整学员账号，请联系系统管理员。
       </Paragraph>
     </Card>
   );

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { useAuthStore } from '../stores/authStore';
 
 export default function LoginPage() {
@@ -17,8 +18,15 @@ export default function LoginPage() {
     try {
       await login({ username: username.trim(), password });
       navigate('/', { replace: true });
-    } catch {
-      setError('账号或密码错误');
+    } catch (err) {
+      // 401 = 凭证错误(后端明确拒绝);429 = 防爆破锁定,透传后端提示;其余视为服务不可用
+      if (axios.isAxiosError(err) && err.response?.status === 401) {
+        setError('账号或密码错误');
+      } else if (axios.isAxiosError(err) && err.response?.status === 429) {
+        setError((err.response.data as { message?: string })?.message ?? '尝试次数过多，请稍后再试');
+      } else {
+        setError('服务暂时不可用，请稍后再试');
+      }
     } finally {
       setBusy(false);
     }
