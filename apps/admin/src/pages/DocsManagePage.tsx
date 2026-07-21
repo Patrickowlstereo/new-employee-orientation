@@ -194,7 +194,7 @@ export default function DocsManagePage() {
           <Button size="small" onClick={() => openUpload(r)}>
             {r.fileType ? '替换文件' : '上传文件'}
           </Button>
-          <Button size="small" danger disabled={!r.fileType} onClick={() => doDeleteFile(r)}>删文件</Button>
+          <Button size="small" danger disabled={!r.fileType} onClick={() => doDeleteFile(r)}>删除文件</Button>
           <Popconfirm
             title="删除该文档？"
             description="有学习记录时将拒绝，请改用停用。"

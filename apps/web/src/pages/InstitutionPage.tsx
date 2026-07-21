@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchInstitutions } from '../api/content';
+import { describeLoadError } from '../api/errors';
+import LoadError from '../components/LoadError';
 import { useProgressStore } from '../stores/progressStore';
 import type { Institution, IslandStateView, IslandStatus } from '@gmnl/shared';
 
@@ -13,16 +15,21 @@ export default function InstitutionPage() {
   const aggregate = useProgressStore((s) => s.aggregate);
   const loadProgress = useProgressStore((s) => s.loadProgress);
 
-  useEffect(() => {
+  const load = useCallback(() => {
+    setError(null);
     fetchInstitutions()
       .then((all) => {
         const found = all.find((i) => i.id === Number(institutionId)) ?? null;
         setInstitution(found);
         if (!found) setError('未找到该机构');
       })
-      .catch(() => setError('加载失败，请重试'));
-    loadProgress();
+      .catch((e) => setError(describeLoadError(e)));
+    loadProgress().catch(() => { /* 聚合加载失败不阻塞页面 */ });
   }, [institutionId, loadProgress]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const islandMap = new Map<number, IslandStateView>();
   aggregate?.islands.forEach((i) => islandMap.set(i.islandId, i));
@@ -59,7 +66,7 @@ export default function InstitutionPage() {
         <div className="ocean-title">{institution?.name ?? '机构'} · 知识群岛</div>
       </div>
 
-      {error && <div style={{ color: '#fff', textAlign: 'center', padding: 24 }}>{error}</div>}
+      {error && <LoadError message={error} onRetry={load} light />}
 
       {/* 精炼星光 */}
       <div className="ocean-sparkles">

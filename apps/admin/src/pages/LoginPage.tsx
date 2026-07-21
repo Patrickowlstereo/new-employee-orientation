@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Form, Input, Button, message } from 'antd';
+import axios from 'axios';
 import { useAuthStore } from '../stores/authStore';
 
 export default function LoginPage() {
@@ -13,8 +14,15 @@ export default function LoginPage() {
     try {
       await login({ username: v.username.trim(), password: v.password });
       navigate('/admin/', { replace: true });
-    } catch {
-      message.error('账号或密码错误，或非管理员');
+    } catch (err) {
+      // 401 = 凭证错误或权限不足;429 = 防爆破锁定,透传后端提示;其余视为服务不可用
+      if (axios.isAxiosError(err) && err.response?.status === 401) {
+        message.error('账号或密码错误，或非管理员');
+      } else if (axios.isAxiosError(err) && err.response?.status === 429) {
+        message.error((err.response.data as { message?: string })?.message ?? '尝试次数过多，请稍后再试');
+      } else {
+        message.error('服务暂时不可用，请稍后再试');
+      }
     } finally { setBusy(false); }
   };
 

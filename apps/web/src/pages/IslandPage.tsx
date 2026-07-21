@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { fetchDocs } from '../api/content';
+import { describeLoadError } from '../api/errors';
+import LoadError from '../components/LoadError';
 import { useProgressStore } from '../stores/progressStore';
 import type { Doc } from '@gmnl/shared';
 
@@ -11,11 +13,16 @@ export default function IslandPage() {
   const aggregate = useProgressStore((s) => s.aggregate);
   const loadProgress = useProgressStore((s) => s.loadProgress);
 
-  useEffect(() => {
+  const load = useCallback(() => {
     if (!islandId) return;
-    fetchDocs(Number(islandId)).then(setDocs).catch(() => setError('加载失败，请重试'));
-    loadProgress();
+    setError(null);
+    fetchDocs(Number(islandId)).then(setDocs).catch((e) => setError(describeLoadError(e)));
+    loadProgress().catch(() => { /* 聚合加载失败不阻塞页面 */ });
   }, [islandId, loadProgress]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const progMap = new Map<number, number>();
   aggregate?.documents.forEach((p) => progMap.set(p.docId, p.progressPct));
@@ -25,7 +32,7 @@ export default function IslandPage() {
 
   return (
     <div className="page-shell">
-      {error && <div style={{ color: 'red', padding: 16 }}>{error}</div>}
+      {error && <LoadError message={error} onRetry={load} />}
       <Link to={backTo} className="page-link-back">← 返回群岛</Link>
       <h1 className="page-title">小岛文档</h1>
       {docs.map((d) => {
