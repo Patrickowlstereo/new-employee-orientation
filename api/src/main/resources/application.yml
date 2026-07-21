@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: local
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5433/orientation}
     username: ${DB_USER:orientation_app}
