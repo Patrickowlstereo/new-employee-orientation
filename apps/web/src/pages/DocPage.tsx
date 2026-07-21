@@ -82,6 +82,20 @@ export default function DocPage() {
 
   const currentPct = aggregate?.documents.find((p) => p.docId === Number(docId))?.progressPct ?? 0;
 
+  // 「标记完成」明确反馈:成功/失败都让用户感知
+  const [completeMsg, setCompleteMsg] = useState<string | null>(null);
+  const [completeOk, setCompleteOk] = useState(false);
+  const onComplete = async () => {
+    if (!docId) return;
+    const ok = await completeDoc(Number(docId));
+    setCompleteOk(ok);
+    setCompleteMsg(ok ? '✓ 已标记完成' : '标记失败，请稍后重试');
+  };
+  const completeFeedback = completeMsg && (
+    <span style={{ marginLeft: 10, fontSize: 13, color: completeOk ? 'var(--emerald-400)' : 'var(--rose-400)' }}>
+      {completeMsg}
+    </span>
+  );
 
   // 媒体走流式直链(后端 Range 206,<video> 等原生 seek/分片,不占内存);下载另走 blob。
   const download = async () => {
@@ -128,7 +142,8 @@ export default function DocPage() {
           style={{ width: '100%', height: '100%', border: 'none', background: '#fff' }}
         />
         <div style={{ position: 'fixed', top: 16, right: 16, display: 'flex', gap: 8, zIndex: 1100 }}>
-          <button className="btn-primary" onClick={() => completeDoc(Number(docId))}>标记完成</button>
+          <button className="btn-primary" onClick={onComplete}>标记完成</button>
+          {completeFeedback}
           <Link to={`/island/${doc.islandId}`} className="btn-secondary">← 返回</Link>
         </div>
       </div>
@@ -153,7 +168,8 @@ export default function DocPage() {
           )}
           <div style={{ marginTop: 8 }}>{renderPreview()}</div>
           <div style={{ marginTop: 24 }}>
-            <button className="btn-primary" onClick={() => completeDoc(Number(docId))}>标记完成</button>
+            <button className="btn-primary" onClick={onComplete}>标记完成</button>
+            {completeFeedback}
           </div>
         </>
       )}
