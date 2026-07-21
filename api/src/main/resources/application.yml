@@ -18,6 +18,8 @@ spring:
       max-file-size: 500MB
       max-request-size: 500MB
 
+# JWT 密钥无默认值:缺失或不足 32 字节时启动即失败(JwtService 校验),
+# 本地开发在 application-local.yml 中配置,生产通过环境变量 JWT_SECRET 注入。
 app:
   jwt:
     secret: ${JWT_SECRET:}
@@ -27,6 +29,14 @@ app:
   static:
     web-dir: ${WEB_DIR:./dist/web}
     admin-dir: ${ADMIN_DIR:./dist/admin}
+
+# Swagger/OpenAPI 默认关闭,本地开发在 application-local.yml 开启,
+# 其他环境确有需要时通过 SWAGGER_ENABLED=true 显式打开。
+springdoc:
+  api-docs:
+    enabled: ${SWAGGER_ENABLED:false}
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED:false}
 
 server:
   port: 8080

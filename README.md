@@ -31,9 +31,11 @@ uploads/        上传文件存储目录（运行时生成，不入库）
    CREATE USER orientation_app WITH PASSWORD 'orientation_dev_pass';
    GRANT ALL PRIVILEGES ON DATABASE orientation TO orientation_app;
    ```
-3. 复制 `api/src/main/resources/application-local.yml.example` 为 `application-local.yml`，按需改密码。
-4. 启动后端：`cd api && mvn spring-boot:run`（Flyway 自动建表 + 注入种子数据，含试点账号 `admin` / `admin12345`）。
+3. 复制 `api/src/main/resources/application-local.yml.example` 为 `application-local.yml`，按需改密码（含本地 JWT 密钥与 Swagger 开关）。
+4. 启动后端：`cd api && mvn spring-boot:run -Dspring-boot.run.profiles=local`（或设置 `SPRING_PROFILES_ACTIVE=local`；Flyway 自动建表 + 注入种子数据。初始 `admin` 密码取环境变量 `ADMIN_INITIAL_PASSWORD`，未设置时随机生成并在启动日志中打印一次）。
 5. 前端开发：`pnpm install`，然后 `pnpm dev:web`（学习端，5173）或 `pnpm dev:admin`（管理后台，5174）。
+
+Swagger UI 默认关闭：本地由 `application-local.yml` 开启（`/swagger-ui/index.html`）；其他环境确有需要时设置 `SWAGGER_ENABLED=true`。
 
 ## 生产打包
 
@@ -45,4 +47,4 @@ cd api && mvn package                                # 打包单体 jar
 java -jar api/target/orientation-api-0.1.0.jar      # 单进程对外服务
 ```
 
-启动后：学习端在根路径 `/`，管理后台在 `/admin/`，用同一试点账号 `admin` / `admin12345` 登录。
+启动后：学习端在根路径 `/`，管理后台在 `/admin/`。生产环境必须通过环境变量提供 `JWT_SECRET`（≥32 字节），初始 `admin` 密码由 `ADMIN_INITIAL_PASSWORD` 指定（未设置时随机生成并打印一次，请立即登录修改）。
