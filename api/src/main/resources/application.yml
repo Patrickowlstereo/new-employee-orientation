@@ -38,5 +38,10 @@ springdoc:
   swagger-ui:
     enabled: ${SWAGGER_ENABLED:false}
 
+# 日志:滚动文件见 logback-spring.xml(按天轮转 + 100MB/文件 + 保留 30 天)
+logging:
+  file:
+    path: ${LOG_DIR:./logs}
+
 server:
   port: 8080

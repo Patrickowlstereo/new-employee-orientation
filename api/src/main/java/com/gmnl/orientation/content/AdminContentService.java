@@ -91,6 +91,7 @@ public class AdminContentService {
     doc.setFileUploadedAt(Instant.now());
     doc.setFileUploadedBy(uploaderId);
     docRepo.save(doc);
+    log.info("审计: {} 上传/替换文件 文档#{}《{}》 类型={} 旧路径={}", operator(), doc.getId(), doc.getTitle(), ext, oldPath);
 
     // 旧文件延迟到事务提交后再删:回滚时 DB 仍指向旧文件,文件必须还在
     deleteFileAfterCommit(oldPath);
@@ -110,6 +111,7 @@ public class AdminContentService {
     doc.setFileUploadedBy(null);
     docRepo.save(doc);
     deleteFileAfterCommit(oldPath);
+    log.info("审计: {} 删除文件 文档#{}《{}》 路径={}", operator(), doc.getId(), doc.getTitle(), oldPath);
     return AdminDocDto.from(doc, null);
   }
 
@@ -122,6 +124,7 @@ public class AdminContentService {
     inst.setName(req.name());
     inst.setOrder(req.order() != null ? req.order() : 0);
     institutionRepo.save(inst);
+    log.info("审计: {} 新增机构 #{}《{}》", operator(), inst.getId(), inst.getName());
     return new InstitutionDto(inst.getId(), inst.getKey(), inst.getName(), inst.getOrder(), List.of());
   }
 
@@ -132,6 +135,7 @@ public class AdminContentService {
     inst.setName(req.name());
     if (req.order() != null) inst.setOrder(req.order());
     institutionRepo.save(inst);
+    log.info("审计: {} 修改机构 #{}《{}》", operator(), inst.getId(), inst.getName());
     return new InstitutionDto(inst.getId(), inst.getKey(), inst.getName(), inst.getOrder(), List.of());
   }
 
@@ -142,6 +146,7 @@ public class AdminContentService {
       throw new IllegalArgumentException("该机构下还有小岛，请先删除小岛");
     }
     institutionRepo.deleteById(id);
+    log.info("审计: {} 删除机构 #{}", operator(), id);
   }
 
   // ========== 小岛 CRUD ==========
@@ -150,6 +155,7 @@ public class AdminContentService {
   public IslandDto createIsland(IslandUpsertRequest req) {
     Island isl = newIsland(req);
     islandRepo.save(isl);
+    log.info("审计: {} 新增小岛 #{}《{}》", operator(), isl.getId(), isl.getName());
     return IslandDto.from(isl);
   }
 
@@ -158,6 +164,7 @@ public class AdminContentService {
     Island isl = islandRepo.findById(id).orElseThrow(() -> notFound("小岛不存在"));
     applyIslandFields(isl, req);
     islandRepo.save(isl);
+    log.info("审计: {} 修改小岛 #{}《{}》", operator(), isl.getId(), isl.getName());
     return IslandDto.from(isl);
   }
 
@@ -168,6 +175,7 @@ public class AdminContentService {
       throw new IllegalArgumentException("该小岛下还有文档，请先处理文档");
     }
     islandRepo.deleteById(id);
+    log.info("审计: {} 删除小岛 #{}", operator(), id);
   }
 
   // ========== 文档行 CRUD ==========
@@ -184,6 +192,7 @@ public class AdminContentService {
     doc.setInstitutionId(req.institutionId());
     doc.setIslandId(req.islandId());
     docRepo.save(doc);
+    log.info("审计: {} 新增文档 #{}《{}》", operator(), doc.getId(), doc.getTitle());
     return AdminDocDto.from(doc, null);
   }
 
@@ -199,6 +208,7 @@ public class AdminContentService {
     doc.setInstitutionId(req.institutionId());
     doc.setIslandId(req.islandId());
     docRepo.save(doc);
+    log.info("审计: {} 修改文档 #{}《{}》", operator(), doc.getId(), doc.getTitle());
     String name = doc.getFileUploadedBy() == null ? null
         : userRepo.findById(doc.getFileUploadedBy()).map(User::getName).orElse(null);
     return AdminDocDto.from(doc, name);
@@ -214,6 +224,7 @@ public class AdminContentService {
     String oldPath = doc.getFilePath();
     docRepo.delete(doc);
     deleteFileAfterCommit(oldPath);
+    log.info("审计: {} 删除文档行 #{}《{}》 文件路径={}", operator(), doc.getId(), doc.getTitle(), oldPath);
   }
 
   /**
@@ -284,5 +295,17 @@ public class AdminContentService {
 
   private ResponseStatusException notFound(String msg) {
     return new ResponseStatusException(HttpStatus.NOT_FOUND, msg);
+  }
+
+  /** 审计日志的操作人:SecurityContext 中存的是 JWT subject(userId),尽力解析为 username。 */
+  private String operator() {
+    var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+    if (auth == null || auth.getPrincipal() == null) return "unknown";
+    String userId = String.valueOf(auth.getPrincipal());
+    try {
+      return userRepo.findById(Long.parseLong(userId)).map(User::getUsername).orElse("user#" + userId);
+    } catch (NumberFormatException e) {
+      return userId;
+    }
   }
 }
