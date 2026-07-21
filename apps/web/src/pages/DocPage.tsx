@@ -3,8 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { docStreamUrl } from '../api/content';
 import { useProgressStore } from '../stores/progressStore';
 import client from '../api/client';
-import { categorizeFileType } from '@gmnl/shared';
-import type { Doc, DocStatus } from '@gmnl/shared';
+import { categorizeFileType, API_BASE } from '@gmnl/shared';
+import type { Doc } from '@gmnl/shared';
 
 export default function DocPage() {
   const { docId } = useParams();
@@ -41,16 +41,47 @@ export default function DocPage() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [docId, upsertProgress]);
 
-  // 离开强制上报最终值
+  // 离开强制上报最终值(SPA 内导航,页面仍存活,可正常走 axios;不再回拉聚合)
   useEffect(() => {
     return () => {
       if (docId && pctRef.current > 0) {
-        upsertProgress(Number(docId), 'READING', pctRef.current);
+        upsertProgress(Number(docId), 'READING', pctRef.current, false);
       }
     };
   }, [docId, upsertProgress]);
 
+  // 关页/跳失兜底:页面隐藏或卸载时用 keepalive fetch 发最终进度,
+  // 浏览器不会在关闭标签页时取消该请求(body 仅几十字节,远低于 64KB 上限)
+  useEffect(() => {
+    if (!docId) return;
+    const id = Number(docId);
+    const sendFinal = () => {
+      const pct = pctRef.current;
+      if (pct <= 0) return;
+      const token = localStorage.getItem('token');
+      fetch(`${API_BASE}/progress/${id}`, {
+        method: 'PUT',
+        keepalive: true,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ status: 'READING', progressPct: pct }),
+      }).catch(() => { /* 尽力而为,失败由下次进入时自愈 */ });
+    };
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') sendFinal();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('pagehide', sendFinal);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pagehide', sendFinal);
+    };
+  }, [docId]);
+
   const currentPct = aggregate?.documents.find((p) => p.docId === Number(docId))?.progressPct ?? 0;
+
 
   // 媒体走流式直链(后端 Range 206,<video> 等原生 seek/分片,不占内存);下载另走 blob。
   const download = async () => {
