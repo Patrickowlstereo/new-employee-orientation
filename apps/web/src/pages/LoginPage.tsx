@@ -49,7 +49,6 @@ export default function LoginPage() {
             {busy ? '登录中…' : '登录'}
           </button>
         </form>
-        <p className="login-hint">试点账号 admin / admin12345</p>
       </div>
     </div>
   );
