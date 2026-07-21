@@ -56,6 +56,21 @@ class SecurityConfigTest {
   }
 
   @Test
+  void actuatorHealthIsPermitted() throws Exception {
+    // WebMvcTest 未加载 actuator 端点(未映射路径在 Boot 3.2 会落到静态资源处理),
+    // 只要安全层不拦截(非 401/403),即证明 /actuator/health 已放行
+    int status = mockMvc.perform(get("/actuator/health")).andReturn().getResponse().getStatus();
+    org.junit.jupiter.api.Assertions.assertNotEquals(401, status);
+    org.junit.jupiter.api.Assertions.assertNotEquals(403, status);
+  }
+
+  @Test
+  void otherActuatorPathsAreDenied() throws Exception {
+    // denyAll 拒绝,匿名访问由入口点返回 401
+    mockMvc.perform(get("/actuator/env")).andExpect(status().isUnauthorized());
+  }
+
+  @Test
   void adminDocsListRequiresAuth() throws Exception {
     mockMvc.perform(get("/api/admin/docs")).andExpect(status().isUnauthorized());
   }
