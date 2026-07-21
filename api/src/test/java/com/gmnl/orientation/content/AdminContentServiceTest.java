@@ -6,6 +6,8 @@ import com.gmnl.orientation.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -117,6 +119,49 @@ class AdminContentServiceTest {
     Doc doc = doc(1L);
     when(docRepo.findById(1L)).thenReturn(Optional.of(doc));
     service.deleteFile(1L);
+    verify(storage, never()).delete(anyString());
+  }
+
+  @Test
+  void oldFileDeletedOnlyAfterCommit() throws Exception {
+    TransactionSynchronizationManager.initSynchronization();
+    try {
+      Doc doc = doc(1L);
+      doc.setFilePath("docs/1/old.pdf");
+      doc.setFileType("pdf");
+      when(docRepo.findById(1L)).thenReturn(Optional.of(doc));
+      when(storage.store(eq(1L), anyString(), any())).thenReturn("docs/1/999_new.pdf");
+      when(userRepo.findById(7L)).thenReturn(Optional.of(user(7L, "张三")));
+
+      service.uploadFile(1L, file("新版.pdf", "x"), 7L);
+      // 事务尚未提交:旧文件必须还在
+      verify(storage, never()).delete(anyString());
+
+      // 模拟事务提交
+      for (TransactionSynchronization s : TransactionSynchronizationManager.getSynchronizations()) {
+        s.afterCommit();
+      }
+      verify(storage).delete("docs/1/old.pdf");
+    } finally {
+      TransactionSynchronizationManager.clearSynchronization();
+    }
+  }
+
+  @Test
+  void oldFileKeptWhenTransactionRollsBack() {
+    TransactionSynchronizationManager.initSynchronization();
+    try {
+      Doc doc = doc(1L);
+      doc.setFilePath("docs/1/old.mp4");
+      when(docRepo.findById(1L)).thenReturn(Optional.of(doc));
+
+      service.deleteFile(1L);
+      // 回滚:不触发 afterCommit,直接清理同步器 → 文件不删
+      verify(storage, never()).delete(anyString());
+    } finally {
+      TransactionSynchronizationManager.clearSynchronization();
+    }
+    // 同步器清理后仍未删除
     verify(storage, never()).delete(anyString());
   }
 
