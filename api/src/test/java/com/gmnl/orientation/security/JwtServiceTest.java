@@ -25,4 +25,15 @@ class JwtServiceTest {
   void invalidTokenThrows() {
     assertThrows(JwtException.class, () -> service.parse("not-a-token"));
   }
+
+  @Test
+  void blankSecretRejectedAtStartup() {
+    assertThrows(IllegalStateException.class, () -> new JwtService("", 8));
+    assertThrows(IllegalStateException.class, () -> new JwtService("   ", 8));
+  }
+
+  @Test
+  void shortSecretRejectedAtStartup() {
+    assertThrows(IllegalStateException.class, () -> new JwtService("too-short", 8));
+  }
 }

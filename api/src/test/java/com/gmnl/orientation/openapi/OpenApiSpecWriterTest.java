@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
@@ -31,6 +32,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+// 生产配置默认关闭 springdoc 且 JWT 密钥无默认值;契约导出必须可用,
+// 故在测试上下文显式开启 api-docs 并注入仅测试用的密钥。
+@TestPropertySource(properties = {
+    "springdoc.api-docs.enabled=true",
+    "app.jwt.secret=test-secret-test-secret-test-secret-test-secret-32b"
+})
 @EnabledIfSystemProperty(named = "dump.openapi", matches = "true")
 class OpenApiSpecWriterTest {
 
