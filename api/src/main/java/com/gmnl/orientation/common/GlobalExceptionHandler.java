@@ -42,6 +42,11 @@ public class GlobalExceptionHandler {
     return error(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", e.getMessage());
   }
 
+  @ExceptionHandler(com.gmnl.orientation.user.AuthService.LoginLockedException.class)
+  public ResponseEntity<ApiError> loginLocked(com.gmnl.orientation.user.AuthService.LoginLockedException e) {
+    return error(HttpStatus.TOO_MANY_REQUESTS, "LOGIN_LOCKED", e.getMessage());
+  }
+
   // 透传 ResponseStatusException 的状态码（如 404/403），避免被下方兜底吞成 500。
   // 比 @ExceptionHandler(Exception.class) 更具体，Spring 会优先匹配。
   @ExceptionHandler(ResponseStatusException.class)

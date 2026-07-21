@@ -11,21 +11,28 @@ public class AuthService {
   private final UserRepository userRepo;
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
+  private final LoginAttemptService loginAttemptService;
 
-  public AuthService(UserRepository userRepo, PasswordEncoder passwordEncoder, JwtService jwtService) {
+  public AuthService(UserRepository userRepo, PasswordEncoder passwordEncoder, JwtService jwtService,
+                     LoginAttemptService loginAttemptService) {
     this.userRepo = userRepo;
     this.passwordEncoder = passwordEncoder;
     this.jwtService = jwtService;
+    this.loginAttemptService = loginAttemptService;
   }
 
   public record LoginResult(String token, UserDto user) {}
 
   public LoginResult login(String username, String password) {
-    User user = userRepo.findByUsername(username)
-        .orElseThrow(() -> invalidCredentials());
-    if (!passwordEncoder.matches(password, user.getPasswordHash())) {
+    if (loginAttemptService.isLocked(username)) {
+      throw new LoginLockedException();
+    }
+    User user = userRepo.findByUsername(username).orElse(null);
+    if (user == null || !passwordEncoder.matches(password, user.getPasswordHash())) {
+      loginAttemptService.onFailure(username);
       throw invalidCredentials();
     }
+    loginAttemptService.onSuccess(username);
     String token = jwtService.generate(user.getId(), user.getUsername(), user.getName(), user.getRole());
     return new LoginResult(token, UserDto.from(user));
   }
@@ -47,5 +54,9 @@ public class AuthService {
 
   public static class InvalidCredentialsException extends RuntimeException {
     public InvalidCredentialsException() { super("账号或密码错误"); }
+  }
+
+  public static class LoginLockedException extends RuntimeException {
+    public LoginLockedException() { super("尝试次数过多，请 10 分钟后再试"); }
   }
 }
