@@ -3,10 +3,14 @@ package com.gmnl.orientation.content;
 import com.gmnl.orientation.progress.ProgressRepository;
 import com.gmnl.orientation.user.User;
 import com.gmnl.orientation.user.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,6 +27,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class AdminContentService {
+
+  private static final Logger log = LoggerFactory.getLogger(AdminContentService.class);
 
   private final DocRepository docRepo;
   private final InstitutionRepository institutionRepo;
@@ -86,26 +92,24 @@ public class AdminContentService {
     doc.setFileUploadedBy(uploaderId);
     docRepo.save(doc);
 
-    if (oldPath != null && !oldPath.isBlank()) {
-      storage.delete(oldPath);
-    }
+    // 旧文件延迟到事务提交后再删:回滚时 DB 仍指向旧文件,文件必须还在
+    deleteFileAfterCommit(oldPath);
 
     String uploaderName = userRepo.findById(uploaderId).map(User::getName).orElse(null);
     return AdminDocDto.from(doc, uploaderName);
   }
 
-  /** 删除文档文件（幂等）：清空路径/类型/审计，并删除物理文件。保留文档行。 */
+  /** 删除文档文件（幂等）：清空路径/类型/审计，物理文件在事务提交后删除。保留文档行。 */
   @Transactional
   public AdminDocDto deleteFile(Long docId) {
     Doc doc = docRepo.findById(docId).orElseThrow(() -> notFound("文档不存在"));
-    if (doc.getFilePath() != null && !doc.getFilePath().isBlank()) {
-      storage.delete(doc.getFilePath());
-    }
+    String oldPath = doc.getFilePath();
     doc.setFilePath(null);
     doc.setFileType(null);
     doc.setFileUploadedAt(null);
     doc.setFileUploadedBy(null);
     docRepo.save(doc);
+    deleteFileAfterCommit(oldPath);
     return AdminDocDto.from(doc, null);
   }
 
@@ -200,17 +204,43 @@ public class AdminContentService {
     return AdminDocDto.from(doc, name);
   }
 
-  /** 硬删文档行：有学习记录则拒绝（建议停用），否则删物理文件 + 行。 */
+  /** 硬删文档行：有学习记录则拒绝（建议停用），否则删行，物理文件在事务提交后删除。 */
   @Transactional
   public void deleteDocRow(Long id) {
     Doc doc = docRepo.findById(id).orElseThrow(() -> notFound("文档不存在"));
     if (progressRepo.countByDocId(id) > 0) {
       throw new IllegalArgumentException("该文档已有学习记录，请改用停用");
     }
-    if (doc.getFilePath() != null && !doc.getFilePath().isBlank()) {
-      storage.delete(doc.getFilePath());
-    }
+    String oldPath = doc.getFilePath();
     docRepo.delete(doc);
+    deleteFileAfterCommit(oldPath);
+  }
+
+  /**
+   * 把物理文件删除注册到当前事务的 afterCommit:提交前（含回滚）文件保留，
+   * 避免 DB 指向已删除文件导致永久 404。无活动事务时（如单元测试直接调用）立即删除。
+   * 删除失败只记 WARN,不阻断已提交的业务结果,留待运维清理。
+   */
+  private void deleteFileAfterCommit(String path) {
+    if (path == null || path.isBlank()) return;
+    if (TransactionSynchronizationManager.isSynchronizationActive()) {
+      TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+        @Override
+        public void afterCommit() {
+          deletePhysicalQuietly(path);
+        }
+      });
+    } else {
+      deletePhysicalQuietly(path);
+    }
+  }
+
+  private void deletePhysicalQuietly(String path) {
+    try {
+      storage.delete(path);
+    } catch (Exception e) {
+      log.warn("物理文件删除失败（留待运维清理）: {}", path, e);
+    }
   }
 
   // ========== 内部辅助 ==========

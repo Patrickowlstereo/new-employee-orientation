@@ -3,8 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { docStreamUrl } from '../api/content';
 import { useProgressStore } from '../stores/progressStore';
 import client from '../api/client';
-import { categorizeFileType } from '@gmnl/shared';
-import type { Doc, DocStatus } from '@gmnl/shared';
+import { categorizeFileType, API_BASE } from '@gmnl/shared';
+import type { Doc } from '@gmnl/shared';
 
 export default function DocPage() {
   const { docId } = useParams();
@@ -41,16 +41,61 @@ export default function DocPage() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [docId, upsertProgress]);
 
-  // 离开强制上报最终值
+  // 离开强制上报最终值(SPA 内导航,页面仍存活,可正常走 axios;不再回拉聚合)
   useEffect(() => {
     return () => {
       if (docId && pctRef.current > 0) {
-        upsertProgress(Number(docId), 'READING', pctRef.current);
+        upsertProgress(Number(docId), 'READING', pctRef.current, false);
       }
     };
   }, [docId, upsertProgress]);
 
+  // 关页/跳失兜底:页面隐藏或卸载时用 keepalive fetch 发最终进度,
+  // 浏览器不会在关闭标签页时取消该请求(body 仅几十字节,远低于 64KB 上限)
+  useEffect(() => {
+    if (!docId) return;
+    const id = Number(docId);
+    const sendFinal = () => {
+      const pct = pctRef.current;
+      if (pct <= 0) return;
+      const token = localStorage.getItem('token');
+      fetch(`${API_BASE}/progress/${id}`, {
+        method: 'PUT',
+        keepalive: true,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ status: 'READING', progressPct: pct }),
+      }).catch(() => { /* 尽力而为,失败由下次进入时自愈 */ });
+    };
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') sendFinal();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('pagehide', sendFinal);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pagehide', sendFinal);
+    };
+  }, [docId]);
+
   const currentPct = aggregate?.documents.find((p) => p.docId === Number(docId))?.progressPct ?? 0;
+
+  // 「标记完成」明确反馈:成功/失败都让用户感知
+  const [completeMsg, setCompleteMsg] = useState<string | null>(null);
+  const [completeOk, setCompleteOk] = useState(false);
+  const onComplete = async () => {
+    if (!docId) return;
+    const ok = await completeDoc(Number(docId));
+    setCompleteOk(ok);
+    setCompleteMsg(ok ? '✓ 已标记完成' : '标记失败，请稍后重试');
+  };
+  const completeFeedback = completeMsg && (
+    <span style={{ marginLeft: 10, fontSize: 13, color: completeOk ? 'var(--emerald-400)' : 'var(--rose-400)' }}>
+      {completeMsg}
+    </span>
+  );
 
   // 媒体走流式直链(后端 Range 206,<video> 等原生 seek/分片,不占内存);下载另走 blob。
   const download = async () => {
@@ -97,7 +142,8 @@ export default function DocPage() {
           style={{ width: '100%', height: '100%', border: 'none', background: '#fff' }}
         />
         <div style={{ position: 'fixed', top: 16, right: 16, display: 'flex', gap: 8, zIndex: 1100 }}>
-          <button className="btn-primary" onClick={() => completeDoc(Number(docId))}>标记完成</button>
+          <button className="btn-primary" onClick={onComplete}>标记完成</button>
+          {completeFeedback}
           <Link to={`/island/${doc.islandId}`} className="btn-secondary">← 返回</Link>
         </div>
       </div>
@@ -122,7 +168,8 @@ export default function DocPage() {
           )}
           <div style={{ marginTop: 8 }}>{renderPreview()}</div>
           <div style={{ marginTop: 24 }}>
-            <button className="btn-primary" onClick={() => completeDoc(Number(docId))}>标记完成</button>
+            <button className="btn-primary" onClick={onComplete}>标记完成</button>
+            {completeFeedback}
           </div>
         </>
       )}

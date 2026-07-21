@@ -5,8 +5,10 @@ import client from '../api/client';
 interface ProgressState {
   aggregate: ProgressAggregate | null;
   loadProgress: () => Promise<void>;
-  upsertProgress: (docId: number, status: DocStatus, progressPct: number) => Promise<void>;
-  completeDoc: (docId: number) => Promise<void>;
+  /** reload=false 用于卸载/后台上报：只写不拉，避免无效请求。 */
+  upsertProgress: (docId: number, status: DocStatus, progressPct: number, reload?: boolean) => Promise<void>;
+  /** 返回是否成功，供按钮给用户明确反馈。 */
+  completeDoc: (docId: number) => Promise<boolean>;
 }
 
 export const useProgressStore = create<ProgressState>((set, get) => ({
@@ -15,14 +17,24 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
     const { data } = await client.get('/progress');
     set({ aggregate: data });
   },
-  upsertProgress: async (docId, status, progressPct) => {
-    const body: UpsertProgressRequest = { status, progressPct };
-    await client.put(`/progress/${docId}`, body);
-    // 简化：上报后重新拉取聚合（后端单调不回退保证正确）
-    await get().loadProgress();
+  upsertProgress: async (docId, status, progressPct, reload = true) => {
+    // 进度上报属尽力而为：失败静默降级，不产生 unhandled rejection
+    try {
+      const body: UpsertProgressRequest = { status, progressPct };
+      await client.put(`/progress/${docId}`, body);
+      // 简化：上报后重新拉取聚合（后端单调不回退保证正确）
+      if (reload) await get().loadProgress();
+    } catch {
+      // 静默：下次节流上报或列表页重新加载会自愈
+    }
   },
   completeDoc: async (docId) => {
-    await client.post(`/progress/${docId}/complete`);
-    await get().loadProgress();
+    try {
+      await client.post(`/progress/${docId}/complete`);
+      await get().loadProgress();
+      return true;
+    } catch {
+      return false;
+    }
   },
 }));

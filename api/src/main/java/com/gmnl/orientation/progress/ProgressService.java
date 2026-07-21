@@ -32,29 +32,16 @@ public class ProgressService {
     int pct = progressPct == null ? 0 : Math.max(0, Math.min(100, progressPct));
     if (status == ProgressStatus.COMPLETED) pct = 100;
 
-    Progress p = progressRepo.findById(new ProgressId(userId, docId)).orElseGet(() -> {
-      Progress np = new Progress();
-      np.setUserId(userId);
-      np.setDocId(docId);
-      np.setStatus(ProgressStatus.NOT_STARTED);
-      np.setProgressPct(0);
-      return np;
-    });
+    // 单调不回退、状态只升不降、completedAt 首完写入等合并语义由
+    // ProgressRepository.upsertAtomic 的 INSERT ... ON CONFLICT 在数据库侧原子完成,
+    // 并发首写不再撞唯一约束;此处只负责把入参规整为「本次上报值」。
+    Instant now = Instant.now();
+    Instant lastReadAt = (pct > 0 || status != ProgressStatus.NOT_STARTED) ? now : null;
+    Instant completedAt = (status == ProgressStatus.COMPLETED) ? now : null;
+    progressRepo.upsertAtomic(userId, docId, status.name(), pct, lastReadAt, completedAt);
 
-    // 单调不回退：只增不减
-    if (pct < p.getProgressPct()) pct = p.getProgressPct();
-    p.setProgressPct(pct);
-    if (pct > 0 || status != ProgressStatus.NOT_STARTED) {
-      p.setLastReadAt(Instant.now());
-    }
-    if (status.ordinal() > p.getStatus().ordinal()) {
-      p.setStatus(status);
-    }
-    if (p.getStatus() == ProgressStatus.COMPLETED) {
-      p.setProgressPct(100);
-      if (p.getCompletedAt() == null) p.setCompletedAt(Instant.now());
-    }
-    progressRepo.save(p);
+    Progress p = progressRepo.findById(new ProgressId(userId, docId))
+        .orElseThrow(() -> new IllegalStateException("进度写入后读取失败"));
     // 小岛解锁状态由 getAggregate 实时计算（顺序解锁），无需在此持久化。
     return ProgressItemDto.from(p);
   }

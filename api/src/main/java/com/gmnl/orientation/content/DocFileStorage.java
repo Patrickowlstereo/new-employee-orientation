@@ -20,6 +20,8 @@ import java.nio.file.StandardCopyOption;
 @Component
 public class DocFileStorage {
 
+  private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(DocFileStorage.class);
+
   private final Path root;
 
   public DocFileStorage(@Value("${app.uploads.dir:./uploads}") String dir) {
@@ -40,13 +42,13 @@ public class DocFileStorage {
     return relative;
   }
 
-  /** 删除相对路径对应文件；不存在或路径非法则静默（best-effort）。 */
+  /** 删除相对路径对应文件；不存在则跳过，删除失败记 WARN（best-effort，不阻断业务）。 */
   public void delete(String relativePath) {
     if (relativePath == null || relativePath.isBlank()) return;
     try {
       Files.deleteIfExists(resolve(relativePath));
-    } catch (IOException ignored) {
-      // 清理失败不阻断业务，留待后续运维清理
+    } catch (IOException e) {
+      log.warn("文件删除失败（留待运维清理）: {}", relativePath, e);
     }
   }
 
