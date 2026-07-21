@@ -22,7 +22,7 @@ spring:
 
 app:
   jwt:
-    secret: ${JWT_SECRET:dev-secret-change-me-please-make-it-long-enough-32bytes}
+    secret: ${JWT_SECRET:}
     expiration-hours: 8
   uploads:
     dir: ${UPLOADS_DIR:./uploads}

@@ -21,7 +21,18 @@ public class JwtService {
 
   public JwtService(@Value("${app.jwt.secret}") String secret,
                     @Value("${app.jwt.expiration-hours:8}") long hours) {
-    this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    // 密钥不允许为空或过短:jjwt HMAC-SHA 要求 ≥32 字节,缺失时启动即失败,
+    // 避免带默认弱密钥上线。
+    if (secret == null || secret.isBlank()) {
+      throw new IllegalStateException(
+          "app.jwt.secret 未配置:请通过环境变量 JWT_SECRET 提供至少 32 字节的密钥");
+    }
+    byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
+    if (secretBytes.length < 32) {
+      throw new IllegalStateException(
+          "app.jwt.secret 长度不足:HMAC-SHA 要求至少 32 字节,当前 " + secretBytes.length + " 字节");
+    }
+    this.key = Keys.hmacShaKeyFor(secretBytes);
     this.expiration = Duration.ofHours(hours);
   }
 
